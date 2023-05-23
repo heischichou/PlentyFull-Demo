@@ -10,7 +10,7 @@ PlentyFull: A Food Surplus Aid Intermediary Web Application is a web application
 - Jan Michael V. Garot - [@heischichou](https://github.com/heischichou/)
 - Francine O. Menchavez - [@Annulyn02](https://github.com/Annulyn2/)
 - Roque C. Gelacio Jr. - [@RG-JR](https://github.com/RG-JR)
-- Niña Therese J. Ybas - [@heischichou](https://github.com/Caerfyre)
+- Niña Therese J. Ybas - [@Caerfyre](https://github.com/Caerfyre)
 
 ## Project setup
 ```
