@@ -1,0 +1,105 @@
+// CUSTOM VARIABLES - edit variables here (get variables you want to change from _variables.scss)
+
+$enable-negative-margins: true;
+
+// Colors
+$primary:         #4AD471;
+$secondary:       #45BF5D;
+$light:           #56F576;
+$dark:            #113333;
+$body:            #FFFFFF;
+$lightgreen:      #6EFF97;
+$black:           #000000;
+
+$theme-colors: (
+  "primary":        $primary,
+  "secondary":      $secondary,
+  "light":          $light,
+  "dark":           $dark,
+  "body":           $body,
+  "lightgreen":     $lightgreen,
+);
+
+// Font
+$font-family-sans-serif:    "Inter";
+
+$font-size-root:              null !default;
+$font-size-base:              1rem !default;
+$font-size-sm:                $font-size-base * .875 !default;
+$font-size-lg:                $font-size-base * 1.25 !default;
+$input-btn-focus-width:       .1rem;
+
+$font-weight-lighter:       200;
+$font-weight-light:         300;
+$font-weight-normal:        400;
+$font-weight-bold:          600;
+$font-weight-bolder:        700;
+
+$h1-font-size:                $font-size-base * 3;
+$h2-font-size:                $font-size-base * 2.5;
+$h3-font-size:                $font-size-base * 2;
+$h4-font-size:                $font-size-base * 1.75;
+$h5-font-size:                $font-size-base * 1.5;
+$h6-font-size:                $font-size-base * 1.25;
+
+$font-sizes: (
+    l: $h1-font-size * 1.25,
+    xl: $h1-font-size * 1.5,
+    xxl: $h1-font-size * 2
+);
+
+// Spacing
+$spacer: 1rem;
+$spacers: (
+    0: 0,
+    1: $spacer * .25,
+    2: $spacer * .5,
+    3: $spacer,
+    4: $spacer * 1.5,
+    5: $spacer * 3,
+    6: $spacer * 4.5
+);
+
+// Borders
+$border-radius-sm:  .25rem;     // 1
+$border-radius:     .5rem;      // 2
+$border-radius-lg:  2rem;       // 3
+
+// Links
+$link-color:  $secondary;
+
+// Navbar
+$navbar-toggler-padding-y:          .5rem;
+$navbar-toggler-padding-x:          .5rem;
+$navbar-toggler-font-size:          $font-size-sm;
+
+$navbar-dark-color:                 rgba($primary, .55);
+$navbar-dark-hover-color:           rgba($primary, .75);
+$navbar-dark-active-color:          $primary;
+$navbar-dark-disabled-color:        rgba($primary, .25);
+$navbar-dark-toggler-border-color:  rgba($primary, .1);
+
+$navbar-light-color:                rgba($primary, .55);
+$navbar-light-hover-color:          rgba($primary, .7);
+$navbar-light-active-color:         $primary;
+$navbar-light-disabled-color:       rgba($primary, .25);
+$navbar-light-toggler-border-color: rgba($primary, .1);
+
+// Body
+html, body, div {
+  background-color: $body;
+  color: $black;
+  font-family: 'Inter', sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+// Main SCSS
+@import "~bootstrap/scss/bootstrap";
+
+// font-family: 'Inter', sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap');
