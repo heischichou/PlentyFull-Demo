@@ -4,6 +4,7 @@
     "module": "esnext",
     "strict": true,
     "allowJs": true,
+    "outDir": "./dist",
     "jsx": "preserve",
     "importHelpers": true,
     "moduleResolution": "node",
@@ -37,6 +38,7 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }

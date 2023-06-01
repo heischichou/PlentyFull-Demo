@@ -5,15 +5,18 @@ module.exports = {
   transform: {
     "^.+\\.vue$": "@vue/vue3-jest",
     "^.+\\.jsx?$": "babel-jest",
-    "^.+\\.{ts|tsx}?$": ["ts-jest", {
-      babel: true,
-      isolatedModules: true,
-      tsConfig: 'tsconfig.json',
-    }]
+    "^.+\\.{ts|tsx}?$": [
+      "ts-jest",
+      {
+        babel: true,
+        isolatedModules: true,
+        tsConfig: "tsconfig.json",
+      },
+    ],
   },
   moduleFileExtensions: ["ts", "js", "vue"],
   moduleNameMapper: {
-    '\\.(css|less|scss)$': '<rootDir>/styleMock.ts',
+    "\\.(css|less|scss)$": "<rootDir>/styleMock.ts",
   },
   testEnvironment: "jsdom",
   testEnvironmentOptions: {
@@ -22,13 +25,11 @@ module.exports = {
   clearMocks: true,
   coverageProvider: "v8",
   collectCoverage: true,
-  // collectCoverageFrom: [ 
+  // collectCoverageFrom: [
   //   'src/components/**/*.{ts,vue}',
   //   "./tests/unit/**/*.{js,jsx,ts,tsx,vue}",
   //   "!./tests/unit/**/_*.{js,jsx,ts,tsx,vue}",
-  // ],  
+  // ],
   coverageReporters: ["text"],
-  testMatch: [
-    "<rootDir>/tests/unit/**/*.spec.ts",
-  ],
+  testMatch: ["<rootDir>/tests/unit/**/*.spec.ts"],
 };
