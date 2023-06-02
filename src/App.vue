@@ -1,10 +1,20 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
+    <AppHeader />
   </div>
   <router-view />
 </template>
+
+<script lang="ts">
+import AppHeader from "@/components/AppHeader.vue";
+
+export default {
+  name: "App",
+  components: {
+    AppHeader,
+  },
+};
+</script>
 
 <style lang="scss">
 #app {
@@ -17,6 +27,7 @@
 
 #nav {
   padding: 30px;
+  border: solid 1px #000;
 
   a {
     font-weight: bold;
