@@ -7,18 +7,19 @@ $primary:         #4AD471;
 $secondary:       #45BF5D;
 $light:           #56F576;
 $dark:            #113333;
-$body:            #FFFFFF;
 $lightgreen:      #6EFF97;
 $black:           #000000;
+$white:           #FFFFFF;
 
 $theme-colors: (
   "primary":        $primary,
   "secondary":      $secondary,
   "light":          $light,
   "dark":           $dark,
-  "body":           $body,
+  "body":           $white,
   "lightgreen":     $lightgreen,
   "black":          $black,
+  "white":          $white,
 );
 
 // Font
@@ -74,27 +75,17 @@ $navbar-toggler-padding-y:          .5rem;
 $navbar-toggler-padding-x:          .5rem;
 $navbar-toggler-font-size:          $font-size-sm;
 
-$navbar-dark-color:                 rgba($primary, .55);
-$navbar-dark-hover-color:           rgba($primary, .75);
-$navbar-dark-active-color:          $primary;
-$navbar-dark-disabled-color:        rgba($primary, .25);
-$navbar-dark-toggler-border-color:  rgba($primary, .1);
-
-$navbar-light-color:                rgba($primary, .55);
-$navbar-light-hover-color:          rgba($primary, .7);
+$navbar-light-color:                $white;
+$navbar-light-hover-color:          $primary;
 $navbar-light-active-color:         $primary;
-$navbar-light-disabled-color:       rgba($primary, .25);
 $navbar-light-toggler-border-color: rgba($primary, .1);
 
 // Body
-html, body, div {
-  background-color: $body;
+html, body {
+  background-color: $white;
   color: $black;
   font-family: 'Inter', sans-serif;
   box-sizing: border-box;
-}
-
-body {
   margin: 0;
   padding: 0;
 }
