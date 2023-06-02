@@ -1,61 +1,162 @@
 <template>
-  <b-nav small align="center">
-    <!-- Check if user is logged in -->
-    <template v-if="role.length === 0">
-      <b-nav-item active>
-        <router-link to="/">Home</router-link>
-      </b-nav-item>
-      <b-nav-item>
-        <router-link to="/about">About</router-link>
-      </b-nav-item>
-      <b-nav-item>
-        <router-link to="/register">Register</router-link>
-      </b-nav-item>
-      <b-nav-item>
-        <router-link to="/login">Login</router-link>
-      </b-nav-item>
-    </template>
-    <template v-else>
-      <!-- Check if user is either a Donor or Charity -->
-      <template v-if="role === 'Donor' || role === 'Charity'">
-        <!-- Check if user is a Donor -->
-        <template v-if="role === 'Donor'">
-          <b-nav-item active>
-            <router-link to="/donate">Donate</router-link>
-          </b-nav-item>
-        </template>
-        <!-- Else, if user is a Charity -->
-        <template v-else>
-          <b-nav-item active>
-            <router-link to="/receive">Receive</router-link>
-          </b-nav-item>
-        </template>
-        <!-- Shared router links -->
-        <b-nav-item>
-          <router-link to="/find">Find</router-link>
-        </b-nav-item>
-        <b-nav-item>
-          <router-link to="/transactions">Transactions</router-link>
-        </b-nav-item>
-        <b-nav-item>
-          <router-link to="/statistics">Statistics</router-link>
-        </b-nav-item>
-      </template>
-      <!-- Else, if user is an Admin -->
-      <template v-else>
-        <b-nav-item>
-          <router-link to="/statistics">Statistics</router-link>
-        </b-nav-item>
-        <b-nav-item active>
-          <router-link to="/registry">Registry</router-link>
-        </b-nav-item>
-      </template>
-      <!-- Shared router links -->
-      <b-nav-item>
-        <router-link to="/profile">Profile</router-link>
-      </b-nav-item>
-    </template>
-  </b-nav>
+  <nav id="nav" class="navbar navbar-expand-md bg-dark" data-bs-theme="light">
+    <div class="container-xl d-flex flew-row flex-row-reverse bg-transparent">
+      <button
+        class="navbar-toggler border-primary my-2 me-3"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarNav"
+        aria-controls="navbarNav"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <em class="bi bi-list text-primary d-flex fs-3"></em>
+      </button>
+      <div
+        class="flex-row align-items-center collapse navbar-collapse text-center bg-transparent m-3"
+        id="navbarNav"
+      >
+        <div class="d-none d-md-block">
+          <h4 class="text-primary m-0">PLENTYFULL</h4>
+        </div>
+        <ul class="w-100 navbar-nav justify-content-center">
+          <!-- Check if user is logged in -->
+          <template v-if="role.length === 0">
+            <li class="nav-item px-2 px-lg-4">
+              <router-link
+                class="nav-link"
+                to="/"
+                :class="{ active: $route.path === '/' }"
+                >Home</router-link
+              >
+            </li>
+            <li class="nav-item px-2 px-lg-4">
+              <router-link
+                class="nav-link"
+                to="/about"
+                :class="{ active: $route.path === '/about' }"
+                >About</router-link
+              >
+            </li>
+            <li class="nav-item px-2 px-lg-4">
+              <router-link
+                class="nav-link"
+                to="/register"
+                :class="{ active: $route.path === '/register' }"
+                >Register</router-link
+              >
+            </li>
+            <li class="nav-item px-2 px-lg-4">
+              <router-link
+                class="nav-link"
+                to="/login"
+                :class="{ active: $route.path === '/login' }"
+                >Login</router-link
+              >
+            </li>
+          </template>
+          <template v-else>
+            <!-- Check if user is either a Donor or Charity -->
+            <template v-if="role === 'Donor' || role === 'Charity'">
+              <!-- Check if user is a Donor -->
+              <template v-if="role === 'Donor'">
+                <li class="nav-item px-2 px-lg-4">
+                  <router-link
+                    class="nav-link"
+                    to="/donate"
+                    :class="{ active: $route.path === '/donate' }"
+                    >Donate</router-link
+                  >
+                </li>
+              </template>
+              <!-- Else, if user is a Charity -->
+              <template v-else>
+                <li class="nav-item px-2 px-lg-4">
+                  <router-link
+                    class="nav-link"
+                    to="/receive"
+                    :class="{ active: $route.path === '/receive' }"
+                    >Receive</router-link
+                  >
+                </li>
+              </template>
+              <!-- Shared router links -->
+              <li class="nav-item px-2 px-lg-4">
+                <router-link class="nav-link" to="/find">Find</router-link>
+              </li>
+              <li class="nav-item px-2 px-lg-4">
+                <router-link
+                  class="nav-link"
+                  to="/transactions"
+                  :class="{ active: $route.path === '/transactions' }"
+                  >Transactions</router-link
+                >
+              </li>
+              <li class="nav-item px-2 px-lg-4">
+                <router-link
+                  class="nav-link"
+                  to="/statistics"
+                  :class="{ active: $route.path === '/statistics' }"
+                  >Statistics</router-link
+                >
+              </li>
+            </template>
+            <!-- Else, if user is an Admin -->
+            <template v-else>
+              <li class="nav-item px-2 px-lg-4">
+                <router-link
+                  class="nav-link"
+                  to="/statistics"
+                  :class="{ active: $route.path === '/statistics' }"
+                  >Statistics</router-link
+                >
+              </li>
+              <li class="nav-item px-2 px-lg-4">
+                <router-link
+                  class="nav-link"
+                  to="/registry"
+                  :class="{ active: $route.path === '/registry' }"
+                  >Registry</router-link
+                >
+              </li>
+            </template>
+            <!-- Shared router links -->
+            <li class="nav-item d-block d-md-none px-2 px-lg-4">
+              <router-link
+                class="nav-link"
+                to="/profile"
+                :class="{ active: $route.path === '/profile' }"
+                >Profile</router-link
+              >
+            </li>
+            <li class="nav-item d-block d-md-none px-2 px-lg-4">
+              <router-link class="nav-link" to="#">Log Out</router-link>
+            </li>
+          </template>
+        </ul>
+        <div class="dropdown d-none d-md-block">
+          <button
+            class="btn dropdown-toggle"
+            :class="{
+              'text-primary': $route.path === '/profile',
+              'text-white': $route.path !== '/profile',
+            }"
+            type="button"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+          >
+            <em class="bi bi-person-circle h5"></em>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end">
+            <router-link class="dropdown-item" to="/profile"
+              >Profile</router-link
+            >
+            <router-link class="dropdown-item" to="#">Log Out</router-link>
+          </div>
+        </div>
+      </div>
+    </div>
+  </nav>
 </template>
 
 <script lang="ts">
@@ -70,3 +171,5 @@ export default defineComponent({
   },
 });
 </script>
+
+<style scoped lang="scss"></style>
