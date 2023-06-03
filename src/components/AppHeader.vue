@@ -1,6 +1,9 @@
 <template>
   <nav id="nav" class="navbar navbar-expand-md bg-dark" data-bs-theme="light">
-    <div class="container-xl d-flex flew-row flex-row-reverse bg-transparent">
+    <div
+      class="container d-flex flex-row justify-content-end justify-content-md-between bg-transparent"
+    >
+      <Notifications class="d-block d-md-none" />
       <button
         class="navbar-toggler border-primary my-2 me-3"
         type="button"
@@ -134,6 +137,7 @@
             </li>
           </template>
         </ul>
+        <Notifications class="d-none d-md-block" />
         <div class="dropdown d-none d-md-block">
           <button
             class="btn dropdown-toggle"
@@ -161,13 +165,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import Notifications from "./NotificationsDropdown.vue";
 
 export default defineComponent({
   name: "AppHeader",
   data() {
     return {
-      role: "",
+      role: "Donor",
     };
+  },
+  components: {
+    Notifications,
   },
 });
 </script>
