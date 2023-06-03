@@ -38,9 +38,10 @@ export default defineComponent({
     };
   },
   methods: {
-    toggleNotifications(event: any) {
+    toggleNotifications(event: Event) {
       if (event) {
-        const toggler = event.target.parentElement;
+        let toggler = event.target as HTMLElement;
+        toggler = toggler.parentElement as HTMLElement;
         this.isOpen = toggler.classList.contains("show") ? true : false;
       }
     },
