@@ -58,10 +58,9 @@
               >
             </li>
           </template>
+
           <template v-else>
-            <!-- Check if user is either a Donor or Charity -->
             <template v-if="role === 'Donor' || role === 'Charity'">
-              <!-- Check if user is a Donor -->
               <template v-if="role === 'Donor'">
                 <li class="nav-item px-2 px-lg-4">
                   <router-link
@@ -72,7 +71,7 @@
                   >
                 </li>
               </template>
-              <!-- Else, if user is a Charity -->
+
               <template v-else>
                 <li class="nav-item px-2 px-lg-4">
                   <router-link
@@ -83,7 +82,7 @@
                   >
                 </li>
               </template>
-              <!-- Shared router links -->
+
               <li class="nav-item px-2 px-lg-4">
                 <router-link class="nav-link" to="/find">Find</router-link>
               </li>
@@ -104,7 +103,7 @@
                 >
               </li>
             </template>
-            <!-- Else, if user is an Admin -->
+
             <template v-else>
               <li class="nav-item px-2 px-lg-4">
                 <router-link
@@ -123,7 +122,7 @@
                 >
               </li>
             </template>
-            <!-- Shared router links -->
+
             <li class="nav-item d-block d-md-none px-2 px-lg-4">
               <router-link
                 class="nav-link"
@@ -133,12 +132,12 @@
               >
             </li>
             <li class="nav-item d-block d-md-none px-2 px-lg-4">
-              <router-link class="nav-link" to="#">Log Out</router-link>
+              <router-link class="nav-link" to="/">Log Out</router-link>
             </li>
           </template>
         </ul>
         <Notifications class="d-none d-md-block" />
-        <div class="dropdown d-none d-md-block">
+        <div class="dropdown d-none d-md-block" v-if="role.length !== 0">
           <button
             class="btn dropdown-toggle"
             :class="{
@@ -155,7 +154,7 @@
             <router-link class="dropdown-item" to="/profile"
               >Profile</router-link
             >
-            <router-link class="dropdown-item" to="#">Log Out</router-link>
+            <router-link class="dropdown-item" to="/">Log Out</router-link>
           </div>
         </div>
       </div>
@@ -171,7 +170,7 @@ export default defineComponent({
   name: "AppHeader",
   data() {
     return {
-      role: "Donor",
+      role: "",
     };
   },
   components: {
