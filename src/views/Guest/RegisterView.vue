@@ -11,10 +11,18 @@
           molestiae te. Ex duo eripuit mentitum.
         </p>
         <div class="d-grid gap-3 d-md-flex justify-content-md-center mt-5">
-          <button type="button" class="btn btn-primary rounded-0" id="get-started-btn">
+          <button
+            type="button"
+            class="btn btn-primary rounded-0"
+            id="get-started-btn"
+          >
             Get Started
           </button>
-          <button type="button" class="btn btn-outline-primary rounded-0" id="learn-more-btn">
+          <button
+            type="button"
+            class="btn btn-outline-primary rounded-0"
+            id="learn-more-btn"
+          >
             Learn More
           </button>
         </div>
@@ -28,7 +36,10 @@
       </div>
     </div>
   </div>
-  <div class="container bg-white border border-secondary border-2 my-5" id="register-form">
+  <div
+    class="container bg-white border border-secondary border-2 my-5"
+    id="register-form"
+  >
     <form>
       <div class="row">
         <div class="col-lg-6 bg-white p-5" id="general-info-section">
@@ -98,7 +109,10 @@
           </div>
         </div>
 
-        <div class="col-lg-6 transparent-input bg-secondary p-5" id="present-location-section">
+        <div
+          class="col-lg-6 transparent-input bg-secondary p-5"
+          id="present-location-section"
+        >
           <h3 class="text-white mb-5">Present Location</h3>
           <div class="form-floating mb-3">
             <input
@@ -179,7 +193,11 @@
             >
           </div>
           <div class="d-flex align-content-start">
-            <button type="submit" class="btn btn-lightgreen fw-bold rounded-1" id="register-btn">
+            <button
+              type="submit"
+              class="btn btn-lightgreen fw-bold rounded-1"
+              id="register-btn"
+            >
               REGISTER
             </button>
           </div>
