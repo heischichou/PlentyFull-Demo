@@ -3,7 +3,12 @@
     <div
       class="container d-flex flex-row justify-content-end justify-content-md-between bg-transparent"
     >
-      <Notifications class="d-block d-md-none" />
+      <Notifications
+        class="d-block d-md-none"
+        :filterByRead="filterByRead"
+        :isOpen="dropdownIsOpen"
+        @updateFilter="(bool) => (this.filterByRead = bool)"
+      />
       <button
         class="navbar-toggler border-primary my-2 me-3"
         type="button"
@@ -137,7 +142,12 @@
             </li>
           </template>
         </ul>
-        <Notifications class="d-none d-md-block" />
+        <Notifications
+          class="d-none d-md-block"
+          :filterByRead="filterByRead"
+          :isOpen="dropdownIsOpen"
+          @updateFilter="(bool) => (this.filterByRead = bool)"
+        />
         <div class="dropdown d-none d-md-block">
           <button
             class="btn dropdown-toggle"
@@ -172,10 +182,46 @@ export default defineComponent({
   data() {
     return {
       role: "Donor",
+      filterByRead: false,
+      dropdownIsOpen: false,
     };
   },
   components: {
     Notifications,
+  },
+  mounted() {
+    const dropdowns = Array.from(
+      document.getElementsByClassName("dropdown-toggle")
+    );
+    dropdowns.forEach((dropdown) => {
+      const toggler = dropdown as HTMLElement;
+      toggler.addEventListener("show.bs.dropdown", () => {
+        this.dropdownIsOpen = true;
+        toggler.classList.replace("text-white", "text-primary");
+      });
+
+      toggler.addEventListener("hide.bs.dropdown", () => {
+        this.dropdownIsOpen = false;
+        toggler.classList.replace("text-primary", "text-white");
+      });
+    });
+  },
+  beforeUnmount() {
+    const dropdowns = Array.from(
+      document.getElementsByClassName("dropdown-toggle")
+    );
+    dropdowns.forEach((dropdown) => {
+      const toggler = dropdown as HTMLElement;
+      toggler.removeEventListener("show.bs.dropdown", () => {
+        this.dropdownIsOpen = true;
+        toggler.classList.replace("text-white", "text-primary");
+      });
+
+      toggler.removeEventListener("hide.bs.dropdown", () => {
+        this.dropdownIsOpen = false;
+        toggler.classList.replace("text-primary", "text-white");
+      });
+    });
   },
 });
 </script>
