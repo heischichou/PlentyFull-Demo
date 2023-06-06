@@ -1,38 +1,40 @@
 <template>
   <div class="container-fluid bg-header" id="header">
-    <div class="row d-flex align-items-center g-5 py-5">
-      <div class="col-lg-6 px-6">
-        <h2 class="text-white fw-bold display-5 mb-5">
-          Help us feed peeps all around Cebu!
-        </h2>
-        <p class="text-white">
-          Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam
-          no suscipit quaerendum. At nam minimum ponderum. Est audiam animal
-          molestiae te. Ex duo eripuit mentitum.
-        </p>
-        <div class="d-grid gap-3 d-md-flex justify-content-md-center mt-5">
-          <button
-            type="button"
-            class="btn btn-primary rounded-0"
-            id="get-started-btn"
-          >
-            Get Started
-          </button>
-          <button
-            type="button"
-            class="btn btn-outline-primary rounded-0"
-            id="learn-more-btn"
-          >
-            Learn More
-          </button>
+    <div class="container">
+      <div class="row d-flex align-items-center g-5 py-5">
+        <div class="col-lg-6 order-last order-lg-first">
+          <h2 class="text-white fw-bold display-5 mb-5">
+            Help us feed peeps all around Cebu!
+          </h2>
+          <p class="text-white">
+            Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam
+            no suscipit quaerendum. At nam minimum ponderum. Est audiam animal
+            molestiae te. Ex duo eripuit mentitum.
+          </p>
+          <div class="d-grid gap-3 d-md-flex justify-content-md-start mt-5">
+            <button
+              type="button"
+              class="btn btn-primary rounded-0"
+              id="get-started-btn"
+            >
+              Get Started
+            </button>
+            <button
+              type="button"
+              class="btn btn-outline-primary rounded-0"
+              id="learn-more-btn"
+            >
+              Learn More
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="col-lg-6 container-fluid">
-        <img
-          class="img-fluid"
-          src="../../assets/Register_Image.svg"
-          alt="Register_Image"
-        />
+        <div class="col-lg-6 container-fluid order-first order-lg-last">
+          <img
+            class="img-fluid"
+            src="../../assets/Register_Image.svg"
+            alt="Register_Image"
+          />
+        </div>
       </div>
     </div>
   </div>
@@ -192,7 +194,7 @@
               of PlentyFull</label
             >
           </div>
-          <div class="d-flex align-content-start">
+          <div class="d-grid gap-3 d-md-flex justify-content-md-start">
             <button
               type="submit"
               class="btn btn-lightgreen fw-bold rounded-1"
