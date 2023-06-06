@@ -1,7 +1,7 @@
 <template>
   <nav id="nav" class="navbar navbar-expand-md bg-dark" data-bs-theme="light">
     <div
-      class="container d-flex flex-row justify-content-end justify-content-md-between bg-transparent"
+      class="container-fluid container-lg d-flex flex-row justify-content-end justify-content-md-between bg-transparent"
     >
       <Notifications class="d-block d-md-none" />
       <button
