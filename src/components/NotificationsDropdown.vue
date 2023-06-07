@@ -48,10 +48,7 @@
           :index="index"
         >
           <div>
-            <div
-              class="bg-white rounded-pill me-3"
-              style="height: 56px; width: 56px"
-            ></div>
+            <div class="avatar bg-white rounded-pill me-3"></div>
           </div>
           <div class="flex-grow-1 align-self-stretch text-white">
             <p
@@ -211,6 +208,11 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.avatar {
+  width: 56px;
+  height: 56px;
+}
+
 .dropdown-toggler {
   transition: all 1s ease-in-out;
 }
