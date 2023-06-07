@@ -222,4 +222,18 @@ export default defineComponent({
 .dropdown-item:hover {
   background-color: #22b33f;
 }
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #4ad471;
+  border-radius: 50rem !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #56f576;
+  border-radius: 50rem !important;
+}
 </style>
