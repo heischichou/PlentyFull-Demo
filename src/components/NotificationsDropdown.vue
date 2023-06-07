@@ -10,7 +10,7 @@
       <em class="bi bi-bell h5"></em>
     </button>
     <div
-      class="dropdown-menu dropdown-menu-end bg-secondary border-0 shadow me-n5"
+      class="dropdown-menu dropdown-menu-end border-0 shadow me-n5"
       :style="{ width: windowWidth > 576 ? '425px' : '300px' }"
     >
       <li class="dropdown-header">
@@ -43,7 +43,7 @@
       <div class="overflow-auto" style="max-height: 290px">
         <li
           class="dropdown-item d-flex align-items-start align-content-center py-3"
-          v-for="(item, index) in notifications"
+          v-for="(item, index) in filteredNotifications"
           :key="item.notificationId"
           :index="index"
         >
@@ -70,10 +70,6 @@
             >
           </div>
           <div>
-            <!-- <div
-              class="bg-white rounded-pill ms-3"
-              style="height: 25px; width: 25px"
-            ></div> -->
             <em
               class="bi text-white mt-3 ms-2 fs-3"
               :class="{
@@ -91,6 +87,21 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
+
+declare interface Notification {
+  notificationId: string;
+  senderId: string;
+  senderName: string;
+  type: string;
+  message: string;
+  createdAt: string;
+  read: boolean;
+  report: {
+    required: boolean;
+    type: object | null;
+    default: object | null;
+  };
+}
 
 export default defineComponent({
   name: "NotificationsDropdown",
@@ -159,7 +170,8 @@ export default defineComponent({
             default: null,
           },
         },
-      ],
+      ] as Notification[],
+      filteredNotifications: [] as Notification[],
     };
   },
   props: {
@@ -179,9 +191,21 @@ export default defineComponent({
   },
   mounted() {
     window.addEventListener("resize", this.onResize);
+    this.filteredNotifications = Object.assign([], this.notifications);
   },
   beforeUnmount() {
     window.removeEventListener("resize", this.onResize);
+  },
+  watch: {
+    filterByRead: function (data) {
+      if (data) {
+        this.filteredNotifications = this.notifications.filter(
+          (item: Notification) => item.read === false
+        );
+      } else {
+        this.filteredNotifications = Object.assign([], this.notifications);
+      }
+    },
   },
 });
 </script>
@@ -191,7 +215,11 @@ export default defineComponent({
   transition: all 1s ease-in-out;
 }
 
+.dropdown-menu {
+  background-color: #25c446;
+}
+
 .dropdown-item:hover {
-  background-color: #3eaf55;
+  background-color: #22b33f;
 }
 </style>
