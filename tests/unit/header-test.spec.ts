@@ -40,74 +40,97 @@ describe("App Header", () => {
   it("renders Guest routes correctly", async () => {
     const wrapper = factory("");
 
+    const guestRoutes = ["Home", "/about", "/register", "/login"];
+    const nonGuestRoutes = [
+      "/donate",
+      "/receive",
+      "/registry",
+      "/find",
+      "/transactions",
+      "/statistics",
+      "/profile",
+    ];
+
     // Contains Guest routes
-    expect(wrapper.html().includes("Home")).toBe(true);
-    expect(wrapper.html().includes("About")).toBe(true);
-    expect(wrapper.html().includes("Register")).toBe(true);
-    expect(wrapper.html().includes("Login")).toBe(true);
+    guestRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(true);
+    });
 
     // Does not contain non-Guest routes
-    expect(wrapper.html().includes("Donate")).toBe(false);
-    expect(wrapper.html().includes("Receive")).toBe(false);
-    expect(wrapper.html().includes("Registry")).toBe(false);
-    expect(wrapper.html().includes("Find")).toBe(false);
-    expect(wrapper.html().includes("Transactions")).toBe(false);
-    expect(wrapper.html().includes("Statistics")).toBe(false);
-    expect(wrapper.html().includes("Profile")).toBe(false);
+    nonGuestRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(false);
+    });
   });
 
   it("renders Donor routes correctly", () => {
     const wrapper = factory("Donor");
 
+    const donorRoutes = [
+      "/donate",
+      "/find",
+      "/transactions",
+      "/statistics",
+      "/profile",
+    ];
+    const guestRoutes = ["/home", "/about", "/register", "/login"];
+
     // Contains Donor routes
-    expect(wrapper.html().includes("/donate")).toBe(true);
-    expect(wrapper.html().includes("/find")).toBe(true);
-    expect(wrapper.html().includes("/transactions")).toBe(true);
-    expect(wrapper.html().includes("/statistics")).toBe(true);
-    expect(wrapper.html().includes("/profile")).toBe(true);
+    donorRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(true);
+    });
 
     // Does not contain Guest routes
-    expect(wrapper.html().includes("Home")).toBe(false);
-    expect(wrapper.html().includes("About")).toBe(false);
-    expect(wrapper.html().includes("Register")).toBe(false);
-    expect(wrapper.html().includes("Login")).toBe(false);
+    guestRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(false);
+    });
   });
 
   it("renders Charity routes correctly", () => {
     const wrapper = factory("Charity");
 
-    // Contains Charity routes
-    expect(wrapper.html().includes("/receive")).toBe(true);
-    expect(wrapper.html().includes("/find")).toBe(true);
-    expect(wrapper.html().includes("/transactions")).toBe(true);
-    expect(wrapper.html().includes("/statistics")).toBe(true);
-    expect(wrapper.html().includes("/profile")).toBe(true);
+    const donorRoutes = [
+      "/receive",
+      "/find",
+      "/transactions",
+      "/statistics",
+      "/profile",
+    ];
+    const guestRoutes = ["/home", "/about", "/register", "/login"];
+
+    // Contains Donor routes
+    donorRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(true);
+    });
 
     // Does not contain Guest routes
-    expect(wrapper.html().includes("Home")).toBe(false);
-    expect(wrapper.html().includes("About")).toBe(false);
-    expect(wrapper.html().includes("Register")).toBe(false);
-    expect(wrapper.html().includes("Login")).toBe(false);
+    guestRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(false);
+    });
   });
 
   it("renders Admin routes correctly", () => {
     const wrapper = factory("Admin");
 
+    const adminRoutes = ["/registry", "/statistics", "/profile"];
+    const nonAdminRoutes = [
+      "/home",
+      "/about",
+      "/register",
+      "/login",
+      "/donate",
+      "/receive",
+      "/find",
+      "/transactions",
+    ];
+
     // Contains Admin routes
-    expect(wrapper.html().includes("/registry")).toBe(true);
-    expect(wrapper.html().includes("/statistics")).toBe(true);
-    expect(wrapper.html().includes("/profile")).toBe(true);
+    adminRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(true);
+    });
 
     // Does not contain non-Admin routes
-    expect(wrapper.html().includes("Home")).toBe(false);
-    expect(wrapper.html().includes("About")).toBe(false);
-    expect(wrapper.html().includes("Register")).toBe(false);
-    expect(wrapper.html().includes("Login")).toBe(false);
-    expect(wrapper.html().includes("Donate")).toBe(false);
-    expect(wrapper.html().includes("Receive")).toBe(false);
-    expect(wrapper.html().includes("Home")).toBe(false);
-    expect(wrapper.html().includes("Find")).toBe(false);
-    expect(wrapper.html().includes("Home")).toBe(false);
-    expect(wrapper.html().includes("Transactions")).toBe(false);
+    nonAdminRoutes.forEach((route) => {
+      expect(wrapper.html().includes(route)).toBe(false);
+    });
   });
 });
