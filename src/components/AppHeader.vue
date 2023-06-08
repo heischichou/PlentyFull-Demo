@@ -3,7 +3,7 @@
     <div
       class="container-fluid container-lg d-flex flex-row justify-content-end justify-content-md-between bg-transparent"
     >
-      <Notifications class="d-block d-md-none" />
+      <Notifications v-if="role.length > 0" class="d-block d-md-none" />
       <button
         class="navbar-toggler border-primary my-2 me-3"
         type="button"
@@ -23,7 +23,6 @@
           <h4 class="text-primary m-0">PLENTYFULL</h4>
         </div>
         <ul class="w-100 navbar-nav justify-content-center">
-          <!-- Check if user is logged in -->
           <template v-if="role.length === 0">
             <li class="nav-item px-2 px-lg-4">
               <router-link
@@ -136,7 +135,7 @@
             </li>
           </template>
         </ul>
-        <Notifications class="d-none d-md-block" />
+        <Notifications v-if="role.length > 0" class="d-none d-md-block" />
         <div class="dropdown d-none d-md-block" v-if="role.length !== 0">
           <button
             class="btn dropdown-toggle"

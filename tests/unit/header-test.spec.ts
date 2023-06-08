@@ -1,4 +1,4 @@
-import { mount, shallowMount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "@/router/index";
 import Header from "@/components/AppHeader.vue";
@@ -9,11 +9,11 @@ const router = createRouter({
   routes: routes,
 });
 
-const factory = (values = {}) => {
+const factory = (role: String) => {
   return mount(Header, {
     data() {
       return {
-        ...values,
+        role: role,
       };
     },
     global: {
@@ -24,19 +24,21 @@ const factory = (values = {}) => {
 
 describe("App Header", () => {
   it("renders successfully", () => {
-    const wrapper = mount(Header as any, {
-      global: {
-        plugins: [router],
-      },
-    });
-
-    const notifications = wrapper.findComponent(NotificationsDropdown);
+    const wrapper = factory("");
     expect(wrapper.exists()).toBe(true);
-    expect(notifications.exists()).toBe(true);
+    expect(wrapper.find("#nav").exists()).toBe(true);
+    expect(wrapper.find(".navbar-collapse").exists()).toBe(true);
+  });
+
+  it("renders notifications toggler correctly", async () => {
+    const wrapper = factory("Donor");
+    expect(wrapper.findComponent(NotificationsDropdown).exists()).toBe(true);
+    await wrapper.setData({ role: "" });
+    expect(wrapper.findComponent(NotificationsDropdown).exists()).toBe(false);
   });
 
   it("renders Guest routes correctly", async () => {
-    const wrapper = factory({ role: "" });
+    const wrapper = factory("");
 
     // Contains Guest routes
     expect(wrapper.html().includes("Home")).toBe(true);
@@ -55,7 +57,7 @@ describe("App Header", () => {
   });
 
   it("renders Donor routes correctly", () => {
-    const wrapper = factory({ role: "Donor" });
+    const wrapper = factory("Donor");
 
     // Contains Donor routes
     expect(wrapper.html().includes("/donate")).toBe(true);
@@ -72,7 +74,7 @@ describe("App Header", () => {
   });
 
   it("renders Charity routes correctly", () => {
-    const wrapper = factory({ role: "Charity" });
+    const wrapper = factory("Charity");
 
     // Contains Charity routes
     expect(wrapper.html().includes("/receive")).toBe(true);
@@ -89,7 +91,7 @@ describe("App Header", () => {
   });
 
   it("renders Admin routes correctly", () => {
-    const wrapper = factory({ role: "Admin" });
+    const wrapper = factory("Admin");
 
     // Contains Admin routes
     expect(wrapper.html().includes("/registry")).toBe(true);
