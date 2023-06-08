@@ -10,7 +10,7 @@ const router = createRouter({
 });
 
 const factory = (role: String) => {
-  return mount(Header, {
+  return mount(Header as any, {
     data() {
       return {
         role: role,
