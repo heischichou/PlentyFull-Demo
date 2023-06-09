@@ -1,16 +1,18 @@
 <template>
   <div class="container-fluid bg-header" id="login">
     <div class="container">
-      <div class="row d-flex align-items-center">
+      <div class="row d-flex align-items-center p-5">
         <div class="col-lg-6">
-          <img class="img-fluid rounded-3" src="@/assets/login_image.svg" />
+          <img class="img-fluid" src="@/assets/Guest/login_image.svg" />
         </div>
         <div class="col-lg-6 p-5 transparent-input">
           <div class="text-start mb-4">
             <h2 class="text-white">Login</h2>
             <p class="text-white">
               Not signed up yet?
-              <a href="#" class="text-lightgreen">Register now!</a>
+              <router-link to="/register" class="text-lightgreen"
+                >Register now!</router-link
+              >
             </p>
           </div>
           <div>
@@ -75,11 +77,7 @@ export default defineComponent({
 a {
   text-decoration: none;
 }
-// div {
-//   outline-width: 2px;
-//   outline-style: solid;
-//   outline-color: red;
-// }
+
 .transparent-input {
   .form-floating {
     .form-control {
