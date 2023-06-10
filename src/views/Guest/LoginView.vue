@@ -10,13 +10,13 @@
             <h2 class="text-white">Login</h2>
             <p class="text-white">
               Not signed up yet?
-              <router-link to="/register" class="text-lightgreen"
+              <router-link to="/register" class="text-lightgreen" id="register"
                 >Register now!</router-link
               >
             </p>
           </div>
           <div>
-            <form action="">
+            <form action="" id="login-form">
               <div class="form-floating mb-4">
                 <input
                   type="email"
@@ -36,7 +36,9 @@
                 <label for="password" class="text-white">Password</label>
               </div>
               <div class="text-start">
-                <a href="#" class="text-lightgreen">Forgot Password?</a>
+                <a href="#" class="text-lightgreen" id="forgot-password"
+                  >Forgot Password?</a
+                >
               </div>
               <div class="form-check d-flex align-items-start gap-3 my-5">
                 <input
@@ -53,6 +55,7 @@
                 <button
                   type="submit"
                   class="btn btn-lightgreen text-black fw-bold px-5 py-2 rounded-1"
+                  id="login-btn"
                 >
                   Login
                 </button>
