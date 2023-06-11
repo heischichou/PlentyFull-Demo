@@ -1,9 +1,10 @@
 <template>
   <nav id="nav" class="navbar navbar-expand-md bg-dark" data-bs-theme="light">
     <div
-      class="container d-flex flex-row justify-content-end justify-content-md-between bg-transparent"
+      class="container-fluid container-lg d-flex flex-row justify-content-end justify-content-md-between bg-transparent"
     >
       <Notifications
+        v-if="role.length > 0"
         class="d-block d-md-none"
         :filterByRead="filterByRead"
         :isOpen="dropdownIsOpen"
@@ -28,7 +29,6 @@
           <h4 class="text-primary m-0">PLENTYFULL</h4>
         </div>
         <ul class="w-100 navbar-nav justify-content-center">
-          <!-- Check if user is logged in -->
           <template v-if="role.length === 0">
             <li class="nav-item px-2 px-lg-4">
               <router-link
@@ -63,10 +63,9 @@
               >
             </li>
           </template>
+
           <template v-else>
-            <!-- Check if user is either a Donor or Charity -->
             <template v-if="role === 'Donor' || role === 'Charity'">
-              <!-- Check if user is a Donor -->
               <template v-if="role === 'Donor'">
                 <li class="nav-item px-2 px-lg-4">
                   <router-link
@@ -77,7 +76,7 @@
                   >
                 </li>
               </template>
-              <!-- Else, if user is a Charity -->
+
               <template v-else>
                 <li class="nav-item px-2 px-lg-4">
                   <router-link
@@ -88,7 +87,7 @@
                   >
                 </li>
               </template>
-              <!-- Shared router links -->
+
               <li class="nav-item px-2 px-lg-4">
                 <router-link class="nav-link" to="/find">Find</router-link>
               </li>
@@ -109,7 +108,7 @@
                 >
               </li>
             </template>
-            <!-- Else, if user is an Admin -->
+
             <template v-else>
               <li class="nav-item px-2 px-lg-4">
                 <router-link
@@ -128,7 +127,7 @@
                 >
               </li>
             </template>
-            <!-- Shared router links -->
+
             <li class="nav-item d-block d-md-none px-2 px-lg-4">
               <router-link
                 class="nav-link"
@@ -138,17 +137,18 @@
               >
             </li>
             <li class="nav-item d-block d-md-none px-2 px-lg-4">
-              <router-link class="nav-link" to="#">Log Out</router-link>
+              <router-link class="nav-link" to="/">Log Out</router-link>
             </li>
           </template>
         </ul>
         <Notifications
+          v-if="role.length > 0"
           class="d-none d-md-block"
           :filterByRead="filterByRead"
           :isOpen="dropdownIsOpen"
           @updateFilter="(bool) => (this.filterByRead = bool)"
         />
-        <div class="dropdown d-none d-md-block">
+        <div class="dropdown d-none d-md-block" v-if="role.length !== 0">
           <button
             class="btn dropdown-toggle"
             :class="{
@@ -165,7 +165,7 @@
             <router-link class="dropdown-item" to="/profile"
               >Profile</router-link
             >
-            <router-link class="dropdown-item" to="#">Log Out</router-link>
+            <router-link class="dropdown-item" to="/">Log Out</router-link>
           </div>
         </div>
       </div>
@@ -181,7 +181,7 @@ export default defineComponent({
   name: "AppHeader",
   data() {
     return {
-      role: "Donor",
+      role: "",
       filterByRead: false,
       dropdownIsOpen: false,
     };

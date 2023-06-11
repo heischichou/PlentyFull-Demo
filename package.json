@@ -8,7 +8,7 @@
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "test": "jest --watch"
+    "test": "jest --watch --runInBand"
   },
   "dependencies": {
     "@babel/core": "^7.22.1",
