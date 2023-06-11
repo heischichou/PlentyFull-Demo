@@ -1,47 +1,206 @@
 <template>
   <div class="dropdown">
     <button
-      class="btn dropdown-toggle"
-      :class="isOpen ? 'text-primary' : 'text-white'"
-      @click="toggleNotifications"
+      class="btn dropdown-toggle text-white"
       type="button"
       data-bs-toggle="dropdown"
+      data-bs-auto-close="false"
       aria-expanded="false"
     >
       <em class="bi bi-bell h5"></em>
     </button>
     <div
-      class="dropdown-menu dropdown-menu-end bg-secondary shadow"
-      style="width: 375px"
+      class="dropdown-menu dropdown-menu-end border-0 shadow me-n5"
+      :style="{ width: windowWidth > 576 ? '425px' : '300px' }"
     >
       <li class="dropdown-header">
         <p class="fs-6 fw-semibold text-white m-0">Notifications</p>
       </li>
       <li class="dropdown-header">
-        <button type="button" class="btn btn-white rounded-pill">All</button>
-        <button type="button" class="btn btn-outline-white rounded-pill ms-2">
+        <button
+          type="button"
+          class="btn rounded-pill"
+          :class="{
+            'btn-white': filterByRead === false,
+            'btn-outline-white': filterByRead === true,
+          }"
+          @click="$emit('updateFilter', false)"
+        >
+          All
+        </button>
+        <button
+          type="button"
+          class="btn rounded-pill ms-2"
+          :class="{
+            'btn-white': filterByRead === true,
+            'btn-outline-white': filterByRead === false,
+          }"
+          @click="$emit('updateFilter', true)"
+        >
           Unread
         </button>
       </li>
+      <div class="overflow-auto" style="max-height: 290px">
+        <li
+          class="dropdown-item d-flex align-items-start align-content-center py-3"
+          v-for="(item, index) in filteredNotifications"
+          :key="item.notificationId"
+          :index="index"
+        >
+          <div>
+            <div class="avatar bg-white rounded-pill me-3"></div>
+          </div>
+          <div class="flex-grow-1 align-self-stretch text-white">
+            <p
+              class="text-wrap m-0"
+              :class="{ 'opacity-75': item.read === true }"
+            >
+              <b class="fw-medium">{{ item.senderName }}</b>
+              {{ item.message }}
+            </p>
+            <small
+              :class="{
+                'opacity-50': item.read === true,
+                'opacity-75': item.read === false,
+              }"
+              >{{ item.createdAt }}</small
+            >
+          </div>
+          <div>
+            <em
+              class="bi text-white mt-3 ms-2 fs-3"
+              :class="{
+                'bi-eye-fill': item.read === true,
+                'bi-eye': item.read === false,
+              }"
+            ></em>
+          </div>
+        </li>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { uuid } from "vue-uuid";
+
+declare interface Notification {
+  notificationId: string;
+  senderId: string;
+  senderName: string;
+  type: string;
+  message: string;
+  createdAt: string;
+  read: boolean;
+  report: {
+    required: boolean;
+    type: object | null;
+    default: object | null;
+  };
+}
 
 export default defineComponent({
   name: "NotificationsDropdown",
   data() {
     return {
-      isOpen: false,
+      windowWidth: window.innerWidth,
+      notifications: [
+        {
+          notificationId: uuid.v1(),
+          senderId: uuid.v1(),
+          senderName: "Cebu Food Bank",
+          type: "Notification",
+          message: "has accepted your donation reception.",
+          createdAt: new Date().toDateString(),
+          read: false,
+          report: {
+            required: false,
+            type: [Object, null],
+            default: null,
+          },
+        },
+        {
+          notificationId: uuid.v1(),
+          senderId: uuid.v1(),
+          senderName: "Anonymous",
+          type: "Report",
+          message: "has reported you.",
+          createdAt: new Date().toDateString(),
+          read: false,
+          report: {
+            required: false,
+            type: [Object, null],
+            default: {
+              reportId: uuid.v1(),
+              reportType: "Other",
+              anonymous: true,
+              resolved: false,
+            },
+          },
+        },
+        {
+          notificationId: uuid.v1(),
+          senderId: uuid.v1(),
+          senderName: "JPIC-IDC Inc.",
+          type: "Notification",
+          message: "successfully received your donation.",
+          createdAt: new Date().toDateString(),
+          read: true,
+          report: {
+            required: false,
+            type: [Object, null],
+            default: null,
+          },
+        },
+        {
+          notificationId: uuid.v1(),
+          senderId: uuid.v1(),
+          senderName: "Hippodromo Barangay Hall",
+          type: "Notification",
+          message: "successfully received your donation.",
+          createdAt: new Date().toDateString(),
+          read: true,
+          report: {
+            required: false,
+            type: [Object, null],
+            default: null,
+          },
+        },
+      ] as Notification[],
+      filteredNotifications: [] as Notification[],
     };
   },
+  props: {
+    filterByRead: {
+      type: Boolean,
+      default: false,
+    },
+    isOpen: {
+      type: Boolean,
+      default: false,
+    },
+  },
   methods: {
-    toggleNotifications(event: any) {
-      if (event) {
-        const toggler = event.target.parentElement;
-        this.isOpen = toggler.classList.contains("show") ? true : false;
+    onResize() {
+      this.windowWidth = window.innerWidth;
+    },
+  },
+  mounted() {
+    window.addEventListener("resize", this.onResize);
+    this.filteredNotifications = Object.assign([], this.notifications);
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
+  },
+  watch: {
+    filterByRead: function (data) {
+      if (data) {
+        this.filteredNotifications = this.notifications.filter(
+          (item: Notification) => item.read === false
+        );
+      } else {
+        this.filteredNotifications = Object.assign([], this.notifications);
       }
     },
   },
@@ -49,11 +208,34 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-// .dropdown-menu-center {
-//   right: auto;
-//   left: 50%;
-//   -webkit-transform: translate(-50%, 0);
-//   -o-transform: translate(-50%, 0);
-//   transform: translate(-50%, 0);
-// }
+.avatar {
+  width: 56px;
+  height: 56px;
+}
+
+.dropdown-toggler {
+  transition: all 1s ease-in-out;
+}
+
+.dropdown-menu {
+  background-color: #25c446;
+}
+
+.dropdown-item:hover {
+  background-color: #22b33f;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #4ad471;
+  border-radius: 50rem !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #56f576;
+  border-radius: 50rem !important;
+}
 </style>
