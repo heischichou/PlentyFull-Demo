@@ -31,8 +31,8 @@
         <div class="col-lg-6 container-fluid order-first order-lg-last">
           <img
             class="img-fluid"
-            src="../../assets/Register_Image.svg"
-            alt="Register_Image"
+            src="@/assets/images/Guest/Register/Header.svg"
+            alt="Rescue Food Surplus"
           />
         </div>
       </div>

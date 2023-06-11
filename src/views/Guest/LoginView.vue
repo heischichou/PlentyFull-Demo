@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row flex-column flex-lg-row align-items-center p-5">
         <div class="col col-lg-6">
-          <img class="img-fluid" src="@/assets/Guest/login_image.svg" />
+          <img class="img-fluid" src="@/assets/images/Guest/Login/Header.svg" />
         </div>
         <div class="col col-lg-6 py-5 px-0 px-lg-5 transparent-input">
           <div class="text-start mb-4">

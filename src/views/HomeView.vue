@@ -26,14 +26,14 @@
           <div class="col-lg-6 py-4 container order-first order-lg-last">
             <img
               class="img-fluid"
-              src="@/assets/images/HomeView/Header_Image.svg"
-              alt="Header_Image"
+              src="@/assets/images/Guest/Home/Header.svg"
+              alt="Food Surplus Donations"
             />
           </div>
         </div>
       </div>
     </div>
-    <!---------------intersted?------------->
+
     <div class="container py-5">
       <div class="row d-flex align-items-center order-last order-md-fist pt-3">
         <div class="col-lg-6 container text-center pt-3">
@@ -46,8 +46,7 @@
         <div class="col-lg-6 py-4 container">
           <img
             class="img-fluid"
-            src="@/assets/images/HomeView/Interested_image.svg"
-            alt="Interested_image"
+            src="@/assets/images/Guest/Home/Interested.svg"
           />
         </div>
         <div class="col-lg-6 container text-start px-4">
@@ -70,7 +69,7 @@
         </div>
       </div>
     </div>
-    <!-------------About Us------------------>
+
     <div class="container-fluid o-bg py-5">
       <div class="row d-flex align-items-center order-last order-md-fist">
         <div class="col-lg-6 container text-center pt-3">
@@ -111,12 +110,12 @@
       <div class="col-lg-6 py-4 container order-first order-lg-last">
         <img
           class="img-fluid"
-          src="@/assets/images/HomeView/About_image.svg"
-          alt="Header_Image"
+          src="@/assets/images/Guest/Home/About.svg"
+          alt="PlentyFull Members"
         />
       </div>
     </div>
-    <!-------------Product Statistics------------>
+
     <div class="container py-5">
       <div class="row d-flex align-items-center order-last order-md-fist py-3">
         <div class="col-lg-4 container text-start pt-5">
@@ -135,7 +134,7 @@
         <div class="col-lg-6 container text-center pt-3">
           <img
             class="img-fluid"
-            src="@/assets/images/HomeView/Statistics_image.svg"
+            src="@/assets/images/Guest/Home/Statistics.svg"
             alt="Statistics_image"
           />
           <div
@@ -148,7 +147,7 @@
         </div>
       </div>
     </div>
-    <!----------------Ready?-------------------->
+
     <div class="container-fluid o-ready pt-3">
       <div class="container align-items-center pt-5">
         <h4>Ready to get started?</h4>
@@ -162,11 +161,14 @@
           </button>
         </div>
         <div class="col-lg-6 py-5 container order-first order-lg-last">
-          <img
-            class="img-fluid mt-3"
-            src="@/assets/images/HomeView/Members_image.svg"
-            alt="Members_Image"
-          />
+          <div class="d-flex flex-row justify-content-between">
+            <div class="avatar rounded-circle"></div>
+            <div class="avatar rounded-circle"></div>
+            <div class="avatar rounded-circle"></div>
+            <div class="avatar rounded-circle"></div>
+            <div class="avatar rounded-circle"></div>
+            <div class="avatar rounded-circle"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -182,6 +184,12 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
+.avatar {
+  background-color: #f8f9fa !important;
+  width: 65px;
+  height: 65px;
+}
+
 .o-bg {
   background-color: rgba(#56f576, 0.2);
 }
