@@ -1,8 +1,19 @@
 import { shallowMount } from '@vue/test-utils'
+import { createRouter, createWebHistory } from "vue-router";
+import { routes } from "@/router/index";
 import AboutView from '@/views/Guest/AboutView.vue'
 
+const router = createRouter({
+    history: createWebHistory(),
+    routes: routes,
+  });
+
 const factory = () => {
-     return shallowMount(AboutView, {});
+  return shallowMount(AboutView, {
+    global: {
+      plugins: [router],
+    },
+  });
 };
 
 describe("About", () => {

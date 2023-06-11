@@ -1,8 +1,19 @@
 import { shallowMount } from "@vue/test-utils";
+import { createRouter, createWebHistory } from "vue-router";
+import { routes } from "@/router/index";
 import LoginView from "@/views/Guest/LoginView.vue";
 
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routes,
+});
+
 const factory = () => {
-  return shallowMount(LoginView, {});
+  return shallowMount(LoginView, {
+    global: {
+      plugins: [router],
+    },
+  });
 };
 
 describe("LoginView", () => {

@@ -118,7 +118,10 @@ describe("Notifications Dropdown", () => {
   });
 
   it("listens to window resize", async () => {
-    const mockResizeEvent = jest.spyOn(Notifications.methods as any, "onResize");
+    const mockResizeEvent = jest.spyOn(
+      Notifications.methods as any,
+      "onResize"
+    );
     const wrapper = factory([], false);
     await window.dispatchEvent(new Event("resize"));
     expect(mockResizeEvent).toBeCalled();
