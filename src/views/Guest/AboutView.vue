@@ -24,8 +24,11 @@
       </div>
     </div>
 
-    <div class="container-fluid o-bg py-5">
-      <div class="row d-flex align-items-center order-last order-md-fist">
+    <div class="container-fluid o-bg py-5" id="about-content-section">
+      <div
+        class="row d-flex align-items-center order-last order-md-fist"
+        id="core-values-section"
+      >
         <div class="col-lg-6 container text-center pt-3">
           <h3 class="fw-bold display-5 mb-5">Core Values</h3>
         </div>
@@ -45,7 +48,7 @@
           </div>
           <div class="col-md-4 px-4 py-3 container text-center">
             <em class="bi bi-graph-up-arrow fs-1"></em>
-            <h4 class="pt-3">Soicial Plugins</h4>
+            <h4 class="pt-3">Social Plugins</h4>
             <p>
               Eos tota dicunt democritum no. Has natum gubergren ne. Est viris
               soleat sadipscing cu. Legere epicuri insolens eu nec, dicit
@@ -64,10 +67,11 @@
         </div>
         <div
           class="row d-flex align-items-center order-last order-md-fist mt-5"
+          id="vision-section"
         >
           <div class="col-lg-7 pt-sm-3">
             <h3 class="fw-bold display-5 mb-5 text-start px-5 ms-5">
-              Vision & <br />
+              Vision &amp; <br />
               Mission Statement
             </h3>
 
@@ -103,7 +107,7 @@
       </div>
     </div>
 
-    <div class="container-fluid o-ready pt-3">
+    <div class="container-fluid o-ready pt-3" id="founders-section">
       <div class="container align-items-center pt-5">
         <h4>Founders</h4>
         <p class="pt-3">
@@ -112,6 +116,7 @@
         </p>
         <div
           class="col-lg-6 pb-5 pt-0 pt-sm-4 container order-first order-lg-last"
+          id="founder-images"
         >
           <div class="d-flex d-md-flex flex-row justify-content-between">
             <div class="avatar rounded-circle"></div>
