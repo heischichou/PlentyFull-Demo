@@ -15,10 +15,13 @@
               animal molestiae te. Ex duo eripuit mentitum.
             </p>
             <div class="d-grid gap-3 d-md-flex justify-content-md-start mt-5">
-              <button type="button" class="btn btn-primary rounded-0 p-3">
+              <button type="button" class="btn btn-primary rounded-0 py-3 px-4">
                 Get Started
               </button>
-              <button type="button" class="btn btn-outline-primary rounded-0">
+              <button
+                type="button"
+                class="btn btn-outline-primary rounded-0 py-3 px-4"
+              >
                 Learn More
               </button>
             </div>
@@ -160,8 +163,10 @@
             Register Now
           </button>
         </div>
-        <div class="col-lg-6 py-5 container order-first order-lg-last">
-          <div class="d-flex flex-row justify-content-between">
+        <div
+          class="col-lg-6 pb-5 pt-0 pt-md-5 container order-first order-lg-last"
+        >
+          <div class="d-none d-md-flex flex-row justify-content-between">
             <div class="avatar rounded-circle"></div>
             <div class="avatar rounded-circle"></div>
             <div class="avatar rounded-circle"></div>

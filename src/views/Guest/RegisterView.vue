@@ -14,14 +14,14 @@
           <div class="d-grid gap-3 d-md-flex justify-content-md-start mt-5">
             <button
               type="button"
-              class="btn btn-primary rounded-0"
+              class="btn btn-primary rounded-0 py-3 px-4"
               id="get-started-btn"
             >
               Get Started
             </button>
             <button
               type="button"
-              class="btn btn-outline-primary rounded-0"
+              class="btn btn-outline-primary rounded-0 py-3 px-4"
               id="learn-more-btn"
             >
               Learn More

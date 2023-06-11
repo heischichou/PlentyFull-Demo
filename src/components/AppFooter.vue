@@ -28,33 +28,49 @@
           <ul class="nav flex-column">
             <li class="nav-item">
               <router-link
-                class="nav-link link-white opacity-75"
-                to="/home"
-                :class="{ active: $route.path === '/home' }"
+                class="nav-link"
+                to="/"
+                :class="{
+                  'link-white': $route.path !== '/',
+                  'opacity-75': $route.path !== '/',
+                  active: $route.path === '/',
+                }"
                 >Home</router-link
               >
             </li>
             <li class="nav-item">
               <router-link
-                class="nav-link link-white opacity-75"
+                class="nav-link"
                 to="/about"
-                :class="{ active: $route.path === '/about' }"
+                :class="{
+                  'link-white': $route.path !== '/about',
+                  'opacity-75': $route.path !== '/about',
+                  active: $route.path === '/about',
+                }"
                 >About</router-link
               >
             </li>
             <li class="nav-item">
               <router-link
-                class="nav-link link-white opacity-75"
+                class="nav-link"
                 to="/register"
-                :class="{ active: $route.path === '/register' }"
+                :class="{
+                  'link-white': $route.path !== '/register',
+                  'opacity-75': $route.path !== '/register',
+                  active: $route.path === '/register',
+                }"
                 >Register</router-link
               >
             </li>
             <li class="nav-item">
               <router-link
-                class="nav-link link-white opacity-75"
+                class="nav-link"
                 to="/login"
-                :class="{ active: $route.path === '/login' }"
+                :class="{
+                  'link-white': $route.path !== '/login',
+                  'opacity-75': $route.path !== '/login',
+                  active: $route.path === '/login',
+                }"
                 >Login</router-link
               >
             </li>
