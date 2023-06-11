@@ -3,7 +3,7 @@
     <div class="container text-md-left">
       <div class="row d-flex align-items-center flex-wrap border-bottom pb-3">
         <!-- Contact Section -->
-        <div class="col-md-3 mt-5">
+        <div class="col-md-3 mt-5" id="contact-section">
           <h5 class="text-uppercase font-weight-bold text-white mb-3">
             Contact
           </h5>
@@ -23,7 +23,7 @@
           </ul>
         </div>
         <!-- Menu Section -->
-        <div class="col-md-3 mt-5">
+        <div class="col-md-3 mt-5" id="menu-section">
           <h5 class="text-uppercase font-weight-bold text-white">Menu</h5>
           <ul class="nav flex-column">
             <li class="nav-item">
@@ -77,7 +77,7 @@
           </ul>
         </div>
         <!-- Text Section -->
-        <div class="col-md-5 mt-5">
+        <div class="col-md-5 mt-5" id="text-section">
           <p class="text-white opacity-75">
             Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam
             no suscipit quaerendum. At nam minimum ponderum. Est audiam animal
@@ -86,7 +86,10 @@
         </div>
       </div>
       <!-- Bottom Footer -->
-      <div class="d-flex justify-content-center text-white py-4">
+      <div
+        class="d-flex justify-content-center text-white py-4"
+        id="bottom-footer"
+      >
         <p>© PlentyFull. All rights reserved.</p>
       </div>
     </div>
