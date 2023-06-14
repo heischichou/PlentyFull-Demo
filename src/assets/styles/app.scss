@@ -93,6 +93,10 @@ html, body {
   padding: 0;
 }
 
+.text-justify {
+  text-align: justify !important;
+}
+
 // Form Checkboxes
 $form-check-input-width: 1.5em;
 $form-check-input-border-radius:          .15em;
