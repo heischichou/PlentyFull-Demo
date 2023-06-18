@@ -1,6 +1,13 @@
 <template>
   <div class="container">
-    <h1 class="text-start fw-bold pt-5 pb-3">Find Charities</h1>
+    <h1 v-if="role === 'Donor'" class="text-start fw-bold pt-5 pb-3">
+      Find Charities
+    </h1>
+    <h1 v-else-if="role === 'Charity'" class="text-start fw-bold pt-5 pb-3">
+      Find Donors
+    </h1>
+    <h1 v-else class="text-start fw-bold pt-5 pb-3">Find</h1>
+
     <div class="input-group rounded-3 mb-5">
       <input
         type="text"
@@ -101,6 +108,7 @@ export default defineComponent({
   },
   data() {
     return {
+      role: "",
       searchByVal: "Name",
       sortByVal: "Distance",
       findResults: [] as Array<any>,
