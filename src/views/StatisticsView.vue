@@ -24,12 +24,20 @@
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <button type="button" class="dropdown-item">
+                  <button
+                    type="button"
+                    class="dropdown-item"
+                    @click="exportAsCSV"
+                  >
                     <em class="bi bi-filetype-csv me-2"></em>CSV
                   </button>
                 </li>
                 <li>
-                  <button type="button" class="dropdown-item">
+                  <button
+                    type="button"
+                    class="dropdown-item"
+                    @click="exportAsExcel"
+                  >
                     <em class="bi bi-filetype-xlsx me-2"></em>Excel
                   </button>
                 </li>
@@ -40,25 +48,22 @@
       </div>
     </div>
   </div>
-  <div class="container-fluid">
-    <div class="container">
-      <TotalVolume
-        :basis="basis"
-        :totalSurplusVolume="totalSurplusVolume"
-        :commonFoodType="commonFoodType"
-        :successRate="successRate"
-        :chartData="foodSurplusVolumeChartData"
-        @updateBasis="(basis) => (this.basis = basis)"
-      />
-      <DonationCount
-        class="border-2 border-bottom"
-        :governmentLevel="governmentLevel"
-        :chartData="donationCountChartData"
-        @updateGovernmentLevel="(level) => (this.governmentLevel = level)"
-      />
-      <TransactionSuccessRates :chartData="successRatesChartData" />
-    </div>
-  </div>
+  <TotalVolume
+    :role="role"
+    :basis="basis"
+    :totalSurplusVolume="totalSurplusVolume"
+    :commonFoodType="commonFoodType"
+    :successRate="successRate"
+    :chartData="foodSurplusVolumeChartData"
+    @updateBasis="(basis) => (this.basis = basis)"
+  />
+  <DonationCount
+    :role="role"
+    :governmentLevel="governmentLevel"
+    :chartData="donationCountChartData"
+    @updateGovernmentLevel="(level) => (this.governmentLevel = level)"
+  />
+  <TransactionSuccessRates :role="role" :chartData="successRatesChartData" />
 </template>
 
 <script lang="ts">
@@ -66,7 +71,6 @@ import { defineComponent } from "vue";
 import TotalVolume from "@/components/StatisticsView/TotalVolume.vue";
 import DonationCount from "@/components/StatisticsView/DonationCount.vue";
 import TransactionSuccessRates from "@/components/StatisticsView/TransactionSuccessRates.vue";
-// import FrequentDonationDays from "@/components/StatisticsView/FrequentDonationDays.vue";
 
 export default defineComponent({
   name: "StatisticsView",
@@ -74,11 +78,10 @@ export default defineComponent({
     TotalVolume,
     DonationCount,
     TransactionSuccessRates,
-    // FrequentDonationDays,
   },
   data() {
-    const colors = ["#113333", "#45bf5D", "#56f576", "#6ef997"];
     return {
+      role: "Donor",
       basis: "Weekly",
       totalSurplusVolume: 1200,
       commonFoodType: {
@@ -98,7 +101,8 @@ export default defineComponent({
           {
             label: "Food Surplus Volume",
             data: [47, 32, 15, 8],
-            backgroundColor: colors,
+            backgroundColor: [] as string[],
+            borderColor: "",
             rotation: -45,
           },
         ],
@@ -109,7 +113,9 @@ export default defineComponent({
           {
             label: "Donations Per Location",
             data: [21, 14, 8, 6],
-            backgroundColor: colors,
+            backgroundColor: [] as string[],
+            borderColor: "",
+            color: "#ffffff",
           },
         ],
       },
@@ -119,12 +125,42 @@ export default defineComponent({
           {
             label: "Rate of Successful Transactions",
             data: [86, 10, 4],
-            backgroundColor: colors.slice(1),
+            backgroundColor: [] as string[],
+            borderColor: "",
             rotation: -45,
           },
         ],
       },
     };
+  },
+  methods: {
+    exportAsCSV() {
+      console.log("Exporting raw data as CSV now...");
+    },
+    exportAsExcel() {
+      console.log("Exporting raw data as XLSX now...");
+    },
+  },
+  computed: {
+    figuresTheme(): string[] {
+      return this.role === "Donor" || this.role === "Charity"
+        ? ["#113333", "#45bf5D", "#56f576", "#6ef997"]
+        : ["#ffffff", "#45bf5D", "#56f576", "#6ef997"];
+    },
+  },
+  created() {
+    // Total Food Surplus Volume Figure Theming
+    this.foodSurplusVolumeChartData.datasets[0].backgroundColor =
+      this.figuresTheme;
+    this.foodSurplusVolumeChartData.datasets[0].borderColor =
+      this.role === "Donor" || this.role === "Charity" ? "#ffffff" : "#113333";
+    // Donations Per Location Figure Theming
+    this.donationCountChartData.datasets[0].backgroundColor = this.figuresTheme;
+    // Rate of Successful Transactions Figure Theming
+    this.successRatesChartData.datasets[0].backgroundColor =
+      this.figuresTheme.slice(1);
+    this.successRatesChartData.datasets[0].borderColor =
+      this.role === "Donor" || this.role === "Charity" ? "#ffffff" : "#113333";
   },
 });
 </script>
