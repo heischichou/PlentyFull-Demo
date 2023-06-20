@@ -25,27 +25,27 @@
         </div>
 
         <div class="d-flex gap-3">
-          <a href="#"
+          <a href="#" id="report-btn"
             ><i class="bi bi-exclamation-triangle link-warning fs-2"></i
           ></a>
-          <a href="#"><i class="bi bi-geo-alt fs-2"></i></a>
+          <a href="#" id="location-btn"><i class="bi bi-geo-alt fs-2"></i></a>
         </div>
       </div>
-      <p class="text-start lh-sm pt-4">
+      <p class="text-start lh-sm pt-4" id="find-desc">
         {{ findResult.description }}
       </p>
       <div class="d-flex flex-column text-start">
-        <div class="d-flex mb-2">
+        <div class="d-flex mb-2" id="find-add">
           <i class="bi bi-geo-alt"></i>
-          <p class="align-self-center ps-2 m-0">
+          <p class="align-self-center ps-2 md-0">
             {{ findResult.address }}
           </p>
         </div>
-        <div class="d-flex mb-2">
+        <div class="d-flex mb-2" id="find-email">
           <i class="bi bi-envelope"></i>
           <p class="align-self-center ps-2 m-0">{{ findResult.email }}</p>
         </div>
-        <div class="d-flex mb-2">
+        <div class="d-flex mb-2" id="find-contact">
           <i class="bi bi-telephone"></i>
           <p class="align-self-center ps-2 m-0">{{ findResult.contact }}</p>
         </div>

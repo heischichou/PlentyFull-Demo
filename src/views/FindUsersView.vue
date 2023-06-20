@@ -14,12 +14,14 @@
         class="form-control form-control-lg border-primary p-sm-3"
         aria-label="Text input with dropdown button"
         placeholder="Search here..."
+        id="find-search-bar"
       />
       <button
         class="btn btn-outline-secondary dropdown-toggle"
         type="toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        id="searchBy-btn"
       >
         Search by: {{ searchByVal }}
       </button>
@@ -48,6 +50,7 @@
         type="toggle"
         data-bs-toggle="dropdown"
         aria-expanded="false"
+        id="sortBy-btn"
       >
         Sort by: {{ sortByVal }}
       </button>
@@ -82,7 +85,7 @@
       </ul>
     </div>
 
-    <div v-if="findResults.length > 0">
+    <div id="find-users-section" v-if="findResults.length > 0">
       <div
         v-for="findResult in findResults"
         :key="findResult.userID"
