@@ -26,7 +26,7 @@
             <h1 class="mb-5 fw-bold">Recent Updates</h1>
             <div class="row">
               <div class="col-12 col-md">
-                <h2 class="fw-semibold mb-4">{{ donationCount }}</h2>
+                <h2 class="fw-semibold mb-4">{{ donationsCount }}</h2>
                 <h6 class="fw-semibold mb-3">Food Donation Count</h6>
                 <small class="opacity-75">
                   This count shows the number of confirmed transactions made by
@@ -187,7 +187,7 @@ export default defineComponent({
         ? ["#113333", "#45bf5D", "#56f576", "#6ef997"]
         : ["#ffffff", "#45bf5D", "#56f576", "#6ef997"];
     },
-    donationCount(): number | null {
+    donationsCount(): number | null {
       return this.role === "Administrator" ? 0 : null;
     },
     successfulTransactionsCount(): number | null {

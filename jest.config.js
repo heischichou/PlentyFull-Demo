@@ -14,6 +14,7 @@ module.exports = {
       },
     ],
   },
+  setupFiles: ["jest-canvas-mock"],
   moduleFileExtensions: ["ts", "js", "vue"],
   moduleNameMapper: {
     "\\.(css|less|scss)$": "<rootDir>/styleMock.ts",
