@@ -37,7 +37,7 @@
       <div class="d-flex flex-column text-start">
         <div class="d-flex mb-2" id="find-add">
           <i class="bi bi-geo-alt"></i>
-          <p class="align-self-center ps-2 md-0">
+          <p class="align-self-center ps-2 m-0">
             {{ findResult.address }}
           </p>
         </div>
