@@ -1,5 +1,6 @@
 <template>
   <div
+    id="donationCount"
     class="container-fluid"
     :class="{
       'bg-white': role === 'Donor' || role === 'Charity',
@@ -16,8 +17,10 @@
     >
       <div class="row flex-column flex-xl-row py-5">
         <div class="col align-self-center pt-0 pt-xl-5 mt-5 mb-0 mb-xl-5">
-          <h2 class="mb-4 text-start fw-semibold">Donations Per Location</h2>
-          <p class="my-2 text-justify opacity-75">
+          <h2 class="figure-title mb-4 text-start fw-semibold">
+            Donations Per Location
+          </h2>
+          <p class="figure-description my-2 text-justify opacity-75">
             Et has minim elitr intellegat. Mea aeterno eleifend antiopam ad, nam
             no suscipit quaerendum. At nam minimum ponderum. Est audiam animal
             molestiae te. Ex duo eripuit mentitum.
@@ -25,7 +28,7 @@
           <div class="row my-4">
             <div
               v-for="(item, index) in chartData.labels"
-              class="col-6 col-xxl my-2 my-xxl-0 d-flex"
+              class="chart-legend col-6 col-xxl my-2 my-xxl-0 d-flex"
               :key="index"
               :index="index"
             >

@@ -2,7 +2,7 @@ import { DOMWrapper, VueWrapper, shallowMount } from "@vue/test-utils";
 import TotalVolume from "@/components/StatisticsView/TotalVolume.vue";
 
 const findByText = (
-  wrapper: VueWrapper<any>,
+  wrapper: VueWrapper<any> | DOMWrapper<any>,
   selector: string,
   text: string
 ) => {
@@ -72,13 +72,13 @@ describe("Total Food Surplus Volume component", () => {
     const wrapper = factory(props);
     const { labels } = props.chartData;
     const { data, backgroundColor } = props.chartData.datasets[0];
-    const pills = wrapper.findAll(".pill");
+    const legends = wrapper.findAll(".chart-legend");
 
-    expect(pills.length).toBe(labels.length);
+    expect(legends.length).toBe(labels.length);
 
-    labels.forEach((label, index) => {
-      const legendItem = findByText(wrapper, "p", data.at(index) + "kg");
-      const pill = pills.at(index)?.attributes("style");
+    legends.forEach((legend, index) => {
+      const legendItem = findByText(legend, "p", data.at(index) + "kg");
+      const pill = wrapper.findAll(".pill").at(index)?.attributes("style");
 
       expect(legendItem.exists()).not.toBe(undefined);
       expect(convertHex(backgroundColor.at(index) as string)).toBe(
@@ -92,7 +92,11 @@ describe("Total Food Surplus Volume component", () => {
     const wrapper = factory(props);
     const { totalSurplusVolume, commonFoodType, successRate } = props;
 
-    let summaryItem = findByText(wrapper, "h2", (totalSurplusVolume /1000) + "K+");
+    let summaryItem = findByText(
+      wrapper,
+      "h2",
+      totalSurplusVolume / 1000 + "K+"
+    );
     expect(summaryItem.exists()).not.toBe(undefined);
 
     summaryItem = findByText(wrapper, "h2", commonFoodType.type);
@@ -116,17 +120,17 @@ describe("Total Food Surplus Volume component", () => {
     const wrapper = factory(stubProps());
     let button = findByText(wrapper, ".dropdown-item", "Weekly");
 
-    // Barangay option
+    // Weekly option
     await button.trigger("click");
     expect(wrapper.emitted("updateBasis")?.toString()).toEqual(button.text());
 
-    // Municipality option
+    // Monthly option
     button = findByText(wrapper, ".dropdown-item", "Monthly");
     await button.trigger("click");
     let emitted = wrapper.emitted("updateBasis");
     expect(emitted?.at(emitted.length - 1)?.toString()).toEqual(button.text());
 
-    // City option
+    // Yearly option
     button = findByText(wrapper, ".dropdown-item", "Yearly");
     await button.trigger("click");
     emitted = wrapper.emitted("updateBasis");

@@ -2,7 +2,7 @@ import { DOMWrapper, VueWrapper, shallowMount } from "@vue/test-utils";
 import DonationCount from "@/components/StatisticsView/DonationCount.vue";
 
 const findByText = (
-  wrapper: VueWrapper<any>,
+  wrapper: VueWrapper<any> | DOMWrapper<any>,
   selector: string,
   text: string
 ) => {
@@ -61,17 +61,17 @@ describe("Donations Per Location", () => {
     const wrapper = factory(props);
     const { labels } = props.chartData;
     const { data, backgroundColor } = props.chartData.datasets[0];
-    const pills = wrapper.findAll(".pill");
+    const legends = wrapper.findAll(".chart-legend");
 
-    expect(pills.length).toBe(labels.length);
+    expect(legends.length).toBe(labels.length);
 
-    labels.forEach((label, index) => {
+    legends.forEach((legend, index) => {
       const legendItem = findByText(
-        wrapper,
+        legend,
         "p",
         data.at(index) + " donations"
       );
-      const pill = pills.at(index)?.attributes("style");
+      const pill = wrapper.findAll(".pill").at(index)?.attributes("style");
 
       expect(legendItem.exists()).not.toBe(undefined);
       expect(convertHex(backgroundColor.at(index) as string)).toBe(

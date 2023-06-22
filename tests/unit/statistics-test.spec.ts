@@ -9,7 +9,7 @@ const router = createRouter({
 });
 
 const findByText = (
-  wrapper: VueWrapper<any>,
+  wrapper: VueWrapper<any> | DOMWrapper<any>,
   selector: string,
   text: string
 ) => {
@@ -42,13 +42,27 @@ describe("Statistics page", () => {
   it("renders statistical figures successfully", () => {
     const wrapper = factory("Donor", {});
     const figures = [
-      "#totalSurplusVolume",
-      "#donationsPerLocation",
-      "#transactionSuccessRates",
+      {
+        id: "#totalVolume",
+        title: "Food Surplus Volume",
+      },
+      {
+        id: "#donationCount",
+        title: "Donations Per Location",
+      },
+      {
+        id: "#transactionRates",
+        title: "Rate of Successful Transactions",
+      },
     ];
 
     figures.forEach((figure) => {
-      expect(wrapper.find(figure).exists()).toBe(true);
+      const figureContainer = wrapper.find(figure.id);
+      expect(figureContainer.exists()).toBe(true);
+
+      const title = findByText(figureContainer, ".fw-semibold", figure.title);
+      expect(title.text()).toEqual(figure.title);
+      expect(figureContainer.find(".figure-description").exists()).toBe(true);
     });
   });
 

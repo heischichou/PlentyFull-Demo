@@ -3,7 +3,7 @@
     class="container-fluid"
     :class="role === 'Administrator' ? 'bg-header' : 'bg-primary'"
   >
-    <div class="container">
+    <div id="header" class="container">
       <div
         class="row flex-column flex-lg-row align-items-center py-5"
         :class="role === 'Administrator' ? 'text-white' : 'text-black'"
