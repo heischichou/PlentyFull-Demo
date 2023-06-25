@@ -308,6 +308,8 @@
         <button
           type="submit"
           class="btn btn-secondary text-white rounded-0 flex-fill flex-md-grow-0 p-3"
+          data-bs-toggle="modal"
+          data-bs-target="#searchingForCharities"
         >
           Open Donation
         </button>
@@ -321,11 +323,14 @@
       </div>
     </div>
   </div>
+
+  <SearchingFor :foundQueuers="queuers.length > 0" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
+import SearchingFor from "@/components/Donor/SearchingForCharities.vue";
 
 declare interface FoodItem {
   itemId: string;
@@ -409,6 +414,9 @@ export default defineComponent({
         },
       ] as FoodItem[],
     };
+  },
+  components: {
+    SearchingFor,
   },
   methods: {
     createItem() {
