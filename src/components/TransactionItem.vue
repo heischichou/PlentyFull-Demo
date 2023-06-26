@@ -31,7 +31,9 @@
         </div>
 
         <div class="d-flex flex-row align-items-center">
-          <a class="link-body-emphasis" id="location-btn"
+          <a
+            class="link-body-emphasis"
+            :id="transItem.transactionID + '-map-btn'"
             ><i class="bi bi-geo-alt fs-2"></i
           ></a>
           <a
