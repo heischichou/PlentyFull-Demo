@@ -166,7 +166,9 @@
         <div
           class="col-lg-6 pb-5 pt-0 pt-md-5 container order-first order-lg-last"
         >
-          <div class="d-none d-md-flex flex-row justify-content-between">
+          <div
+            class="members d-none d-md-flex flex-row justify-content-between"
+          >
             <div class="avatar rounded-circle"></div>
             <div class="avatar rounded-circle"></div>
             <div class="avatar rounded-circle"></div>
@@ -189,7 +191,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.avatar {
+.members > .avatar {
   background-color: #f8f9fa !important;
   width: 65px;
   height: 65px;

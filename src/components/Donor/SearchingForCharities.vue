@@ -4,7 +4,7 @@
     id="searchingForCharities"
     tabindex="-1"
     data-bs-keyboard="false"
-    aria-hidden="true"
+    aria-hidden="false"
   >
     <div class="modal-dialog modal-fullscreen text-white">
       <div
@@ -62,6 +62,8 @@
             v-if="foundQueuers"
             type="button"
             class="btn btn-white p-3 rounded-0"
+            data-bs-toggle="modal"
+            data-bs-target="#donationQueue"
           >
             View Queue
           </button>
@@ -92,12 +94,11 @@ import { BreedingRhombusSpinner } from "epic-spinners";
 
 export default defineComponent({
   name: "SearchingFor",
-  data() {
-    return {
-      windowWidth: window.innerWidth,
-    };
-  },
   props: {
+    windowWidth: {
+      type: Number,
+      required: true,
+    },
     foundQueuers: {
       type: Boolean,
       required: true,
@@ -105,14 +106,6 @@ export default defineComponent({
   },
   components: {
     BreedingRhombusSpinner,
-  },
-  methods: {
-    onResize() {
-      this.windowWidth = window.innerWidth;
-    },
-  },
-  mounted() {
-    window.addEventListener("resize", this.onResize);
   },
 });
 </script>

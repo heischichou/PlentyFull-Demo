@@ -118,7 +118,9 @@
           class="col-lg-6 pb-5 pt-0 pt-sm-4 container order-first order-lg-last"
           id="founder-images"
         >
-          <div class="d-flex d-md-flex flex-row justify-content-between">
+          <div
+            class="developers d-flex d-md-flex flex-row justify-content-between"
+          >
             <div class="avatar rounded-circle"></div>
             <div class="avatar rounded-circle"></div>
             <div class="avatar rounded-circle"></div>
@@ -139,7 +141,7 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-.avatar {
+.developers > .avatar {
   background-color: #f8f9fa !important;
   width: 65px;
   height: 65px;

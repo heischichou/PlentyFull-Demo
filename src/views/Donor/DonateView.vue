@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid" v-if="queuers.length === 0">
+  <div class="container-fluid">
     <div class="container">
       <h1
         class="text-start fw-bold pt-5 pb-4 border-0 border-3 border-bottom border-dark"
@@ -16,7 +16,7 @@
           v-for="(item, index) in foodItems"
           :key="item.itemId"
           :index="index"
-          class="accordion-item border-0"
+          class="accordion-item foodItem border-0"
         >
           <div class="d-flex align-items-center py-3">
             <button
@@ -324,13 +324,15 @@
     </div>
   </div>
 
-  <SearchingFor :foundQueuers="queuers.length > 0" />
+  <SearchingFor :foundQueuers="queuers.length > 0" :windowWidth="windowWidth" />
+  <DonationQueue :queuers="queuers" :windowWidth="windowWidth" />
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
 import SearchingFor from "@/components/Donor/SearchingForCharities.vue";
+import DonationQueue from "@/components/Donor/DonationQueue.vue";
 
 declare interface FoodItem {
   itemId: string;
@@ -348,7 +350,7 @@ declare interface Queuer {
   charityId: string;
   name: string;
   status: string;
-  queuePos: string;
+  queuePos: number;
   queueWeight: string;
   distance: number;
   donationsReceived: number;
@@ -360,6 +362,7 @@ export default defineComponent({
   name: "DonateView",
   data() {
     return {
+      windowWidth: window.innerWidth,
       queuers: [] as Queuer[],
       newItem: {
         itemId: uuid.v1(),
@@ -368,8 +371,8 @@ export default defineComponent({
         stage: "In Storage",
         quantity: 0,
         weight: 0,
-        createdAt: Date.now().toString(),
-        updatedAt: Date.now().toString(),
+        createdAt: new Date().toString(),
+        updatedAt: new Date().toString(),
       } as FoodItem,
       foodItems: [
         {
@@ -379,8 +382,8 @@ export default defineComponent({
           stage: "In Storage",
           quantity: 2,
           weight: 1,
-          createdAt: Date.now().toString(),
-          updatedAt: Date.now().toString(),
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
         },
         {
           itemId: uuid.v1(),
@@ -389,8 +392,8 @@ export default defineComponent({
           stage: "Prepared",
           quantity: 1,
           weight: 3,
-          createdAt: Date.now().toString(),
-          updatedAt: Date.now().toString(),
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
         },
         {
           itemId: uuid.v1(),
@@ -399,8 +402,8 @@ export default defineComponent({
           stage: "In Storage",
           quantity: 2,
           weight: 0.25,
-          createdAt: Date.now().toString(),
-          updatedAt: Date.now().toString(),
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
         },
         {
           itemId: uuid.v1(),
@@ -409,16 +412,20 @@ export default defineComponent({
           stage: "Prepared",
           quantity: 2,
           weight: 0.2,
-          createdAt: Date.now().toString(),
-          updatedAt: Date.now().toString(),
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
         },
       ] as FoodItem[],
     };
   },
   components: {
     SearchingFor,
+    DonationQueue,
   },
   methods: {
+    onResize() {
+      this.windowWidth = window.innerWidth;
+    },
     createItem() {
       this.foodItems.push(this.newItem as FoodItem);
       this.newItem = Object.assign(
@@ -430,15 +437,13 @@ export default defineComponent({
           stage: "In Storage",
           quantity: 0,
           weight: 0,
-          createdAt: Date.now().toString(),
-          updatedAt: Date.now().toString(),
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
         }
       );
     },
     removeItem(index: number) {
-      console.log("food items before", this.foodItems);
       this.foodItems.splice(index, 1);
-      console.log("food items after", this.foodItems);
     },
     resetForm() {
       this.newItem = Object.assign(
@@ -450,55 +455,56 @@ export default defineComponent({
           stage: "In Storage",
           quantity: 0,
           weight: 0,
-          createdAt: Date.now().toString(),
-          updatedAt: Date.now().toString(),
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
         }
       );
       this.foodItems = Object.assign([], []);
     },
   },
   mounted() {
-    // this.queuers = Object.assign(
-    //   [],
-    //   [
-    //     {
-    //       queuerId: uuid.v1(),
-    //       charityId: uuid.v1(),
-    //       name: "Cebu Food Bank",
-    //       status: "Pending",
-    //       queuePos: "1",
-    //       queueWeight: "1000",
-    //       distance: 1.1,
-    //       donationsReceived: 1,
-    //       createdAt: Date.now().toString(),
-    //       updatedAt: Date.now().toString(),
-    //     },
-    //     {
-    //       queuerId: uuid.v1(),
-    //       charityId: uuid.v1(),
-    //       name: "Hippodromo Barangay Hall",
-    //       status: "Pending",
-    //       queuePos: "2",
-    //       queueWeight: "1100",
-    //       distance: 1.3,
-    //       donationsReceived: 2,
-    //       createdAt: Date.now().toString(),
-    //       updatedAt: Date.now().toString(),
-    //     },
-    //     {
-    //       queuerId: uuid.v1(),
-    //       charityId: uuid.v1(),
-    //       name: "JPIC-IDC Inc.",
-    //       status: "Pending",
-    //       queuePos: "3",
-    //       queueWeight: "1200",
-    //       distance: 1.8,
-    //       donationsReceived: 2,
-    //       createdAt: Date.now().toString(),
-    //       updatedAt: Date.now().toString(),
-    //     },
-    //   ]
-    // );
+    window.addEventListener("resize", this.onResize);
+    this.queuers = Object.assign(
+      [],
+      [
+        {
+          queuerId: uuid.v1(),
+          charityId: uuid.v1(),
+          name: "Cebu Food Bank",
+          status: "Pending",
+          queuePos: "1",
+          queueWeight: "1000",
+          distance: 1100,
+          donationsReceived: 1,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          queuerId: uuid.v1(),
+          charityId: uuid.v1(),
+          name: "Hippodromo Barangay Hall",
+          status: "Pending",
+          queuePos: "2",
+          queueWeight: "1100",
+          distance: 1300,
+          donationsReceived: 2,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          queuerId: uuid.v1(),
+          charityId: uuid.v1(),
+          name: "JPIC-IDC Inc.",
+          status: "Pending",
+          queuePos: "3",
+          queueWeight: "1200",
+          distance: 1800,
+          donationsReceived: 2,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+      ]
+    );
   },
 });
 </script>
