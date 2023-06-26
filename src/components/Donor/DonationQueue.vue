@@ -158,7 +158,7 @@
               style="margin-top: 2rem !important"
             >
               <div
-                class="accordion-item rounded-0"
+                class="accordion-item queuer rounded-0"
                 v-for="(queuer, index) in filteredQueue"
                 :key="queuer.queuerId"
                 :index="index"
