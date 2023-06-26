@@ -62,49 +62,64 @@
         <h1 class="text-start fw-bold pb-3" v-text="updateTitle()"></h1>
         <hr class="border border-dark border-2 opacity-100" />
 
-        <div v-show="awaiting">
-          <div
-            v-for="transItem in awaitingTransactions"
-            :key="transItem.transactionID"
-            class="mb-3"
-          >
-            <TransactionItem
-              :transItem="transItem"
-              :displayName="getDisplayName()"
-              :userName="getTransactionUser(transItem)"
-              :userProfile="getTransactionProfile(transItem)"
-            />
+        <div id="transactions-section" v-if="transactionList.length > 0">
+          <div v-show="awaiting" v-if="awaitingTransactions.length > 0">
+            <div
+              v-for="transItem in awaitingTransactions"
+              :key="transItem.transactionID"
+              class="mb-3"
+            >
+              <TransactionItem
+                :transItem="transItem"
+                :displayName="getDisplayName()"
+                :userName="getTransactionUser(transItem)"
+                :userProfile="getTransactionProfile(transItem)"
+              />
+            </div>
+          </div>
+          <div v-show="awaiting" v-else class="m-5">
+            <h3 class="text-center text-black-50">No awaiting transactions</h3>
+          </div>
+
+          <div v-show="completed" v-if="completedTransactions.length > 0">
+            <div
+              v-for="transItem in completedTransactions"
+              :key="transItem.transactionID"
+              class="mb-3"
+            >
+              <TransactionItem
+                :transItem="transItem"
+                :displayName="getDisplayName()"
+                :userName="getTransactionUser(transItem)"
+                :userProfile="getTransactionProfile(transItem)"
+              />
+            </div>
+          </div>
+          <div v-show="completed" v-else class="m-5">
+            <h3 class="text-center text-black-50">No completed transactions</h3>
+          </div>
+
+          <div v-show="cancelled" v-if="cancelledTransactions.length > 0">
+            <div
+              v-for="transItem in cancelledTransactions"
+              :key="transItem.transactionID"
+              class="mb-3"
+            >
+              <TransactionItem
+                :transItem="transItem"
+                :displayName="getDisplayName()"
+                :userName="getTransactionUser(transItem)"
+                :userProfile="getTransactionProfile(transItem)"
+              />
+            </div>
+          </div>
+          <div v-show="cancelled" v-else class="m-5">
+            <h3 class="text-center text-black-50">No cancelled transactions</h3>
           </div>
         </div>
 
-        <div v-show="completed">
-          <div
-            v-for="transItem in completedTransactions"
-            :key="transItem.transactionID"
-            class="mb-3"
-          >
-            <TransactionItem
-              :transItem="transItem"
-              :displayName="getDisplayName()"
-              :userName="getTransactionUser(transItem)"
-              :userProfile="getTransactionProfile(transItem)"
-            />
-          </div>
-        </div>
-
-        <div v-show="cancelled">
-          <div
-            v-for="transItem in cancelledTransactions"
-            :key="transItem.transactionID"
-            class="mb-3"
-          >
-            <TransactionItem
-              :transItem="transItem"
-              :displayName="getDisplayName()"
-              :userName="getTransactionUser(transItem)"
-              :userProfile="getTransactionProfile(transItem)"
-            />
-          </div>
+        <div v-else class="m-5">
+          <h3 class="text-center text-black-50">No current transactions</h3>
         </div>
       </div>
     </div>
@@ -115,6 +130,31 @@
 import { defineComponent } from "vue";
 import TransactionItem from "@/components/TransactionItem.vue";
 
+class DonateItem {
+  itemID!: number;
+  itemName!: string;
+  foodType!: string;
+  lifeCycleStage!: string;
+  itemQuantity!: string;
+  itemWeight!: string;
+}
+
+class Transaction {
+  transactionID!: number;
+  donorName!: string;
+  donorProfile!: string;
+  charityName!: string;
+  charityProfile!: string;
+  transactionDate!: string;
+  distance!: string;
+  deliveryMode!: string;
+  requestTime!: string;
+  status!: string;
+  deliveryNotes!: string;
+  optionalNotes!: string;
+  donateItemsList!: Array<DonateItem>;
+}
+
 export default defineComponent({
   name: "ReceiveView",
   components: {
@@ -123,7 +163,7 @@ export default defineComponent({
   data() {
     return {
       role: "Charity",
-      transactionList: [] as Array<any>,
+      transactionList: [] as Array<Transaction>,
       awaiting: true,
       completed: false,
       cancelled: false,
@@ -329,17 +369,17 @@ export default defineComponent({
     ];
   },
   computed: {
-    awaitingTransactions: function (): any[] {
+    awaitingTransactions: function (): Transaction[] {
       return this.transactionList.filter((transItem) => {
         return transItem.status.localeCompare("Pending") === 0;
       });
     },
-    completedTransactions: function (): any[] {
+    completedTransactions: function (): Transaction[] {
       return this.transactionList.filter((transItem) => {
         return transItem.status.localeCompare("Completed") === 0;
       });
     },
-    cancelledTransactions: function (): any[] {
+    cancelledTransactions: function (): Transaction[] {
       return this.transactionList.filter((transItem) => {
         return transItem.status.localeCompare("Cancelled") === 0;
       });
