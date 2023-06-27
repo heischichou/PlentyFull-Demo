@@ -46,7 +46,6 @@
 
           <div class="col col-md-9 d-flex pb-3">
             <div class="row">
-              <!---------Picture----------->
               <div
                 class="col-3 col-lg-3 order-first order-md-last text-white text-start"
                 id="profile-picture"
@@ -70,7 +69,7 @@
                   </div>
                 </div>
               </div>
-              <!--------------Profile------------------>
+
               <div
                 class="col-auto col-md-9 text-white text-start py-lg-5 px-lg-5"
                 id="view-profile"
@@ -222,7 +221,7 @@
                   </form>
                 </div>
               </div>
-              <!--------------Security------------------>
+
               <div
                 class="col-auto col-md-9 text-white text-start py-lg-5 px-lg-5"
                 id="view-security"
@@ -344,7 +343,7 @@
                         Delete My Account
                       </button>
                     </div>
-                    <!---------Modal--------->
+
                     <div
                       class="modal fade"
                       id="confirmModal"
