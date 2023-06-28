@@ -71,7 +71,7 @@ describe("Donations Per Location", () => {
         "p",
         data.at(index) + " donations"
       );
-      const pill = wrapper.findAll(".pill").at(index)?.attributes("style");
+      const pill = legend.find(".pill").attributes("style");
 
       expect(legendItem.exists()).not.toBe(undefined);
       expect(convertHex(backgroundColor.at(index) as string)).toBe(

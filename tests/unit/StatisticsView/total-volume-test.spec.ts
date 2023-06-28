@@ -78,7 +78,7 @@ describe("Total Food Surplus Volume component", () => {
 
     legends.forEach((legend, index) => {
       const legendItem = findByText(legend, "p", data.at(index) + "kg");
-      const pill = wrapper.findAll(".pill").at(index)?.attributes("style");
+      const pill = legend.find(".pill").attributes("style");
 
       expect(legendItem.exists()).not.toBe(undefined);
       expect(convertHex(backgroundColor.at(index) as string)).toBe(

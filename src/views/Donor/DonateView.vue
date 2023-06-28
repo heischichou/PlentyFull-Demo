@@ -16,7 +16,7 @@
           v-for="(item, index) in foodItems"
           :key="item.itemId"
           :index="index"
-          class="accordion-item foodItem border-0"
+          class="accordion-item food-item border-0"
         >
           <div class="d-flex align-items-center py-3">
             <button
@@ -34,7 +34,11 @@
                 >
               </div>
             </button>
-            <button type="button" class="btn py-3" @click="removeItem(index)">
+            <button
+              type="button"
+              class="btn remove-item py-3"
+              @click="removeItem(index)"
+            >
               <em class="bi bi-trash3 h5"></em>
             </button>
             <button
@@ -97,7 +101,12 @@
                 >
               </div>
             </button>
-            <button type="button" class="btn py-3" @click="createItem">
+            <button
+              type="button"
+              class="btn py-3"
+              ref="newItem"
+              @click="createItem"
+            >
               <em class="bi bi-plus-lg h5"></em>
             </button>
             <button
