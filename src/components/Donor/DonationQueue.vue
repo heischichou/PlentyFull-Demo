@@ -215,7 +215,7 @@
                       </div>
                       <div class="col-12 col-sm-6 mt-2">
                         <small class="fw-semibold">Distance</small>
-                        <p>{{ queuer.distance / 1000 }}km</p>
+                        <p>{{ queuer.distance / 1000 }}km away</p>
                       </div>
                       <div class="col-12 mt-2">
                         <small class="fw-semibold">Donations Received</small>
@@ -263,7 +263,7 @@ declare interface Queuer {
   name: string;
   status: string;
   queuePos: number;
-  queueWeight: string;
+  queueWeight: number;
   distance: number;
   donationsReceived: number;
   createdAt: string;
@@ -291,45 +291,7 @@ export default defineComponent({
   methods: {
     setFilterBy(filterBy: string) {
       this.filterBy = filterBy;
-    },
-    setSortBy(sortBy: string) {
-      this.sortBy = sortBy;
-    },
-    truncateText(text: string) {
-      const truncated = text.length > 6 ? text.substring(0, 6) + "..." : text;
-      return this.windowWidth > 576 ? text : truncated;
-    },
-    getOrdinalSuffix(number: number) {
-      const suffix = ["th", "st", "nd", "rd"],
-        v = number % 100;
-      return number + (suffix[(v - 20) % 10] || suffix[v] || suffix[0]);
-    },
-    getTime(dateString: string) {
-      const date = new Date(dateString);
-      const hours = date.getHours() % 12;
-      const minutes =
-        date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
-      const meridiem = date.getHours() < 12 ? "AM" : "PM";
-      return `${hours}:${minutes} ${meridiem}`;
-    },
-    confirmQueuer(queuer: Queuer) {
-      console.log("Confirmed transaction with", queuer.name);
-    },
-    declineQueuer(queuer: Queuer) {
-      console.log("Declined transaction with", queuer.name);
-    },
-  },
-  computed: {
-    filteredQueue(): Queuer[] {
-      return this.queuers.map((queuer) => {
-        return {
-          ...queuer,
-        };
-      });
-    },
-  },
-  watch: {
-    filterBy: function (filterBy: string) {
+
       switch (filterBy) {
         case "Name":
           this.filteredQueue.sort((a, b) => {
@@ -383,7 +345,9 @@ export default defineComponent({
           break;
       }
     },
-    sortBy: function (sortBy: string) {
+    setSortBy(sortBy: string) {
+      this.sortBy = sortBy;
+
       switch (this.filterBy) {
         case "Name":
           this.filteredQueue.sort((a, b) => {
@@ -436,6 +400,38 @@ export default defineComponent({
           });
           break;
       }
+    },
+    truncateText(text: string) {
+      const truncated = text.length > 6 ? text.substring(0, 6) + "..." : text;
+      return this.windowWidth > 576 ? text : truncated;
+    },
+    getOrdinalSuffix(number: number) {
+      const suffix = ["th", "st", "nd", "rd"],
+        v = number % 100;
+      return number + (suffix[(v - 20) % 10] || suffix[v] || suffix[0]);
+    },
+    getTime(dateString: string) {
+      const date = new Date(dateString);
+      const hours = date.getHours() % 12;
+      const minutes =
+        date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+      const meridiem = date.getHours() < 12 ? "AM" : "PM";
+      return `${hours}:${minutes} ${meridiem}`;
+    },
+    confirmQueuer(queuer: Queuer) {
+      console.log("Confirmed transaction with", queuer.name);
+    },
+    declineQueuer(queuer: Queuer) {
+      console.log("Declined transaction with", queuer.name);
+    },
+  },
+  computed: {
+    filteredQueue(): Queuer[] {
+      return this.queuers.map((queuer) => {
+        return {
+          ...queuer,
+        };
+      });
     },
   },
 });

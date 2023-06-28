@@ -112,26 +112,17 @@ describe("Donate page", () => {
     const items = wrapper.findAll(".food-item");
     expect(wrapper.findAll(".food-item").length).toBeGreaterThan(0);
     items.forEach((item, index) => {
-      const itemKeys = Object.keys(itemList[index]).slice(
-        1,
-        Object.keys(itemList[index]).length - 2
-      );
-      const itemValues = Object.values(itemList[index]).slice(
-        1,
-        itemKeys.length + 1
-      );
+      const itemEntries = Object.entries(itemList[index]).filter(([key]) => {
+        return key !== "itemId" && key !== "createdAt" && key !== "updatedAt";
+      });
 
-      itemKeys.forEach((key, keyIndex) => {
+      itemEntries.forEach(([key, value]) => {
         let column =
           key === "quantity"
-            ? findByText(item, "p", itemValues[keyIndex].toString() + " pc.")
+            ? findByText(item, "p", value.toString() + " pc.")
             : key === "weight"
-            ? findByText(
-                item,
-                "p",
-                itemValues[keyIndex].toString() + " kilograms"
-              )
-            : findByText(item, "p", itemValues[keyIndex].toString());
+            ? findByText(item, "p", value.toString() + " kilograms")
+            : findByText(item, "p", value.toString());
 
         expect(column.exists()).toBe(true);
       });
