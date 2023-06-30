@@ -73,7 +73,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: "/receive",
     name: "Receive",
-    component: Receive,
+    component: Transactions,
   },
   // Admin Routes
   {

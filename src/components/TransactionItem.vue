@@ -1,105 +1,129 @@
 <template>
-  <div class="card shadow">
+  <div class="transaction card shadow-sm">
     <div class="card-body accordion">
       <div class="d-flex flex-row align-items-center justify-content-between">
-        <div class="d-flex flew-row align-items-center">
-          <img
-            v-if="isURL(userProfile) === false"
-            :src="require('../assets/images/Shared/' + userProfile)"
-            :alt="userName"
-            class="component-img rounded-circle text-white bg-dark d-none d-sm-block"
-          />
-          <img
-            v-else
-            :src="userProfile"
-            :alt="userName"
-            class="component-img rounded-circle text-white bg-dark d-none d-sm-block"
-          />
+        <button
+          type="button"
+          class="btn flex-fill d-flex flew-row align-items-center"
+          role="button"
+          data-bs-toggle="collapse"
+          :data-bs-target="'#' + transaction.transactionId"
+          aria-expanded="false"
+          :aria-controls="transaction.transactionId"
+        >
+          <div>
+            <img
+              :src="
+                isURL(avatar)
+                  ? avatar
+                  : require('../assets/images/Shared/' + avatar)
+              "
+              :alt="
+                role === 'Charity'
+                  ? transaction.donorName
+                  : transaction.charityName
+              "
+              class="avatar d-none d-sm-block rounded-circle object-fit-cover text-white bg-dark me-3"
+            />
+          </div>
 
-          <div class="text-start ms-3">
-            <h5 class="card-title fw-semibold fs-5" v-text="userName"></h5>
+          <div class="text-start">
+            <h5 class="card-title fw-semibold fs-5">
+              {{
+                role === "Charity"
+                  ? truncateText(transaction.donorName)
+                  : truncateText(transaction.charityName)
+              }}
+            </h5>
             <div class="d-flex flex-wrap gap-1 align-items-center">
               <h6 class="card-subtitle text-black-50 fs-6">
-                {{ transItem.transactionDate }}
-              </h6>
-              <h6 class="card-subtitle text-black-50 fs-6">•</h6>
-              <h6 class="card-subtitle text-black-50 fs-6">
-                {{ transItem.distance }}
+                {{ getDate(transaction.createdAt) }} •
+                {{ transaction.distance / 1000 }}km away
               </h6>
             </div>
           </div>
-        </div>
+        </button>
 
         <div class="d-flex flex-row align-items-center">
-          <a
-            class="link-body-emphasis"
-            :id="transItem.transactionID + '-map-btn'"
-            ><i class="bi bi-geo-alt fs-2"></i
-          ></a>
-          <a
+          <button
+            type="button"
+            class="btn px-1"
+            :id="transaction.transactionId + '-map-btn'"
+          >
+            <em class="bi bi-geo-alt fs-2"></em>
+          </button>
+          <button
+            type="button"
             class="accordion-button collapsed"
             role="button"
             data-bs-toggle="collapse"
-            :data-bs-target="'#' + transItem.transactionID"
+            :data-bs-target="'#' + transaction.transactionId"
             aria-expanded="false"
-            :aria-controls="transItem.transactionID"
-          ></a>
+            :aria-controls="transaction.transactionId"
+          ></button>
         </div>
       </div>
 
       <div
         class="accordion-collapse collapse accordion-body border-top border-black-50 border-2 mt-3 pb-0"
-        :id="transItem.transactionID"
+        :id="transaction.transactionId"
       >
-        <h6 class="text-start fw-semibold fs-5 m-0">Donation Details</h6>
-        <div class="row pt-3">
-          <div class="col-md-12">
-            <div class="row">
-              <div class="col-md-6 align-items-start">
-                <p class="text-start">
-                  <b class="fw-semibold">{{ displayName }} Name:</b>
-                  {{ userName }}
-                </p>
-                <p class="text-start">
-                  <b class="fw-semibold">Delivery Mode:</b>
-                  {{ transItem.deliveryMode }}
-                </p>
-              </div>
-              <div class="col-md-6 align-items-start">
-                <p class="text-start">
-                  <b class="fw-semibold">Request Time:</b>
-                  {{ transItem.requestTime }}
-                </p>
-                <p class="text-start">
-                  <b class="fw-semibold">Status:</b> {{ transItem.status }}
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div class="col-md-12">
+        <h5 class="text-start fw-semibold fs-5 mt-2 mb-3">Donation Details</h5>
+        <div class="row">
+          <div class="col-12 col-md-6 mt-1 align-items-start">
             <p class="text-start">
-              <b class="fw-semibold">Delivery Notes:</b>
-              {{ transItem.deliveryNotes }}
+              <b class="fw-semibold"
+                >{{ role === "Charity" ? "Donor" : role }} Name:</b
+              >
+              {{
+                role === "Charity"
+                  ? transaction.donorName
+                  : transaction.charityName
+              }}
+            </p>
+          </div>
+          <div class="col-12 col-md-6 mt-1 align-items-start">
+            <p class="text-start m-0">
+              <b class="fw-semibold">Request Time:</b>
+              {{ getTime(transaction.createdAt) }}
+            </p>
+          </div>
+          <div class="col-12 col-md-6 mt-1 align-items-start">
+            <p class="text-start">
+              <b class="fw-semibold">Delivery Mode:</b>
+              {{ transaction.deliveryMode }}
+            </p>
+          </div>
+          <div class="col-12 col-md-6 mt-1 align-items-start">
+            <p class="text-start">
+              <b class="fw-semibold">Status:</b> {{ transaction.status }}
             </p>
           </div>
 
-          <div class="col-md-12">
+          <div class="col-md-12 mt-1">
+            <p class="text-start">
+              <b class="fw-semibold">Delivery Notes:</b>
+              {{ transaction.deliveryNotes }}
+            </p>
+          </div>
+
+          <div class="col-md-12 mt-1">
             <p class="text-start">
               <b class="fw-semibold">Optional Notes:</b>
-              {{ transItem.optionalNotes }}
+              {{ transaction.optionalNotes }}
             </p>
           </div>
         </div>
-        <div class="table-responsive-md">
+
+        <div class="table-responsive-md mt-2 mb-3">
           <DataTable
-            class="table table-sm table-borderless border border-2"
+            class="table table-sm table-borderless my-0"
             :options="tableOptions"
             :columns="tableColumns"
-            :data="transItem.donateItemsList"
+            :data="transaction.donations"
           >
             <thead class="table-primary">
-              <tr>
+              <tr class="align-middle">
                 <th class="text-center">Food Item Name</th>
                 <th class="text-center">Food Type</th>
                 <th class="text-center">Life Cycle Stage</th>
@@ -110,10 +134,17 @@
           </DataTable>
         </div>
         <div
-          v-if="displayName !== 'Charity'"
-          class="d-flex flex-row align-items-center justify-content-end"
+          v-if="
+            role === 'Charity' &&
+            transaction.status !== 'Completed' &&
+            transaction.status !== 'Cancelled'
+          "
+          class="d-flex flex-row align-items-center justify-content-end my-3"
         >
-          <button type="button" class="btn btn-primary rounded-0">
+          <button
+            type="button"
+            class="btn btn-primary fw-medium rounded-0 py-2 px-3"
+          >
             Receive
           </button>
         </div>
@@ -135,10 +166,18 @@ export default defineComponent({
     DataTable,
   },
   props: {
-    transItem: Object,
-    displayName: String,
-    userName: String,
-    userProfile: String,
+    role: {
+      type: String,
+      required: true,
+    },
+    windowWidth: {
+      type: Number,
+      required: true,
+    },
+    transaction: {
+      type: Object,
+      required: true,
+    },
   },
   data() {
     return {
@@ -149,22 +188,49 @@ export default defineComponent({
         lengthChange: false,
       },
       tableColumns: [
-        { data: "itemName", title: "Food Item Name" },
-        { data: "foodType", title: "Food Type" },
-        { data: "lifeCycleStage", title: "Life Cycle Stage" },
-        { data: "itemQuantity", title: "Quantity" },
-        { data: "itemWeight", title: "Weight" },
+        { data: "name", title: "Food Item Name", className: "py-2" },
+        { data: "type", title: "Food Type", className: "py-2" },
+        { data: "stage", title: "Life Cycle Stage", className: "py-2" },
+        { data: "quantity", title: "Quantity", className: "py-2" },
+        { data: "weight", title: "Weight", className: "py-2" },
       ],
     };
   },
   methods: {
     isURL(image: string) {
       const urlcheck = /^(ftp|http|https):\/\/[^ "]+$/;
-      if (RegExp(urlcheck).exec(image)) {
-        return true;
-      } else {
-        return false;
-      }
+      return RegExp(urlcheck).exec(image) ? true : false;
+    },
+    truncateText(text: string) {
+      const truncated = text.length > 6 ? text.substring(0, 6) + "..." : text;
+      return this.windowWidth > 576 ? text : truncated;
+    },
+    getDate(dateString: string) {
+      const date = new Date(dateString);
+      const month =
+        this.windowWidth > 576
+          ? date.toLocaleString("default", { month: "long" })
+          : date.getMonth();
+      const day = date.getDate();
+      const year = date.getFullYear();
+      return this.windowWidth > 576
+        ? `${month} ${day}, ${year}`
+        : `${month}/${day}/${year}`;
+    },
+    getTime(dateString: string) {
+      const date = new Date(dateString);
+      const hours = date.getHours() % 12;
+      const minutes =
+        date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();
+      const meridiem = date.getHours() < 12 ? "AM" : "PM";
+      return `${hours}:${minutes} ${meridiem}`;
+    },
+  },
+  computed: {
+    avatar: function (): string {
+      return this.role === "Charity"
+        ? this.transaction.donorAvatar
+        : this.transaction.charityAvatar;
     },
   },
 });
@@ -173,14 +239,22 @@ export default defineComponent({
 <style scoped lang="scss">
 @import "datatables.net-bs5";
 
-.component-img {
-  width: 60px;
-  height: 60px;
-  object-fit: contain;
-}
-
 .accordion-button:not(.collapsed) {
   background-color: transparent !important;
   box-shadow: none !important;
+}
+
+::-webkit-scrollbar {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #4ad471;
+  border-radius: 50rem !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #56f576;
+  border-radius: 50rem !important;
 }
 </style>
