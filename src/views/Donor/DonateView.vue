@@ -27,7 +27,7 @@
               aria-expanded="false"
               :aria-controls="`item-${index}`"
             >
-              <div class="d-flex flex-column text-start">
+              <div class="d-flex flex-column text-start ps-1">
                 <h6 class="fw-semibold m-0">{{ item.name }}</h6>
                 <small class="text-muted"
                   >{{ item.quantity * item.weight }}kg • {{ item.type }}</small
@@ -94,7 +94,7 @@
               aria-expanded="true"
               aria-controls="itemForm"
             >
-              <div class="d-flex flex-column text-start">
+              <div class="d-flex flex-column text-start ps-1">
                 <h5 class="fw-semibold m-0">New Food Item</h5>
                 <small class="text-muted"
                   >Add a food item to the donation list</small
@@ -221,7 +221,7 @@
               aria-expanded="true"
               aria-controls="deliveryForm"
             >
-              <div class="d-flex flex-column">
+              <div class="d-flex flex-column ps-1">
                 <h5 class="fw-semibold m-0">Delivery Method</h5>
                 <small class="text-muted"
                   >Change the delivery mode for your donation</small
@@ -279,7 +279,7 @@
               aria-expanded="false"
               aria-controls="notesForm"
             >
-              <div class="d-flex flex-column">
+              <div class="d-flex flex-column ps-1">
                 <h5 class="fw-semibold m-0">Notes (Optional)</h5>
                 <small class="text-muted"
                   >Leave a message if you'd like...</small
