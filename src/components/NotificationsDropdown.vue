@@ -42,7 +42,7 @@
       </li>
       <div class="overflow-auto" style="max-height: 290px">
         <li
-          class="dropdown-item d-flex align-items-start align-content-center py-3"
+          class="dropdown-item notification d-flex align-items-start align-content-center py-3"
           v-for="(item, index) in filteredNotifications"
           :key="item.notificationId"
           :index="index"
@@ -208,7 +208,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.avatar {
+.notification .avatar {
   width: 56px;
   height: 56px;
 }
