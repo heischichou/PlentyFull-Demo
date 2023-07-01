@@ -193,6 +193,7 @@ export default defineComponent({
   },
   mounted() {
     this.filterBy = this.headers[0].key;
+    this.filteredDonations = Object.assign([], this.donations);
     this.setFilterBy(this.filterBy);
   },
 });
