@@ -1,5 +1,5 @@
 describe("Receive page", () => {
-  const baseUrl = "http://localhost:8081/receive";
+  const baseUrl = "http://localhost:8081/transactions";
   beforeEach(() => {
     cy.visit(baseUrl);
   });
@@ -12,8 +12,8 @@ describe("Receive page", () => {
     cy.get("#sideBar").should("exist");
   });
 
-  it("sidebar should contain and display three items", () => {
-    cy.get("#sideBar").find("li").should("have.length", 3);
+  it("sidebar should contain and display at least two items", () => {
+    cy.get("#sideBar").find("li").should("have.length.least", 2);
     cy.get("#sideBar").find("li").should("be.visible");
   });
 

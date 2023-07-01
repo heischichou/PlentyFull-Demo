@@ -2,9 +2,10 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 // Shared Modules
 import Home from "@/views/HomeView.vue";
 import Find from "@/views/FindUsersView.vue";
-import Transactions from "@/views/TransactionsView.vue";
 import Statistics from "@/views/StatisticsView.vue";
 import Profile from "@/views/ProfileView.vue";
+// Transactions page also doubles as the Receive page for Charities
+import Transactions from "@/views/TransactionsView.vue";
 
 // Guest Modules
 import About from "@/views/Guest/AboutView.vue";
@@ -13,9 +14,6 @@ import Login from "@/views/Guest/LoginView.vue";
 
 // Donor Modules
 import Donate from "@/views/Donor/DonateView.vue";
-
-// Charity Modules
-import Receive from "@/views/Charity/ReceiveView.vue";
 
 // Admin Modules
 import Registry from "@/views/Admin/RegistryView.vue";

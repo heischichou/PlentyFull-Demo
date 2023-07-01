@@ -1,5 +1,5 @@
 <template>
-  <div class="transaction-item-table table-responsive-md mt-2 mb-3">
+  <div class="donations-table table-responsive-md mt-2 mb-3">
     <table class="table table-borderless">
       <thead class="table-primary">
         <tr class="align-middle">
@@ -14,6 +14,9 @@
                 type="button"
                 class="btn w-100 d-flex flex-row align-items-center justify-content-center gap-3"
                 @click="setFilterBy(header.key)"
+                :ref="`sortBy${
+                  header.key.charAt(0).toUpperCase() + header.key.slice(1)
+                }`"
               >
                 <p class="fw-bold m-0">
                   {{ header.label }}
@@ -61,7 +64,7 @@
         <tr
           v-for="donation in filteredDonations"
           :key="donation.itemId"
-          class="align-middle"
+          class="donation align-middle"
         >
           <template v-for="(header, index) in headers">
             <template
@@ -190,23 +193,9 @@ export default defineComponent({
   },
   mounted() {
     this.filterBy = this.headers[0].key;
-    this.filteredDonations = Object.assign([], this.donations);
+    this.setFilterBy(this.filterBy);
   },
 });
 </script>
 
-<style scoped lang="scss">
-::-webkit-scrollbar {
-  height: 6px;
-}
-
-::-webkit-scrollbar-track {
-  background: #4ad471;
-  border-radius: 50rem !important;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #56f576;
-  border-radius: 50rem !important;
-}
-</style>
+<style scoped lang="scss"></style>

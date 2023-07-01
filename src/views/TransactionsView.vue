@@ -346,4 +346,18 @@ export default defineComponent({
   width: 60px;
   height: 60px;
 }
+
+::-webkit-scrollbar {
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #4ad471;
+  border-radius: 50rem !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #56f576;
+  border-radius: 50rem !important;
+}
 </style>
