@@ -16,7 +16,7 @@
               :src="
                 isURL(avatar)
                   ? avatar
-                  : require('../assets/images/Shared/' + avatar)
+                  : require('@/assets/images/Shared/' + avatar)
               "
               :alt="
                 role === 'Charity'
@@ -47,7 +47,7 @@
         <div class="d-flex flex-row align-items-center">
           <button
             type="button"
-            class="btn px-1"
+            class="btn location-pin px-1"
             :id="transaction.transactionId + '-map-btn'"
           >
             <em class="bi bi-geo-alt fs-2"></em>
@@ -115,24 +115,7 @@
           </div>
         </div>
 
-        <div class="table-responsive-md mt-2 mb-3">
-          <DataTable
-            class="table table-sm table-borderless my-0"
-            :options="tableOptions"
-            :columns="tableColumns"
-            :data="transaction.donations"
-          >
-            <thead class="table-primary">
-              <tr class="align-middle">
-                <th class="text-center">Food Item Name</th>
-                <th class="text-center">Food Type</th>
-                <th class="text-center">Life Cycle Stage</th>
-                <th class="text-center">Quantity</th>
-                <th class="text-center">Weight</th>
-              </tr>
-            </thead>
-          </DataTable>
-        </div>
+        <Donations :headers="headers" :donations="transaction.donations" />
         <div
           v-if="
             role === 'Charity' &&
@@ -155,15 +138,17 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import DataTable from "datatables.net-vue3";
-import DataTablesCore from "datatables.net-bs5";
+import Donations from "@/components/TransactionsView/DonationsTable.vue";
 
-DataTable.use(DataTablesCore);
+declare interface Header {
+  key: string;
+  label: string;
+}
 
 export default defineComponent({
   name: "TransactionItem",
   components: {
-    DataTable,
+    Donations,
   },
   props: {
     role: {
@@ -181,19 +166,13 @@ export default defineComponent({
   },
   data() {
     return {
-      tableOptions: {
-        searching: false,
-        paging: false,
-        info: false,
-        lengthChange: false,
-      },
-      tableColumns: [
-        { data: "name", title: "Food Item Name", className: "py-2" },
-        { data: "type", title: "Food Type", className: "py-2" },
-        { data: "stage", title: "Life Cycle Stage", className: "py-2" },
-        { data: "quantity", title: "Quantity", className: "py-2" },
-        { data: "weight", title: "Weight", className: "py-2" },
-      ],
+      headers: [
+        { key: "name", label: "Food Item Name" },
+        { key: "type", label: "Food Type" },
+        { key: "stage", label: "Life Cycle Stage" },
+        { key: "quantity", label: "Quantity" },
+        { key: "weight", label: "Weight" },
+      ] as Header[],
     };
   },
   methods: {
@@ -237,8 +216,6 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-@import "datatables.net-bs5";
-
 .accordion-button:not(.collapsed) {
   background-color: transparent !important;
   box-shadow: none !important;

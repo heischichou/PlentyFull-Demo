@@ -18,6 +18,7 @@
                 type="button"
                 class="nav-link w-100 py-3 px-4 rounded-0"
                 @click="switchTab('Awaiting')"
+                ref="awaitingTab"
               >
                 <em
                   class="bi bi-hourglass fs-2"
@@ -33,6 +34,7 @@
                 type="button"
                 class="nav-link w-100 py-3 px-4 rounded-0"
                 @click="switchTab('Completed')"
+                ref="completedTab"
               >
                 <em
                   class="bi bi-clipboard-check fs-2"
@@ -50,6 +52,7 @@
                 type="button"
                 class="nav-link w-100 py-3 px-4 rounded-0"
                 @click="switchTab('Cancelled')"
+                ref="cancelledTab"
               >
                 <em
                   class="bi bi-slash-circle fs-2"
@@ -97,15 +100,15 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
-import TransactionItem from "@/components/TransactionItem.vue";
+import TransactionItem from "@/components/TransactionsView/TransactionItem.vue";
 
 declare interface FoodItem {
-  itemId: number;
+  itemId: string;
   name: string;
   type: string;
   stage: string;
-  quantity: number | string;
-  weight: number | string;
+  quantity: number;
+  weight: number;
   createdAt: string;
 }
 
@@ -180,39 +183,39 @@ export default defineComponent({
         optionalNotes: "Please deliver the goods to the barangay hall.",
         donations: [
           {
-            itemId: 1,
+            itemId: uuid.v1(),
             name: "Chicken Breast",
             type: "Meat and Poultry",
             stage: "In Storage",
-            quantity: "2 pieces",
-            weight: "1 kilo",
+            quantity: 2,
+            weight: 1,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 2,
+            itemId: uuid.v1(),
             name: "Brussels Sprouts",
             type: "Fruits and Vegetables",
             stage: "Prepared",
-            quantity: "1 piece",
-            weight: "3 kilos",
+            quantity: 1,
+            weight: 3,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 3,
+            itemId: uuid.v1(),
             name: "Tuna Panga",
             type: "Fish and Seafood",
             stage: "In Storage",
-            quantity: "2 pieces",
-            weight: "0.25 kilos",
+            quantity: 2,
+            weight: 0.25,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 4,
+            itemId: uuid.v1(),
             name: "Duck Eggs",
             type: "Eggs and Dairy",
             stage: "Prepared",
-            quantity: "2 pieces",
-            weight: "0.2 kilos",
+            quantity: 2,
+            weight: 0.2,
             createdAt: new Date().toString(),
           },
         ],
@@ -234,39 +237,39 @@ export default defineComponent({
         optionalNotes: "Please deliver the goods",
         donations: [
           {
-            itemId: 1,
+            itemId: uuid.v1(),
             name: "Chicken Breast",
             type: "Meat and Poultry",
             stage: "In Storage",
-            quantity: "2 pieces",
-            weight: "1 kilo",
+            quantity: 2,
+            weight: 1,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 2,
+            itemId: uuid.v1(),
             name: "Brussels Sprouts",
             type: "Fruits and Vegetables",
             stage: "Prepared",
-            quantity: "1 piece",
-            weight: "3 kilos",
+            quantity: 1,
+            weight: 3,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 3,
+            itemId: uuid.v1(),
             name: "Tuna Panga",
             type: "Fish and Seafood",
             stage: "In Storage",
-            quantity: "2 pieces",
-            weight: "0.25 kilos",
+            quantity: 2,
+            weight: 0.25,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 4,
+            itemId: uuid.v1(),
             name: "Duck Eggs",
             type: "Eggs and Dairy",
             stage: "Prepared",
-            quantity: "2 pieces",
-            weight: "0.2 kilos",
+            quantity: 2,
+            weight: 0.2,
             createdAt: new Date().toString(),
           },
         ],
@@ -288,39 +291,39 @@ export default defineComponent({
         optionalNotes: "Please deliver the goods to the Food bank",
         donations: [
           {
-            itemId: 1,
+            itemId: uuid.v1(),
             name: "Chicken Breast",
             type: "Meat and Poultry",
             stage: "In Storage",
-            quantity: "2 pieces",
-            weight: "1 kilo",
+            quantity: 2,
+            weight: 1,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 2,
+            itemId: uuid.v1(),
             name: "Brussels Sprouts",
             type: "Fruits and Vegetables",
             stage: "Prepared",
-            quantity: "1 piece",
-            weight: "3 kilos",
+            quantity: 1,
+            weight: 3,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 3,
+            itemId: uuid.v1(),
             name: "Tuna Panga",
             type: "Fish and Seafood",
             stage: "In Storage",
-            quantity: "2 pieces",
-            weight: "0.25 kilos",
+            quantity: 2,
+            weight: 0.25,
             createdAt: new Date().toString(),
           },
           {
-            itemId: 4,
+            itemId: uuid.v1(),
             name: "Duck Eggs",
             type: "Eggs and Dairy",
             stage: "Prepared",
-            quantity: "2 pieces",
-            weight: "0.2 kilos",
+            quantity: 2,
+            weight: 0.2,
             createdAt: new Date().toString(),
           },
         ],
