@@ -91,7 +91,7 @@
               <li class="nav-item px-2 px-lg-4">
                 <router-link class="nav-link" to="/find">Find</router-link>
               </li>
-              <li class="nav-item px-2 px-lg-4">
+              <li v-if="role === 'Donor'" class="nav-item px-2 px-lg-4">
                 <router-link
                   class="nav-link"
                   to="/transactions"
@@ -226,4 +226,8 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+#nav .dropdown {
+  z-index: 1100 !important;
+}
+</style>

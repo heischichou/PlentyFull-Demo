@@ -91,7 +91,6 @@ describe("App Header", () => {
     const donorRoutes = [
       "/receive",
       "/find",
-      "/transactions",
       "/statistics",
       "/profile",
     ];
