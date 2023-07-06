@@ -20,9 +20,9 @@
           >
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
-                @click="togglePages(true, false, false)"
+                @click="switchTab('Registration')"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="signUp ? 'active' : ''"
+                :class="activeTab === 'Registration' ? 'active' : ''"
                 data-bs-toggle="tooltip"
                 data-bs-placement="right"
                 data-bs-title="Awaiting Transactions"
@@ -39,9 +39,9 @@
             </li>
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
-                @click="togglePages(false, true, false)"
+                @click="switchTab('Members')"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="manageUsers ? 'active' : ''"
+                :class="activeTab === 'Members' ? 'active' : ''"
                 data-bs-toggle="tooltip"
                 data-bs-placement="right"
                 data-bs-title="Completed Transactions"
@@ -58,9 +58,9 @@
             </li>
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
-                @click="togglePages(false, false, true)"
+                @click="switchTab('Reports')"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="reports ? 'active' : ''"
+                :class="activeTab === 'Reports' ? 'active' : ''"
                 data-bs-toggle="tooltip"
                 data-bs-placement="right"
                 data-bs-title="Cancelled Transactions"
@@ -80,10 +80,7 @@
       </div>
 
       <div class="col-sm p-5 min-vh-100">
-        <h1
-          class="text-start text-white fw-bold pb-3"
-          v-text="updateTitle()"
-        ></h1>
+        <h1 class="text-start text-white fw-bold pb-3">{{ activeTab }}</h1>
         <p class="text-white">Insert content here</p>
       </div>
     </div>
@@ -97,43 +94,24 @@ export default defineComponent({
   name: "RegistryView",
   data() {
     return {
+      activeTab: "Registration",
       show: true,
-      signUp: true,
-      manageUsers: false,
-      reports: false,
     };
   },
   methods: {
-    updateTitle() {
-      if (this.signUp) {
-        return "Registration";
-      } else if (this.manageUsers) {
-        return "Members";
-      } else if (this.reports) {
-        return "Reports";
-      } else {
-        return "Title";
-      }
+    switchTab(tab: string) {
+      this.activeTab = tab;
     },
     toggleSidebar() {
       this.show = !this.show;
     },
     hideSideBarText() {
       const width = window.innerWidth;
-      if (width < 576) {
+      if (width < 768) {
         this.show = false;
       } else {
         this.show = true;
       }
-    },
-    togglePages(
-      signUpdate: boolean,
-      manageUsersUpdate: boolean,
-      reportsUpdate: boolean
-    ) {
-      this.signUp = signUpdate;
-      this.manageUsers = manageUsersUpdate;
-      this.reports = reportsUpdate;
     },
   },
   mounted() {
