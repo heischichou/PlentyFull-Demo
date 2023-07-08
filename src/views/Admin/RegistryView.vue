@@ -85,6 +85,7 @@
           v-text="updateTitle()"
         ></h1>
         <p class="text-white">Insert content here</p>
+        <ManageUsers />
       </div>
     </div>
   </div>
@@ -92,9 +93,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import ManageUsers from "@/components/ManageUsers.vue";
 
 export default defineComponent({
   name: "RegistryView",
+  components: {
+    ManageUsers,
+  },
   data() {
     return {
       show: true,
