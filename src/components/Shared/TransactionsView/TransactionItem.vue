@@ -13,11 +13,7 @@
         >
           <div>
             <img
-              :src="
-                isURL(avatar)
-                  ? avatar
-                  : require('@/assets/images/Shared/' + avatar)
-              "
+              :src="setURL(avatar)"
               :alt="
                 role === 'Charity'
                   ? transaction.donorName
@@ -138,7 +134,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Donations from "@/components/TransactionsView/DonationsTable.vue";
+import Donations from "./DonationsTable.vue";
 
 declare interface Header {
   key: string;
@@ -176,15 +172,17 @@ export default defineComponent({
     };
   },
   methods: {
-    isURL(image: string) {
+    setURL(image: string): string {
       const urlcheck = /^(ftp|http|https):\/\/[^ "]+$/;
-      return RegExp(urlcheck).exec(image) ? true : false;
+      return RegExp(urlcheck).exec(image)
+        ? image
+        : require("@/assets/images/Shared/" + image);
     },
-    truncateText(text: string) {
+    truncateText(text: string): string {
       const truncated = text.length > 6 ? text.substring(0, 6) + "..." : text;
       return this.windowWidth > 576 ? text : truncated;
     },
-    getDate(dateString: string) {
+    getDate(dateString: string): string {
       const date = new Date(dateString);
       const month =
         this.windowWidth > 576
@@ -196,7 +194,7 @@ export default defineComponent({
         ? `${month} ${day}, ${year}`
         : `${month}/${day}/${year}`;
     },
-    getTime(dateString: string) {
+    getTime(dateString: string): string {
       const date = new Date(dateString);
       const hours = date.getHours() % 12;
       const minutes =

@@ -438,7 +438,7 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.avatar {
+.queuer :deep(.avatar) {
   width: 48px;
   height: 48px;
 }

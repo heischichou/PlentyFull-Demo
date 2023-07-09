@@ -139,7 +139,7 @@ export default defineComponent({
     };
   },
   methods: {
-    setFilterBy(filterBy: string) {
+    setFilterBy(filterBy: string): void {
       if (filterBy === this.filterBy) {
         this.ascending = !this.ascending;
       } else {

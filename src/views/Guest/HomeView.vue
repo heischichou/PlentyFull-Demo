@@ -169,12 +169,11 @@
           <div
             class="members d-none d-md-flex flex-row justify-content-between"
           >
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
+            <div
+              v-for="user in 6"
+              :key="user"
+              class="avatar rounded-circle"
+            ></div>
           </div>
         </div>
       </div>
@@ -190,7 +189,7 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
+<style scoped lang="scss">
 .members > .avatar {
   background-color: #f8f9fa !important;
   width: 65px;

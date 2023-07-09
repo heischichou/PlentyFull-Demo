@@ -1,11 +1,11 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 // Shared Modules
-import Home from "@/views/HomeView.vue";
-import Find from "@/views/FindUsersView.vue";
-import Statistics from "@/views/StatisticsView.vue";
-import Profile from "@/views/ProfileView.vue";
+import Home from "@/views/Guest/HomeView.vue";
+import Find from "@/views/Shared/FindUsersView.vue";
+import Statistics from "@/views/Shared/StatisticsView.vue";
+import Profile from "@/views/Shared/ProfileView.vue";
 // Transactions page also doubles as the Receive page for Charities
-import Transactions from "@/views/TransactionsView.vue";
+import Transactions from "@/views/Shared/TransactionsView.vue";
 
 // Guest Modules
 import About from "@/views/Guest/AboutView.vue";

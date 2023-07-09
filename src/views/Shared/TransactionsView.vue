@@ -7,7 +7,7 @@
           id="sideBar"
         >
           <ul
-            class="nav nav-pills w-100 nav-flush flex-row flex-sm-column flex-nowrap text-center justify-content-around align-items-center"
+            class="nav nav-pills nav-flush w-100 flex-row flex-sm-column flex-nowrap text-center justify-content-around align-items-center"
           >
             <li
               class="nav-item h-100 flex-fill"
@@ -100,7 +100,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
-import TransactionItem from "@/components/TransactionsView/TransactionItem.vue";
+import TransactionItem from "@/components/Shared/TransactionsView/TransactionItem.vue";
 
 declare interface FoodItem {
   itemId: string;
@@ -342,21 +342,21 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
-.transaction .avatar {
+.transaction :deep(.avatar) {
   width: 60px;
   height: 60px;
 }
 
-::-webkit-scrollbar {
+:deep(.donations-table)::-webkit-scrollbar {
   height: 6px;
 }
 
-::-webkit-scrollbar-track {
+:deep(.donations-table)::-webkit-scrollbar-track {
   background: #4ad471;
   border-radius: 50rem !important;
 }
 
-::-webkit-scrollbar-thumb {
+:deep(.donations-table)::-webkit-scrollbar-thumb {
   background: #56f576;
   border-radius: 50rem !important;
 }

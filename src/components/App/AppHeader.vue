@@ -151,10 +151,7 @@
         <div class="dropdown d-none d-md-block" v-if="role.length !== 0">
           <button
             class="btn dropdown-toggle"
-            :class="{
-              'text-primary': $route.path === '/profile',
-              'text-white': $route.path !== '/profile',
-            }"
+            :class="$route.path === '/profile' ? 'text-primary' : 'text-white'"
             type="button"
             data-bs-toggle="dropdown"
             aria-expanded="false"
@@ -175,7 +172,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Notifications from "./NotificationsDropdown.vue";
+import Notifications from "../Shared/NotificationsDropdown.vue";
 
 export default defineComponent({
   name: "AppHeader",

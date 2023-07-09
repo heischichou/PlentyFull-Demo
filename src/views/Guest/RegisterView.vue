@@ -44,7 +44,7 @@
   >
     <form>
       <div class="row">
-        <div class="col-lg-6 bg-white p-5" id="general-info-section">
+        <div class="col-lg-6 bg-white p-5" id="generalInformation">
           <h3 class="text-secondary mb-5">General Information</h3>
           <div class="form-floating mb-3">
             <input
@@ -61,7 +61,7 @@
               class="form-control description-height"
               id="description"
               placeholder="Enter Description Here"
-              style="height: 135px"
+              style="height: 132px"
             />
             <label for="description">Description</label>
           </div>
@@ -79,7 +79,7 @@
           </div>
 
           <div class="form-floating mb-3">
-            <input
+            <inputf
               type="password"
               class="form-control"
               id="password"
@@ -99,9 +99,9 @@
           </div>
 
           <div class="d-flex align-content-start">
-            <label for="fileInput" class="mb-2">Proof of Verification</label>
+            <label for="fileInput" class="mb-2">Proof of Authenticity</label>
           </div>
-          <div class="input-group custom-file-button mb-3">
+          <div class="upload-proof input-group mb-3">
             <label
               class="input-group-text text-white bg-secondary"
               for="fileInput"
@@ -113,7 +113,7 @@
 
         <div
           class="col-lg-6 transparent-input bg-secondary p-5"
-          id="present-location-section"
+          id="presentLocation"
         >
           <h3 class="text-white mb-5">Present Location</h3>
           <div class="form-floating mb-3">
@@ -138,10 +138,10 @@
             <input
               type="text"
               class="form-control text-white"
-              id="streetAdd"
+              id="streetAddress"
               placeholder="Enter street address here"
             />
-            <label for="streetAdd" class="text-white">Street Address</label>
+            <label for="streetAddress" class="text-white">Street Address</label>
           </div>
           <div class="form-floating mb-3">
             <input
@@ -184,9 +184,9 @@
               type="checkbox"
               class="form-check-input"
               value=""
-              id="checkBox"
+              id="acceptTOS"
             />
-            <label for="checkBox" class="form-check-label text-white"
+            <label for="acceptTOS" class="form-check-label text-white"
               >I accept the
               <a class="link-underline-white text-white" href="#"
                 >Terms and Conditions</a
@@ -198,7 +198,7 @@
             <button
               type="submit"
               class="btn btn-lightgreen fw-bold rounded-1"
-              id="register-btn"
+              id="register"
             >
               REGISTER
             </button>
@@ -217,12 +217,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-.description-height {
-  height: 135px;
-}
-
-.custom-file-button {
+<style scoped lang="scss">
+.upload-proof {
   input[type="file"] {
     margin-left: -2px !important;
 
@@ -238,27 +234,6 @@ export default defineComponent({
     label {
       background-color: #dde0e3;
       cursor: pointer;
-    }
-  }
-}
-
-.transparent-input {
-  .form-floating {
-    .form-control {
-      background-color: transparent;
-      border-color: white !important;
-    }
-    .form-control:focus {
-      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-    }
-    .form-control:focus ~ label::after,
-    .form-control:not(:placeholder-shown) ~ label::after {
-      position: absolute;
-      inset: 1rem 0.375rem;
-      z-index: -1;
-      height: 1.5em;
-      content: "";
-      background-color: rgba(#45bf5d, 0.75);
     }
   }
 }

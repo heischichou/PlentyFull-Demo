@@ -108,9 +108,9 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import TotalVolume from "@/components/StatisticsView/TotalVolume.vue";
-import DonationCount from "@/components/StatisticsView/DonationCount.vue";
-import TransactionSuccessRates from "@/components/StatisticsView/TransactionSuccessRates.vue";
+import TotalVolume from "@/components/Shared/StatisticsView/TotalVolume.vue";
+import DonationCount from "@/components/Shared/StatisticsView/DonationCount.vue";
+import TransactionSuccessRates from "@/components/Shared/StatisticsView/TransactionSuccessRates.vue";
 
 export default defineComponent({
   name: "StatisticsView",

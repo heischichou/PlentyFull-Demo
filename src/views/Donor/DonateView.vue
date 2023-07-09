@@ -432,10 +432,10 @@ export default defineComponent({
     DonationQueue,
   },
   methods: {
-    onResize() {
+    onResize(): void {
       this.windowWidth = window.innerWidth;
     },
-    createItem() {
+    createItem(): void {
       this.foodItems.push(this.newItem as FoodItem);
       this.newItem = Object.assign(
         {},
@@ -451,10 +451,10 @@ export default defineComponent({
         }
       );
     },
-    removeItem(index: number) {
+    removeItem(index: number): void {
       this.foodItems.splice(index, 1);
     },
-    resetForm() {
+    resetForm(): void {
       this.newItem = Object.assign(
         {},
         {
@@ -514,6 +514,9 @@ export default defineComponent({
         },
       ]
     );
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", this.onResize);
   },
 });
 </script>

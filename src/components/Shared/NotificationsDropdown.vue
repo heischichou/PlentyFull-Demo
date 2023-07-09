@@ -20,10 +20,7 @@
         <button
           type="button"
           class="btn rounded-pill"
-          :class="{
-            'btn-white': filterByRead === false,
-            'btn-outline-white': filterByRead === true,
-          }"
+          :class="filterByRead ? 'btn-outline-white' : 'btn-white'"
           @click="$emit('updateFilter', false)"
         >
           All
@@ -31,10 +28,7 @@
         <button
           type="button"
           class="btn rounded-pill ms-2"
-          :class="{
-            'btn-white': filterByRead === true,
-            'btn-outline-white': filterByRead === false,
-          }"
+          :class="filterByRead ? 'btn-white' : 'btn-outline-white'"
           @click="$emit('updateFilter', true)"
         >
           Unread
@@ -58,21 +52,14 @@
               <b class="fw-medium">{{ item.senderName }}</b>
               {{ item.message }}
             </p>
-            <small
-              :class="{
-                'opacity-50': item.read === true,
-                'opacity-75': item.read === false,
-              }"
-              >{{ item.createdAt }}</small
-            >
+            <small :class="item.read === true ? 'opacity-50' : 'opacity-75'">{{
+              item.createdAt
+            }}</small>
           </div>
           <div>
             <em
               class="bi text-white mt-3 ms-2 fs-3"
-              :class="{
-                'bi-eye-fill': item.read === true,
-                'bi-eye': item.read === false,
-              }"
+              :class="item.read === true ? 'bi-eye-fill' : 'bi-eye'"
             ></em>
           </div>
         </li>
@@ -182,7 +169,7 @@ export default defineComponent({
     },
   },
   methods: {
-    onResize() {
+    onResize(): void {
       this.windowWidth = window.innerWidth;
     },
   },
@@ -194,7 +181,7 @@ export default defineComponent({
     window.removeEventListener("resize", this.onResize);
   },
   watch: {
-    filterByRead: function (data) {
+    filterByRead: function (data): void {
       if (data) {
         this.filteredNotifications = this.notifications.filter(
           (item: Notification) => item.read === false
