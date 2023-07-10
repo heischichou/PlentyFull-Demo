@@ -1,8 +1,8 @@
 import { mount } from "@vue/test-utils";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "@/router/index";
-import Header from "@/components/AppHeader.vue";
-import NotificationsDropdown from "@/components/NotificationsDropdown.vue";
+import Header from "@/components/App/AppHeader.vue";
+import NotificationsDropdown from "@/components/Shared/NotificationsDropdown.vue";
 
 const router = createRouter({
   history: createWebHistory(),

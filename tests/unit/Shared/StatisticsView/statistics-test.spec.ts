@@ -1,7 +1,7 @@
 import { DOMWrapper, VueWrapper, mount } from "@vue/test-utils";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "@/router/index";
-import Statistics from "@/views/StatisticsView.vue";
+import Statistics from "@/views/Shared/StatisticsView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -36,7 +36,7 @@ const factory = (role: String, data = {}) => {
 describe("Statistics page", () => {
   it("renders successfully", () => {
     const wrapper = factory("Donor", {});
-    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.exists()).toBeTruthy();
   });
 
   it("renders statistical figures successfully", () => {
@@ -58,24 +58,21 @@ describe("Statistics page", () => {
 
     figures.forEach((figure) => {
       const figureContainer = wrapper.find(figure.id);
-      expect(figureContainer.exists()).toBe(true);
+      expect(figureContainer.exists()).toBeTruthy();
 
       const title = findByText(figureContainer, ".fw-semibold", figure.title);
       expect(title.text()).toEqual(figure.title);
-      expect(figureContainer.find(".figure-description").exists()).toBe(true);
+      expect(figureContainer.find(".figure-description").exists()).toBeTruthy();
     });
   });
 
   it("conditionally renders the page Header correctly", async () => {
     const wrapper = factory("Administrator", {});
-    const updates = [
-      "Food Donation Count",
-      "Successful Transactions Count",
-    ]
-    
+    const updates = ["Food Donation Count", "Successful Transactions Count"];
+
     updates.forEach((update) => {
       const figure = findByText(wrapper, ".fw-semibold", update);
-      expect(figure.exists()).toBe(true);
+      expect(figure.exists()).toBeTruthy();
     });
 
     await wrapper.setData({ role: "Donor" });
@@ -89,28 +86,28 @@ describe("Statistics page", () => {
 
   it("renders the Export dropdown correctly", async () => {
     const wrapper = factory("Administrator", {});
-    expect(wrapper.find(".bi-download").exists()).toBe(false);
+    expect(wrapper.find(".bi-download").exists()).toBeFalsy();
 
     await wrapper.setData({ role: "Donor" });
-    expect(wrapper.find(".bi-download").exists()).toBe(true);
+    expect(wrapper.find(".bi-download").exists()).toBeTruthy();
   });
 
   it("exports the raw data correctly", async () => {
-    const mockExportAsCSV = jest.spyOn(
-      Statistics.methods as any,
-      "exportAsCSV"
-    );
-    const mockExportAsExcel = jest.spyOn(
-      Statistics.methods as any,
-      "exportAsExcel"
-    );
-
     const wrapper = factory("Donor", {});
-    const exportAsCSVButton = findByText(wrapper, ".dropdown-item", "CSV");
-    const exportAsExcelButton = findByText(wrapper, ".dropdown-item", "Excel");
-    await exportAsCSVButton.trigger("click");
-    expect(mockExportAsCSV).toBeCalled();
-    await exportAsExcelButton.trigger("click");
-    expect(mockExportAsExcel).toBeCalled();
+    const mocks = [
+      {
+        button: findByText(wrapper, ".dropdown-item", "CSV"),
+        method: jest.spyOn(wrapper.vm, "exportAsCSV"),
+      },
+      {
+        button: findByText(wrapper, ".dropdown-item", "Excel"),
+        method: jest.spyOn(wrapper.vm, "exportAsExcel"),
+      },
+    ];
+
+    mocks.forEach((mock) => {
+      mock.button.trigger("click");
+      expect(mock.method).toBeCalled();
+    });
   });
 });

@@ -1,7 +1,7 @@
 import { shallowMount } from "@vue/test-utils";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "@/router/index";
-import AboutView from "@/views/Guest/AboutView.vue";
+import About from "@/views/Guest/AboutView.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -9,42 +9,47 @@ const router = createRouter({
 });
 
 const factory = () => {
-  return shallowMount(AboutView, {
+  return shallowMount(About, {
     global: {
       plugins: [router],
     },
   });
 };
 
-describe("About", () => {
-  it("renders header successfully", () => {
+describe("About page", () => {
+  it("renders successfully", () => {
+    const wrapper = factory();
+    expect(wrapper.exists()).toBeTruthy();
+  });
+
+  it("renders Header correctly", () => {
     const wrapper = factory();
     expect(wrapper.find("#header").exists()).toBeTruthy();
-  });
-  it("renders header title successfully", () => {
-    const wrapper = factory();
     expect(wrapper.find("#header").find("h2").text()).toEqual("About Us");
   });
-  it("renders about content section successfully", () => {
+
+  it("renders About content section successfully", () => {
     const wrapper = factory();
-    expect(wrapper.find("#about-content-section").exists()).toBeTruthy();
+    expect(wrapper.find("#aboutContent").exists()).toBeTruthy();
   });
-  it("renders core values section successfully", () => {
+
+  it("renders Core Values correctly", () => {
     const wrapper = factory();
-    expect(wrapper.find("#core-values-section").exists()).toBeTruthy();
-  });
-  it("renders core values title successfully", () => {
-    const wrapper = factory();
-    expect(wrapper.find("#core-values-section").find("h3").text()).toEqual(
+    expect(wrapper.find("#coreValues").exists()).toBeTruthy();
+    expect(wrapper.find("#coreValues").find("h3").text()).toEqual(
       "Core Values"
     );
   });
-  it("renders vision & mission section successfully", () => {
+
+  it("renders Vision and Mission successfully", () => {
     const wrapper = factory();
-    expect(wrapper.find("#vision-section").exists()).toBeTruthy();
+    expect(wrapper.find("#vision").exists()).toBeTruthy();
   });
-  it("renders founders section successfully", () => {
+
+  it("renders Founders correctly", () => {
     const wrapper = factory();
-    expect(wrapper.find("#founders-section").exists()).toBeTruthy();
+    const founders = wrapper.find("#founders");
+    expect(founders.exists()).toBeTruthy();
+    expect(founders.findAll(".avatar").length).toEqual(4);
   });
 });

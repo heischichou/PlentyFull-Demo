@@ -1,5 +1,5 @@
 import { DOMWrapper, VueWrapper, shallowMount } from "@vue/test-utils";
-import DonationCount from "@/components/StatisticsView/DonationCount.vue";
+import TotalVolume from "@/components/Shared/StatisticsView/TotalVolume.vue";
 
 const findByText = (
   wrapper: VueWrapper<any> | DOMWrapper<any>,
@@ -23,13 +23,24 @@ const convertHex = (color: string) => {
 const stubProps = () => {
   return {
     role: "Donor",
-    governmentLevel: "Barangay",
+    basis: "Weekly",
+    totalSurplusVolume: 1200,
+    commonFoodType: {
+      type: "Vegetables",
+      percent: 48,
+    },
+    successRate: 86,
     chartData: {
-      labels: ["TALAMBAN", "MABOLO", "MANDAUE", "LAHUG"],
+      labels: [
+        "Vegetables",
+        "Meat & Poultry",
+        "Eggs & Dairy",
+        "Fish & Seafood",
+      ],
       datasets: [
         {
-          label: "Donations Per Location",
-          data: [21, 14, 8, 6],
+          label: "Food Surplus Volume",
+          data: [47, 32, 15, 8],
           backgroundColor: ["#113333", "#45bf5D", "#56f576", "#6ef997"],
         },
       ],
@@ -38,14 +49,14 @@ const stubProps = () => {
 };
 
 const factory = (props = {}) => {
-  return shallowMount(DonationCount as any, {
+  return shallowMount(TotalVolume as any, {
     propsData: {
       ...props,
     },
   });
 };
 
-describe("Donations Per Location", () => {
+describe("Total Food Surplus Volume component", () => {
   it("renders successfully", () => {
     const wrapper = factory(stubProps());
     expect(wrapper.exists()).toBe(true);
@@ -66,11 +77,7 @@ describe("Donations Per Location", () => {
     expect(legends.length).toBe(labels.length);
 
     legends.forEach((legend, index) => {
-      const legendItem = findByText(
-        legend,
-        "p",
-        data.at(index) + " donations"
-      );
+      const legendItem = findByText(legend, "p", data.at(index) + "kg");
       const pill = legend.find(".pill").attributes("style");
 
       expect(legendItem.exists()).not.toBe(undefined);
@@ -80,36 +87,48 @@ describe("Donations Per Location", () => {
     });
   });
 
-  it("renders Government Level selector correctly", async () => {
+  it("renders report summary successfully", () => {
+    const props = stubProps();
+    const wrapper = factory(props);
+    const { totalSurplusVolume, commonFoodType, successRate } = props;
+
+    let summaryItem = findByText(
+      wrapper,
+      "h2",
+      totalSurplusVolume / 1000 + "K+"
+    );
+    expect(summaryItem.exists()).not.toBe(undefined);
+
+    summaryItem = findByText(wrapper, "h2", commonFoodType.type);
+    expect(summaryItem.exists()).not.toBe(undefined);
+
+    summaryItem = findByText(wrapper, "h2", successRate + "%");
+    expect(summaryItem.exists()).not.toBe(undefined);
+  });
+
+  it("renders Per Basis selector correctly", async () => {
     const wrapper = factory(stubProps());
     expect(wrapper.find(".dropdown-toggle").exists()).toBe(true);
 
     const options = wrapper.findAll(".dropdown-item");
     options.forEach(async (option: DOMWrapper<Element>) => {
-      expect(["Barangay", "Municipality", "City"]).toContain(option.text());
+      expect(["Weekly", "Monthly", "Yearly"]).toContain(option.text());
     });
   });
 
-  it("emits Government Level selector correctly", async () => {
+  it("emits Per Basis selector correctly", async () => {
     const wrapper = factory(stubProps());
-    let button = findByText(wrapper, ".dropdown-item", "Barangay");
+    const options = [
+      findByText(wrapper, ".dropdown-item", "Weekly"),
+      findByText(wrapper, ".dropdown-item", "Monthly"),
+      findByText(wrapper, ".dropdown-item", "Yearly"),
+    ];
+    let emittedLength = -1;
 
-    // Barangay option
-    await button.trigger("click");
-    expect(wrapper.emitted("updateGovernmentLevel")?.toString()).toEqual(
-      button.text()
-    );
-
-    // Municipality option
-    button = findByText(wrapper, ".dropdown-item", "Municipality");
-    await button.trigger("click");
-    let emitted = wrapper.emitted("updateGovernmentLevel");
-    expect(emitted?.at(emitted.length - 1)?.toString()).toEqual(button.text());
-
-    // City option
-    button = findByText(wrapper, ".dropdown-item", "City");
-    await button.trigger("click");
-    emitted = wrapper.emitted("updateGovernmentLevel");
-    expect(emitted?.at(emitted.length - 1)?.toString()).toEqual(button.text());
+    options.forEach((option: DOMWrapper<Element>) => {
+      option.trigger("click");
+      const emitted = wrapper.emitted("updateBasis");
+      expect(emitted?.at(++emittedLength)?.toString()).toEqual(option.text());
+    });
   });
 });

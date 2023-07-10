@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import Notifications from "@/components/NotificationsDropdown.vue";
+import Notifications from "@/components/Shared/NotificationsDropdown.vue";
 import { uuid } from "vue-uuid";
 
 declare interface Notification {

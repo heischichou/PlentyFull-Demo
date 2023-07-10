@@ -1,6 +1,6 @@
 import { DOMWrapper, VueWrapper, mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
-import TransactionItem from "@/components/TransactionsView/TransactionItem.vue";
+import TransactionItem from "@/components/Shared/TransactionsView/TransactionItem.vue";
 
 const findByText = (
   wrapper: VueWrapper<any> | DOMWrapper<any>,
@@ -13,7 +13,7 @@ const findByText = (
     .at(0) as DOMWrapper<Element>;
 };
 
-const transactions = () => {
+const stubTransaction = () => {
   return {
     transactionId: uuid.v1(),
     donorName: "DonorName 1",
@@ -92,24 +92,24 @@ const factory = (role: string, windowWidth: number, transaction: Object) => {
 
 describe("Transaction Item", () => {
   it("renders successfully", () => {
-    const wrapper = factory("Donor", window.innerWidth, transactions());
+    const wrapper = factory("Donor", window.innerWidth, stubTransaction());
     expect(wrapper.exists()).toBe(true);
   });
 
   it("receives props successfully", () => {
-    const transaction = transactions();
+    const transaction = stubTransaction();
     const wrapper = factory("Donor", window.innerWidth, transaction);
     expect(wrapper.props("transaction")).not.toBeNull();
     expect(wrapper.props("transaction")).toStrictEqual(transaction);
   });
 
   it("renders the DonationsTable component successfully", () => {
-    const wrapper = factory("Donor", window.innerWidth, transactions());
+    const wrapper = factory("Donor", window.innerWidth, stubTransaction());
     expect(wrapper.find(".donations-table").exists()).toBe(true);
   });
 
   it("table header contains the correct values", () => {
-    const wrapper = factory("Donor", window.innerWidth, transactions());
+    const wrapper = factory("Donor", window.innerWidth, stubTransaction());
     expect(wrapper.vm.headers).not.toBeNull();
     expect(wrapper.vm.headers).toEqual([
       { key: "name", label: "Food Item Name" },
@@ -120,27 +120,30 @@ describe("Transaction Item", () => {
     ]);
   });
 
-  it("runs the isURL method successfully", () => {
-    const wrapper = factory("Donor", window.innerWidth, transactions());
-    const isUrlMethod = jest.spyOn(wrapper.vm, "isURL");
-    wrapper.vm.isURL(wrapper.vm.avatar);
-    expect(isUrlMethod).toHaveBeenCalled();
+  it("runs the setURL() successfully", () => {
+    const wrapper = factory("Donor", window.innerWidth, stubTransaction());
+    const mockSetURL = jest.spyOn(wrapper.vm, "setURL");
+    wrapper.vm.setURL(wrapper.vm.avatar);
+    expect(mockSetURL).toHaveBeenCalled();
   });
 
-  it("isURL() returns the correct boolean value", async () => {
-    const wrapper = factory("Charity", window.innerWidth, transactions());
-    const mockisURL = jest.spyOn(wrapper.vm, "isURL");
+  it("setURL() returns the correct URL", async () => {
+    const wrapper = factory("Charity", window.innerWidth, stubTransaction());
+    const mockSetURL = jest.spyOn(wrapper.vm, "setURL");
 
-    wrapper.vm.isURL(wrapper.vm.avatar);
-    expect(mockisURL).toReturnWith(true);
+    wrapper.vm.setURL(wrapper.vm.avatar);
+    expect(mockSetURL).toReturnWith(wrapper.props("transaction").donorAvatar);
 
     await wrapper.setProps({ role: "Donor" });
-    wrapper.vm.isURL(wrapper.vm.avatar);
-    expect(mockisURL).toReturnWith(false);
+    wrapper.vm.setURL(wrapper.vm.avatar);
+    expect(mockSetURL).toReturnWith(
+      `${require("@/assets/images/Shared/" +
+        wrapper.props("transaction").charityAvatar)}`
+    );
   });
 
   it("truncateText() returns the correct string value", async () => {
-    const wrapper = factory("Charity", window.innerWidth, transactions());
+    const wrapper = factory("Charity", window.innerWidth, stubTransaction());
     const mockTruncateText = jest.spyOn(wrapper.vm, "truncateText");
 
     wrapper.vm.truncateText("Cebu Food Bank");
@@ -152,18 +155,22 @@ describe("Transaction Item", () => {
   });
 
   it("getTime() returns the correct string value", async () => {
-    const wrapper = factory("Charity", window.innerWidth, transactions());
+    const wrapper = factory("Charity", window.innerWidth, stubTransaction());
     const mockGetTime = jest.spyOn(wrapper.vm, "getTime");
 
-    wrapper.vm.getTime("Sat Jul 04 2025 14:00:00 GMT+0800 (Philippine Standard Time)");
+    wrapper.vm.getTime(
+      "Sat Jul 04 2025 14:00:00 GMT+0800 (Philippine Standard Time)"
+    );
     expect(mockGetTime).toReturnWith("2:00 PM");
 
-    wrapper.vm.getTime("Sat Jul 04 2025 9:00:00 GMT+0800 (Philippine Standard Time)");
+    wrapper.vm.getTime(
+      "Sat Jul 04 2025 9:00:00 GMT+0800 (Philippine Standard Time)"
+    );
     expect(mockGetTime).toReturnWith("9:00 AM");
   });
 
   it("renders the transaction accordion header information successfully", async () => {
-    const wrapper = factory("Donor", window.innerWidth, transactions());
+    const wrapper = factory("Donor", window.innerWidth, stubTransaction());
 
     expect(wrapper.find(".card-subtitle").exists()).toBe(true);
     expect(wrapper.find(".card-subtitle").text()).toEqual(
@@ -181,9 +188,7 @@ describe("Transaction Item", () => {
 
     expect(wrapper.find(".avatar").exists()).toBe(true);
     expect(wrapper.find(".avatar").attributes("src")).toEqual(
-      wrapper.vm.isURL(wrapper.vm.avatar)
-        ? wrapper.vm.avatar
-        : require("@/assets/images/Shared/" + wrapper.vm.avatar)
+      wrapper.vm.setURL(wrapper.vm.avatar)
     );
 
     expect(wrapper.find(".location-pin").exists()).toBe(true);
@@ -191,7 +196,7 @@ describe("Transaction Item", () => {
   });
 
   it("renders the transaciton details successfully", () => {
-    const wrapper = factory("Donor", window.innerWidth, transactions());
+    const wrapper = factory("Donor", window.innerWidth, stubTransaction());
     const details = wrapper.findAll("p.text-start");
     const detailsColumns = [
       `Donor Name: ${
@@ -219,7 +224,7 @@ describe("Transaction Item", () => {
   });
 
   it("conditionally renders the Receive button depending on role", async () => {
-    const wrapper = factory("Donor", window.innerWidth, transactions());
+    const wrapper = factory("Donor", window.innerWidth, stubTransaction());
 
     let receiveButton = findByText(wrapper, ".btn", "Receive");
     expect(receiveButton).toBe(undefined);

@@ -67,11 +67,12 @@
 
         <div
           class="col container-fluid d-flex justify-content-center pb-3 mb-5"
+          id="settings"
         >
           <div class="container text-white text-start mx-3 mx-sm-5">
-            <h4 class="pt-3 pb-2">{{ activeTab }}</h4>
+            <h4 class="settings-header pt-3 pb-2">{{ activeTab }}</h4>
             <hr class="border-lightgreen border-2 opacity-100 mb-0" />
-            <Profile v-if="activeTab === 'Profile'" />
+            <EditProfile v-if="activeTab === 'Profile'" />
             <SecurityAndLogin v-if="activeTab === 'Security and Login'" />
           </div>
         </div>
@@ -85,16 +86,11 @@
             class="d-none"
             accept="image/png, image/gif, image/jpeg"
             ref="selectFile"
-            @change="changeAvatarPreview($event.target)"
           />
           <div
             class="avatar rounded-circle bg-white position-relative"
             :style="{
-              backgroundImage: `url(${
-                isURL(avatar)
-                  ? avatar
-                  : require('@/assets/images/Shared/' + avatar)
-              })`,
+              backgroundImage: `url(${setURL(avatar)})`,
             }"
           >
             <button
@@ -126,7 +122,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import Profile from "@/components/Shared/ProfileView/EditProfile.vue";
+import EditProfile from "@/components/Shared/ProfileView/EditProfile.vue";
 import SecurityAndLogin from "@/components/Shared/ProfileView/SecurityAndLogin.vue";
 
 export default defineComponent({
@@ -139,25 +135,21 @@ export default defineComponent({
     };
   },
   components: {
-    Profile,
+    EditProfile,
     SecurityAndLogin,
   },
   methods: {
-    setActiveTab(tab: string) {
-      this.activeTab = tab;
-    },
     onResize() {
       this.windowWidth = window.innerWidth;
     },
-    isURL(image: string) {
+    setURL(image: string): string {
       const urlcheck = /^(ftp|http|https):\/\/[^ "]+$/;
-      return RegExp(urlcheck).exec(image) ? true : false;
+      return RegExp(urlcheck).exec(image)
+        ? image
+        : require("@/assets/images/Shared/" + image);
     },
-    changeAvatarPreview(event: HTMLInputElement) {
-      if (event.files !== null) {
-        const file = event.files[0];
-        console.log(file);
-      }
+    setActiveTab(tab: string) {
+      this.activeTab = tab;
     },
   },
   mounted() {

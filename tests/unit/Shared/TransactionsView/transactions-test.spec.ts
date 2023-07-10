@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
-import Transactions from "@/views/TransactionsView.vue";
+import Transactions from "@/views/Shared/TransactionsView.vue";
 
 const transactions = () => {
   return [
@@ -225,25 +225,27 @@ describe("Receive View", () => {
     expect(wrapper.findAll(".transaction").length).toEqual(0);
   });
 
-  it("runs the switchTab and filterTransactions methods successfully", async () => {
+  it("runs switchTab() and filterTransactions() successfully", async () => {
     const wrapper = factory();
-    const mockSwitchTab = jest.spyOn(wrapper.vm, "switchTab");
-    const mockFilterTransactions = jest.spyOn(wrapper.vm, "filterTransactions");
+    const refs = [
+      { name: "completedTab", tab: "Completed" },
+      { name: "awaitingTab", tab: "Awaiting" },
+      { name: "cancelledTab", tab: "Cancelled" },
+    ];
+    let callbacks = 0;
+    const mocks = [
+      jest.spyOn(wrapper.vm, "switchTab"),
+      jest.spyOn(wrapper.vm, "filterTransactions"),
+    ];
 
-    await wrapper.find({ ref: "completedTab" }).trigger("click");
-    expect(mockSwitchTab).toHaveBeenCalledTimes(1);
-    expect(mockFilterTransactions).toHaveBeenCalledTimes(1);
-    expect(wrapper.vm.activeTab).toEqual("Completed");
-
-    await wrapper.find({ ref: "awaitingTab" }).trigger("click");
-    expect(mockSwitchTab).toHaveBeenCalledTimes(2);
-    expect(mockFilterTransactions).toHaveBeenCalledTimes(2);
-    expect(wrapper.vm.activeTab).toEqual("Awaiting");
-
-    await wrapper.find({ ref: "cancelledTab" }).trigger("click");
-    expect(mockSwitchTab).toHaveBeenCalledTimes(3);
-    expect(mockFilterTransactions).toHaveBeenCalledTimes(3);
-    expect(wrapper.vm.activeTab).toEqual("Cancelled");
+    refs.forEach((ref) => {
+      wrapper.find({ ref: ref.name }).trigger("click");
+      callbacks++;
+      mocks.forEach((mock) => {
+        expect(mock).toHaveBeenCalledTimes(callbacks);
+      });
+      expect(wrapper.vm.activeTab).toEqual(ref.tab);
+    });
   });
 
   it("listens to window resize", async () => {

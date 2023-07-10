@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
-import Donations from "@/components/TransactionsView/DonationsTable.vue";
+import Donations from "@/components/Shared/TransactionsView/DonationsTable.vue";
 
 const stubDonations = () => {
   return [

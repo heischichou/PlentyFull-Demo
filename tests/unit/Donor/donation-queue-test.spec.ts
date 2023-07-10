@@ -100,10 +100,10 @@ const factory = (windowWidth: number) => {
 describe("Donation Queue", () => {
   it("renders successfully", () => {
     const wrapper = factory(window.innerWidth);
-    expect(wrapper.exists()).toBe(true);
+    expect(wrapper.exists()).toBeTruthy();
   });
 
-  it("renders list of queuers correctly", () => {
+  it("renders Queuers correctly", () => {
     const wrapper = factory(window.innerWidth);
     const queuerList = queuers();
     const queuerAccordions = wrapper.findAll(".queuer");
@@ -146,12 +146,12 @@ describe("Donation Queue", () => {
               )
             : findByText(accordion, "p", value.toString());
 
-        expect(column.exists()).toBe(true);
+        expect(column.exists()).toBeTruthy();
       });
     });
   });
 
-  it("filters queuers correctly", async () => {
+  it("filters Queuers correctly", async () => {
     const mockSetFilterBy = jest.spyOn(
       DonationQueue.methods as any,
       "setFilterBy"
@@ -168,7 +168,7 @@ describe("Donation Queue", () => {
     filters.forEach((filter) => {
       const option = findByText(wrapper, ".dropdown-item", filter);
 
-      expect(option.exists()).toBe(true);
+      expect(option.exists()).toBeTruthy();
       option.trigger("click");
       expect(mockSetFilterBy).toBeCalled();
       expect(wrapper.vm.filterBy).toEqual(filter);
@@ -177,7 +177,7 @@ describe("Donation Queue", () => {
     expect(mockSetFilterBy).toBeCalledTimes(filters.length);
   });
 
-  it("sorts queuers correctly", async () => {
+  it("sorts Queuers correctly", async () => {
     const mockSetSortBy = jest.spyOn(DonationQueue.methods as any, "setSortBy");
     let orders = ["Ascending", "Descending"];
 
@@ -185,7 +185,7 @@ describe("Donation Queue", () => {
     orders.forEach((order) => {
       const option = findByText(wrapper, ".dropdown-item", order);
 
-      expect(option.exists()).toBe(true);
+      expect(option.exists()).toBeTruthy();
       option.trigger("click");
       expect(mockSetSortBy).toBeCalled();
       expect(wrapper.vm.sortBy).toEqual(order);
@@ -202,7 +202,7 @@ describe("Donation Queue", () => {
 
     const wrapper = factory(window.innerWidth);
     const confirmButton = findByText(wrapper, ".btn-secondary", "Confirm");
-    expect(confirmButton.exists()).toBe(true);
+    expect(confirmButton.exists()).toBeTruthy();
     await confirmButton.trigger("click");
     expect(mockConfirmQueuer).toBeCalled();
   });
@@ -215,7 +215,7 @@ describe("Donation Queue", () => {
 
     const wrapper = factory(window.innerWidth);
     const declineButton = findByText(wrapper, ".btn", "Decline");
-    expect(declineButton.exists()).toBe(true);
+    expect(declineButton.exists()).toBeTruthy();
     await declineButton.trigger("click");
     expect(mockDeclineQueuer).toBeCalled();
   });

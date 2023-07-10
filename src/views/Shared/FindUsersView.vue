@@ -23,7 +23,7 @@
       >
         Search by: {{ searchBy }}
       </button>
-      <ul class="dropdown-menu dropdown-menu-end">
+      <ul class="dropdown-menu dropdown-menu-end" id="searchByDropdown">
         <li>
           <button
             class="dropdown-item"
@@ -52,7 +52,7 @@
       >
         Sort by: {{ sortBy }}
       </button>
-      <ul class="dropdown-menu dropdown-menu-end">
+      <ul class="dropdown-menu dropdown-menu-end" id="sortByDropdown">
         <li>
           <button
             class="dropdown-item"
@@ -83,7 +83,7 @@
       </ul>
     </div>
 
-    <div v-if="users.length > 0" id="users">
+    <div v-if="filteredUsers.length > 0" id="users">
       <FindComponent
         v-for="user in filteredUsers"
         :key="user.userId"
@@ -99,7 +99,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
-import FindComponent from "@/components/Shared/FindComponent.vue";
+import FindComponent from "@/components/Shared/FindUsersView/FindComponent.vue";
 
 declare interface User {
   userId: string;

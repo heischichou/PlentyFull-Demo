@@ -1,5 +1,5 @@
 import { DOMWrapper, VueWrapper, shallowMount } from "@vue/test-utils";
-import TransactionSuccessRates from "@/components/StatisticsView/TransactionSuccessRates.vue";
+import DonationCount from "@/components/Shared/StatisticsView/DonationCount.vue";
 
 const findByText = (
   wrapper: VueWrapper<any> | DOMWrapper<any>,
@@ -23,13 +23,14 @@ const convertHex = (color: string) => {
 const stubProps = () => {
   return {
     role: "Donor",
+    governmentLevel: "Barangay",
     chartData: {
-      labels: ["Successful", "Cancelled", "Aborted"],
+      labels: ["TALAMBAN", "MABOLO", "MANDAUE", "LAHUG"],
       datasets: [
         {
-          label: "Rate of Successful Transactions",
-          data: [86, 10, 4],
-          backgroundColor: ["#113333", "#45bf5D", "#56f576"],
+          label: "Donations Per Location",
+          data: [21, 14, 8, 6],
+          backgroundColor: ["#113333", "#45bf5D", "#56f576", "#6ef997"],
         },
       ],
     },
@@ -37,14 +38,14 @@ const stubProps = () => {
 };
 
 const factory = (props = {}) => {
-  return shallowMount(TransactionSuccessRates as any, {
+  return shallowMount(DonationCount as any, {
     propsData: {
       ...props,
     },
   });
 };
 
-describe("Rate of Successful Transactions", () => {
+describe("Donations Per Location", () => {
   it("renders successfully", () => {
     const wrapper = factory(stubProps());
     expect(wrapper.exists()).toBe(true);
@@ -65,13 +66,43 @@ describe("Rate of Successful Transactions", () => {
     expect(legends.length).toBe(labels.length);
 
     legends.forEach((legend, index) => {
-      const legendItem = findByText(legend, "p", data.at(index) + "%");
+      const legendItem = findByText(
+        legend,
+        "p",
+        data.at(index) + " donations"
+      );
       const pill = legend.find(".pill").attributes("style");
 
       expect(legendItem.exists()).not.toBe(undefined);
       expect(convertHex(backgroundColor.at(index) as string)).toBe(
         pill?.substring(pill.indexOf("rgb"), pill.length - 1)
       );
+    });
+  });
+
+  it("renders Government Level selector correctly", async () => {
+    const wrapper = factory(stubProps());
+    expect(wrapper.find(".dropdown-toggle").exists()).toBe(true);
+
+    const options = wrapper.findAll(".dropdown-item");
+    options.forEach(async (option: DOMWrapper<Element>) => {
+      expect(["Barangay", "Municipality", "City"]).toContain(option.text());
+    });
+  });
+
+  it("emits Government Level selector correctly", async () => {
+    const wrapper = factory(stubProps());
+    const options = [
+      findByText(wrapper, ".dropdown-item", "Barangay"),
+      findByText(wrapper, ".dropdown-item", "Municipality"),
+      findByText(wrapper, ".dropdown-item", "City"),
+    ];
+    let emittedLength = -1;
+
+    options.forEach((option: DOMWrapper<Element>) => {
+      option.trigger("click");
+      const emitted = wrapper.emitted("updateGovernmentLevel");
+      expect(emitted?.at(++emittedLength)?.toString()).toEqual(option.text());
     });
   });
 });

@@ -95,19 +95,19 @@ const factory = (data = {}) => {
 describe("Donate page", () => {
   it("renders successfully", () => {
     const wrapper = factory();
-    expect(wrapper.exists()).toBe(true);
-    expect(wrapper.find("#searchingForCharities").exists()).toBe(true);
-    expect(wrapper.find("#donationQueue").exists()).toBe(true);
+    expect(wrapper.exists()).toBeTruthy();
+    expect(wrapper.find("#searchingForCharities").exists()).toBeTruthy();
+    expect(wrapper.find("#donationQueue").exists()).toBeTruthy();
   });
 
-  it("renders food items correctly", async () => {
+  it("renders Food Items correctly", async () => {
     const itemList = foodItems();
     const wrapper = factory({ foodItems: [] });
     expect(wrapper.find("#foodItems").exists()).toBe(false);
     expect(wrapper.findAll(".food-item").length).toEqual(0);
 
     await wrapper.setData({ foodItems: itemList });
-    expect(wrapper.find("#foodItems").exists()).toBe(true);
+    expect(wrapper.find("#foodItems").exists()).toBeTruthy();
 
     const items = wrapper.findAll(".food-item");
     expect(wrapper.findAll(".food-item").length).toBeGreaterThan(0);
@@ -124,12 +124,12 @@ describe("Donate page", () => {
             ? findByText(item, "p", value.toString() + " kilograms")
             : findByText(item, "p", value.toString());
 
-        expect(column.exists()).toBe(true);
+        expect(column.exists()).toBeTruthy();
       });
     });
   });
 
-  it("creates food items successfully", async () => {
+  it("creates Food Items successfully", async () => {
     const mockCreateItem = jest.spyOn(Donate.methods as any, "createItem");
     const wrapper = factory({ foodItems: foodItems(), newItem: {} });
     const oldIndex = wrapper.vm.foodItems.length;
@@ -141,7 +141,7 @@ describe("Donate page", () => {
     expect(wrapper.findAll(".food-item").length).toEqual(oldIndex + 1);
   });
 
-  it("removes food items successfully", async () => {
+  it("removes Food Items successfully", async () => {
     const mockRemoveItem = jest.spyOn(Donate.methods as any, "removeItem");
     const wrapper = factory({ foodItems: foodItems() });
     const oldIndex = wrapper.findAll(".food-item").length;
@@ -153,7 +153,7 @@ describe("Donate page", () => {
     expect(wrapper.findAll(".food-item").length).toEqual(oldIndex - 1);
   });
 
-  it("resets the donation form successfully", async () => {
+  it("resets the Donation Form successfully", async () => {
     const mockResetForm = jest.spyOn(Donate.methods as any, "resetForm");
     const wrapper = factory({ foodItems: foodItems() });
     expect(wrapper.findAll(".food-item").length).toBeGreaterThan(0);
