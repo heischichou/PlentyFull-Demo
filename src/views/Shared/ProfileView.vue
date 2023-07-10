@@ -70,7 +70,7 @@
           id="settings"
         >
           <div class="container text-white text-start mx-3 mx-sm-5">
-            <h4 class="settings-header pt-3 pb-2">{{ activeTab }}</h4>
+            <h4 class="pt-3 pb-2">{{ activeTab }}</h4>
             <hr class="border-lightgreen border-2 opacity-100 mb-0" />
             <EditProfile v-if="activeTab === 'Profile'" />
             <SecurityAndLogin v-if="activeTab === 'Security and Login'" />

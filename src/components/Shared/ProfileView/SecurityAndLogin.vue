@@ -80,9 +80,9 @@
         <button
           type="button"
           class="btn btn-danger d-grid gap-3 d-md-flex text-white rounded-0 py-2 px-4"
-          id="modal-button"
+          id="deleteAccount"
           data-bs-toggle="modal"
-          data-bs-target="#confirmModal"
+          data-bs-target="#confirmDeletion"
         >
           Delete My Account
         </button>
@@ -90,15 +90,15 @@
 
       <div
         class="modal fade"
-        id="confirmModal"
+        id="confirmDeletion"
         tabindex="-1"
-        aria-labelledby="confirmModalLabel"
+        aria-labelledby="confirmDeletionlLabel"
         aria-hidden="true"
       >
         <div class="modal-dialog">
           <div class="modal-content text-black rounded-2">
             <div class="modal-header">
-              <h1 class="modal-title fs-5 ps-3" id="confirmModalLabel">
+              <h1 class="modal-title fs-5 ps-3" id="confirmDeletionLabel">
                 Delete Account
               </h1>
               <button
