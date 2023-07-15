@@ -12,6 +12,7 @@
             type="button"
             aria-label="Toggle Sidebar"
             @click="toggleSidebar"
+            ref="sidebarToggle"
           >
             <em class="bi bi-list text-white fs-3"></em>
           </button>
@@ -23,10 +24,8 @@
                 @click="switchTab('Registration')"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
                 :class="activeTab === 'Registration' ? 'active' : ''"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-title="Awaiting Transactions"
-                aria-label="Awaiting Transactions"
+                role="button"
+                ref="registration"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -42,10 +41,8 @@
                 @click="switchTab('Members')"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
                 :class="activeTab === 'Members' ? 'active' : ''"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-title="Completed Transactions"
-                aria-label="Completed Transactions"
+                role="button"
+                ref="members"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -61,10 +58,8 @@
                 @click="switchTab('Reports')"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
                 :class="activeTab === 'Reports' ? 'active' : ''"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-title="Cancelled Transactions"
-                aria-label="Cancelled Transactions"
+                role="button"
+                ref="reports"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -82,25 +77,30 @@
       <div class="col-sm p-5 min-vh-100">
         <h1 class="text-start text-white fw-bold pb-4">{{ activeTab }}</h1>
         <div v-show="activeTab === 'Registration'">
-          <div v-if="requests.length > 0">
-            <SignUpRequest
-              v-for="request in sortedRequests.slice(
-                (currentPage - 1) * perPage,
-                currentPage * perPage
-              )"
-              class="mb-3"
-              :key="request.id"
-              :request="request"
-              :dateDuration="convertToDuration(request.createdAt)"
-            />
-            <RequestsPagination
-              :maxVisibleButtons="maxVisibleButtons"
-              :totalRequests="totalRequests"
-              :perPage="perPage"
-              :currentPage="currentPage"
-              @pagechanged="onPageChange"
-            />
+          <div id="requestsSection" v-if="requests.length > 0">
+            <div v-if="sortedRequests.length > 0">
+              <SignUpRequest
+                v-for="request in sortedRequests.slice(
+                  (currentPage - 1) * perPage,
+                  currentPage * perPage
+                )"
+                class="mb-3"
+                :key="request.id"
+                :request="request"
+                :dateDuration="
+                  convertToDuration(request.createdAt, new Date().toISOString())
+                "
+              />
+              <RequestsPagination
+                :maxVisibleButtons="visibleButtons"
+                :totalRequests="totalRequests"
+                :perPage="perPage"
+                :currentPage="currentPage"
+                @pageChanged="onPageChange"
+              />
+            </div>
           </div>
+
           <div v-else>
             <h3 class="text-white">No requests found.</h3>
           </div>
@@ -153,7 +153,7 @@ export default defineComponent({
       show: true,
       requests: [] as Array<Request>,
       sortedRequests: [] as Array<Request>,
-      maxVisibleButtons: 1,
+      visibleButtons: 0,
       totalRequests: 0,
       perPage: 3,
       currentPage: 1,
@@ -187,10 +187,10 @@ export default defineComponent({
         );
       this.sortedRequests = Object.assign([], sorted);
     },
-    convertToDuration(date: string) {
-      const currentDate = DateTime.now();
+    convertToDuration(date: string, current: string) {
       date = new Date(date).toISOString();
       const createdAt = DateTime.fromISO(date);
+      const currentDate = DateTime.fromISO(current);
       const duration = currentDate
         .diff(createdAt, [
           "years",
@@ -221,11 +221,11 @@ export default defineComponent({
         }
       }
 
-      return "just now";
+      return "Just now";
     },
   },
   computed: {
-    gettotalRequests: function (): number {
+    getTotalRequests: function (): number {
       return this.requests.length;
     },
     setVisibleButtons: function (): number {
@@ -277,8 +277,8 @@ export default defineComponent({
         createdAt: "7/12/2023 1:50:00 AM",
       },
     ];
-    this.totalRequests = this.gettotalRequests;
-    this.maxVisibleButtons = this.setVisibleButtons;
+    this.totalRequests = this.getTotalRequests;
+    this.visibleButtons = this.setVisibleButtons;
     this.sortRequests();
   },
 });

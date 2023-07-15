@@ -1,40 +1,44 @@
 <template>
-  <div class="card bg-transparent border border-green">
+  <div class="request card bg-transparent border border-green">
     <div class="card-body p-4">
-      <h1 class="card-title text-start text-white fs-3">
+      <h1 class="requestName card-title text-start text-white fs-3">
         {{ request.requestName }}
       </h1>
-      <h5 class="card-subtitle text-start text-white fs-6 fw-light mb-2">
+      <h5
+        class="orgType card-subtitle text-start text-white fs-6 fw-light mb-2"
+      >
         {{ request.organizationType }}
       </h5>
-      <h6 class="card-subtitle text-start text-white fs-6 fw-lighter">
+      <h6
+        class="dateDuration card-subtitle text-start text-white fs-6 fw-lighter"
+      >
         {{ dateDuration }}
       </h6>
-      <p class="text-white text-start mt-3">
+      <p class="description text-white text-start mt-3">
         {{ request.description }}
       </p>
 
       <div class="d-flex flex-column text-start">
         <div class="d-flex mb-2">
           <i class="bi bi-geo-alt text-white fs-5"></i>
-          <p class="align-self-center text-white ps-2 m-0">
+          <p class="location align-self-center text-white ps-2 m-0">
             {{ request.location }}
           </p>
         </div>
         <div class="d-flex mb-2">
           <i class="bi bi-envelope text-white fs-5"></i>
-          <p class="align-self-center text-white ps-2 m-0">
+          <p class="email align-self-center text-white ps-2 m-0">
             {{ request.email }}
           </p>
         </div>
         <div class="d-flex mb-2">
           <i class="bi bi-telephone text-white fs-5"></i>
-          <p class="align-self-center text-white ps-2 m-0">
+          <p class="phone align-self-center text-white ps-2 m-0">
             {{ request.phone }}
           </p>
         </div>
         <a
-          class="link-white link-opacity-75-hover d-flex mb-2"
+          class="proof link-white link-opacity-75-hover d-flex mb-2"
           :href="request.proof"
           target="_blank"
         >

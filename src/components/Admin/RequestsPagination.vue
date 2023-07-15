@@ -3,12 +3,12 @@
     <ul class="pagination justify-content-center">
       <li class="page-item" :class="isInFirstPage === true ? 'disabled' : ''">
         <button
-          class="page-link"
+          class="previous page-link"
           aria-label="Previous"
           type="button"
           @click="onClickPreviousPage"
         >
-          <span aria-hidden="true">&laquo;</span>
+          &laquo;
         </button>
       </li>
       <li
@@ -17,18 +17,18 @@
         class="page-item"
         :class="page.isDisabled === true ? 'active' : ''"
       >
-        <a class="page-link" @click="onClickPage(page.pageNum)">{{
+        <a class="pageBtn page-link" @click="onClickPage(page.pageNum)">{{
           page.pageNum
         }}</a>
       </li>
       <li class="page-item" :class="isInLastPage === true ? 'disabled' : ''">
         <button
-          class="page-link"
+          class="next page-link"
           aria-label="Next"
           type="button"
           @click="onClickNextPage"
         >
-          <span aria-hidden="true">&raquo;</span>
+          &raquo;
         </button>
       </li>
     </ul>
@@ -105,13 +105,13 @@ export default defineComponent({
   },
   methods: {
     onClickPreviousPage() {
-      this.$emit("pagechanged", this.currentPage - 1);
+      this.$emit("pageChanged", this.currentPage - 1);
     },
     onClickPage(page: number) {
-      this.$emit("pagechanged", page);
+      this.$emit("pageChanged", page);
     },
     onClickNextPage() {
-      this.$emit("pagechanged", this.currentPage + 1);
+      this.$emit("pageChanged", this.currentPage + 1);
     },
   },
 });
