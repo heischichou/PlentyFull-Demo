@@ -129,17 +129,6 @@ declare interface Request {
   createdAt: string;
 }
 
-declare interface Duration {
-  years: number | undefined;
-  months: number;
-  weeks: number;
-  days: number;
-  hours: number;
-  minutes: number;
-  seconds: number;
-  milliseconds: number;
-}
-
 export default defineComponent({
   name: "RegistryView",
   components: {
@@ -182,8 +171,8 @@ export default defineComponent({
         .slice()
         .sort(
           (a, b) =>
-            new Date(b["createdAt"] as any).getTime() -
-            new Date(a["createdAt"] as any).getTime()
+            new Date(b["createdAt"]).getTime() -
+            new Date(a["createdAt"]).getTime()
         );
       this.sortedRequests = Object.assign([], sorted);
     },
@@ -250,7 +239,7 @@ export default defineComponent({
         email: "info@cebufoodbank.com",
         phone: "(32) 417 3322",
         proof: "https://my.alfred.edu/zoom/_images/foster-lake.jpg",
-        createdAt: "7/13/2023 12:21:00 AM",
+        createdAt: new Date().toString(),
       },
       {
         id: uuid.v1(),
