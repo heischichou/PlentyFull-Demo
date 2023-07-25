@@ -24,10 +24,10 @@
       </div>
     </div>
 
-    <div class="container-fluid o-bg py-5" id="about-content-section">
+    <div class="container-fluid o-bg py-5" id="aboutContent">
       <div
         class="row d-flex align-items-center order-last order-md-fist"
-        id="core-values-section"
+        id="coreValues"
       >
         <div class="col-lg-6 container text-center pt-3">
           <h3 class="fw-bold display-5 mb-5">Core Values</h3>
@@ -67,7 +67,7 @@
         </div>
         <div
           class="row d-flex align-items-center order-last order-md-fist mt-5"
-          id="vision-section"
+          id="vision"
         >
           <div class="col-lg-7 pt-sm-3">
             <h3 class="fw-bold display-5 mb-5 text-start px-5 ms-5">
@@ -107,7 +107,7 @@
       </div>
     </div>
 
-    <div class="container-fluid o-ready pt-3" id="founders-section">
+    <div class="container-fluid o-ready pt-3" id="founders">
       <div class="container align-items-center pt-5">
         <h4>Founders</h4>
         <p class="pt-3">
@@ -116,13 +116,16 @@
         </p>
         <div
           class="col-lg-6 pb-5 pt-0 pt-sm-4 container order-first order-lg-last"
-          id="founder-images"
+          id="foundersAvatars"
         >
-          <div class="d-flex d-md-flex flex-row justify-content-between">
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
-            <div class="avatar rounded-circle"></div>
+          <div
+            class="developers d-flex d-md-flex flex-row justify-content-between"
+          >
+            <div
+              v-for="founder in 4"
+              :key="founder"
+              class="avatar rounded-circle"
+            ></div>
           </div>
         </div>
       </div>
@@ -138,8 +141,8 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-.avatar {
+<style scoped lang="scss">
+.developers > .avatar {
   background-color: #f8f9fa !important;
   width: 65px;
   height: 65px;

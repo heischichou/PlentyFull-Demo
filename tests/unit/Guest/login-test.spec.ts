@@ -1,53 +1,56 @@
 import { shallowMount } from "@vue/test-utils";
-import LoginView from "@/views/Guest/LoginView.vue";
+import { createRouter, createWebHistory } from "vue-router";
+import { routes } from "@/router/index";
+import Login from "@/views/Guest/LoginView.vue";
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routes,
+});
 
 const factory = () => {
-  return shallowMount(LoginView, {});
+  return shallowMount(Login, {
+    global: {
+      plugins: [router],
+    },
+  });
 };
 
-describe("LoginView", () => {
-  it("renders the login div", () => {
+describe("Login page", () => {
+  it("renders successfully", () => {
     const wrapper = factory();
-    expect(wrapper.find("#login").exists()).toBeTruthy();
+    expect(wrapper.exists()).toBeTruthy();
   });
 
-  it("renders the login form", () => {
-    const wrapper = factory();
-    expect(wrapper.find("#login-form").exists()).toBeTruthy();
-  });
-
-  it("renders the login form title", () => {
-    const wrapper = factory();
-    expect(wrapper.find("h2").text()).toEqual("Login");
-  });
-
-  it("renders the login form register link", () => {
+  it("renders the Register link successfully", () => {
     const wrapper = factory();
     expect(wrapper.find("#register").exists()).toBeTruthy();
   });
 
-  it("renders the login form email input", () => {
+  it("renders the Forgot Password link succesfully", () => {
     const wrapper = factory();
-    expect(wrapper.find("#email").exists()).toBeTruthy();
+    expect(wrapper.find("#forgotPassword").exists()).toBeTruthy();
   });
 
-  it("renders the login form password input", () => {
+  it("renders the Login Form correctly", () => {
     const wrapper = factory();
-    expect(wrapper.find("#password").exists()).toBeTruthy();
+    const login = wrapper.find("#login");
+    expect(login.exists()).toBeTruthy();
+    expect(login.find("h2").text()).toEqual("Login");
+    expect(login.find("#loginForm").exists()).toBeTruthy();
   });
 
-  it("renders the login form forgot password link", () => {
+  it("renders the form's fields correctly", () => {
+    const fields = ["email", "password", "forgotPassword", "rememberMe"];
     const wrapper = factory();
-    expect(wrapper.find("#forgot-password").exists()).toBeTruthy();
+
+    fields.forEach((field) => {
+      expect(wrapper.find(`#${field}`).exists()).toBeTruthy();
+    });
   });
 
-  it("renders the login form checkbox input field", () => {
+  it("renders the form's submit button successfully", () => {
     const wrapper = factory();
-    expect(wrapper.find("#rememberbox").exists()).toBeTruthy();
-  });
-
-  it("renders the login form submit button", () => {
-    const wrapper = factory();
-    expect(wrapper.find("#login-btn").exists()).toBeTruthy();
+    expect(wrapper.find({ ref: "login" }).exists()).toBeTruthy();
   });
 });
