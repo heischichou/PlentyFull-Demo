@@ -14,6 +14,7 @@ $white:           #FFFFFF;
 $header:          #143D37;
 $registry:        #011409;
 $green:           #1BB55C;
+$danger:          #dc3545;
 
 $theme-colors: (
   "primary":        $primary,
@@ -28,6 +29,7 @@ $theme-colors: (
   "header":         $header,
   "registry":       $registry,
   "green":          $green,
+  "danger":         $danger
 );
 
 // Font
@@ -136,6 +138,11 @@ $form-check-input-border-radius:          .15em;
 $form-check-input-focus-box-shadow: 0 0 0 .25rem rgba($white, .25);
 $form-check-input-checked-color:          $primary;
 $form-check-input-checked-bg-color:       $white;
+
+$table-variants: (
+  "registry":   $registry,
+  "transparent":$transparent,
+);
 
 // Main SCSS
 @import "~bootstrap/scss/bootstrap";
