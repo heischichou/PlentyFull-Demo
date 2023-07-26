@@ -1,5 +1,79 @@
 <template>
-  <h1>Manage me</h1>
+  <div class="container">
+    <form action="get">
+      <div class="input-group mb-2">
+        <input
+          type="text"
+          class="form-control border border-secondary bg-registry text-white rounded-bottom-0"
+          placeholder="Search here..."
+          aria-label="Search here..."
+          aria-describedby="button-addon2"
+        />
+        <button
+          class="btn btn-outline-secondary ps-3"
+          type="button"
+          id="button-addon2"
+        >
+          <em class="bi bi-arrow-clockwise text-white"></em>
+        </button>
+        <button
+          class="btn border border-start-0 border-end-0 border-secondary"
+          type="button"
+          id="button-addon2"
+        >
+          <em class="bi bi-exclamation-circle text-white"></em>
+        </button>
+        <button
+          class="btn border border-start-0 border-end-0 border-secondary"
+          type="button"
+          id="button-addon2"
+        >
+          <em class="bi bi-lock text-white"></em>
+        </button>
+        <button
+          class="btn border border-secondary border-start-0 rounded-bottom-0"
+          type="button"
+          id="button-addon2"
+        >
+          <em class="bi bi-dash-circle text-white"></em>
+        </button>
+      </div>
+      <div class="table-responsive-md">
+        <table
+          class="table table-registry table-hover border-top border-start border-end border-secondary align-middle"
+        >
+          <thead>
+            <tr class="table-success">
+              <th scope="col"></th>
+              <th scope="col">Name</th>
+              <th scope="col">Address</th>
+              <th scope="col">Contact No.</th>
+              <th scope="col">User Type</th>
+              <th scope="col">Verified?</th>
+              <th scope="col"></th>
+            </tr>
+          </thead>
+          <tbody class="table-group-divider border-secondary">
+            <tr>
+              <th scope="row">
+                <input class="form-check-input" type="checkbox" value="" />
+              </th>
+              <td>Mark</td>
+              <td>Otto</td>
+              <td>@mdo</td>
+              <td>mem</td>
+              <td>yeah</td>
+              <td>
+                <button class="btn" type="button" id="button-addon2">
+                  <em class="bi bi-three-dots text-white"></em>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -177,4 +251,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss"></style>
+<style lang="scss" scoped></style>
