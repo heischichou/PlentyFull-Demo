@@ -9,7 +9,7 @@
         @change="setSearchText($event.target.value)"
       />
     </div>
-    <div class="reports-table table-responsive-md mt-2 mb-3">
+    <div class="reports-table table-responsive mt-2 mb-3">
       <table class="table table-hover table-admin overflow-hidden rounded-1">
         <thead class="table-registry border-3 border-primary">
           <tr class="align-middle">
