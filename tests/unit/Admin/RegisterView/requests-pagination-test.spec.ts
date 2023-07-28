@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import RequestsPagination from "@/components/Admin/RequestsPagination.vue";
+import RequestsPagination from "@/components/Admin/RegistryView/RequestsPagination.vue";
 
 const factory = () => {
     return mount(RequestsPagination as any, {

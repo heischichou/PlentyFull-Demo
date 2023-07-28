@@ -1,9 +1,9 @@
 <template>
-  <div class="container-fluid bg-registry p-0">
+  <div class="container-fluid bg-admin p-0">
     <div class="row">
       <div class="col-sm-auto sticky-top pe-0 shadow-sm">
         <div
-          class="navbar d-flex flex-sm-column flex-row flex-nowrap bg-registry border-end border-green border-2 h-100 sticky-top p-0"
+          class="navbar d-flex flex-sm-column flex-row flex-nowrap bg-admin border-end border-green border-2 h-100 sticky-top p-0"
           role="navigation"
           id="sideBar"
         >
@@ -105,6 +105,8 @@
             <h3 class="text-white">No requests found.</h3>
           </div>
         </div>
+
+        <UserReports v-if="activeTab === 'Reports'" />
       </div>
     </div>
   </div>
@@ -114,8 +116,9 @@
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
 import { DateTime } from "luxon";
-import SignUpRequest from "@/components/Admin/SignUpRequest.vue";
-import RequestsPagination from "@/components/Admin/RequestsPagination.vue";
+import SignUpRequest from "@/components/Admin/RegistryView/SignUpRequest.vue";
+import RequestsPagination from "@/components/Admin/RegistryView/RequestsPagination.vue";
+import UserReports from "@/components/Admin/RegistryView/UserReports/UserReports.vue";
 
 declare interface Request {
   id: string;
@@ -134,11 +137,12 @@ export default defineComponent({
   components: {
     SignUpRequest,
     RequestsPagination,
+    UserReports,
   },
   data() {
     return {
       role: "Admin",
-      activeTab: "Registration",
+      activeTab: "Reports",
       show: true,
       requests: [] as Array<Request>,
       sortedRequests: [] as Array<Request>,
