@@ -1,12 +1,12 @@
 <template>
   <AppHeader />
-  <router-view />
+  <router-view :key="$route.path" />
   <AppFooter />
 </template>
 
 <script lang="ts">
-import AppHeader from "@/components/AppHeader.vue";
-import AppFooter from "@/components/AppFooter.vue";
+import AppHeader from "@/components/App/AppHeader.vue";
+import AppFooter from "@/components/App/AppFooter.vue";
 
 export default {
   name: "App",

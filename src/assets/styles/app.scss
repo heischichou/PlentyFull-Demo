@@ -5,30 +5,15 @@ $enable-negative-margins: true;
 // Colors
 $primary:         #4AD471;
 $secondary:       #45BF5D;
+$danger:          #dc3545;
 $light:           #56F576;
 $dark:            #113333;
 $lightgreen:      #6EFF97;
 $black:           #000000;
 $white:           #FFFFFF;
 $header:          #143D37;
-$registry:        #011409;
+$admin:           #011409;
 $green:           #1BB55C;
-$danger:          #dc3545;
-
-$theme-colors: (
-  "primary":        $primary,
-  "secondary":      $secondary,
-  "light":          $light,
-  "dark":           $dark,
-  "body":           $white,
-  "lightgreen":     $lightgreen,
-  "black":          $black,
-  "white":          $white,
-  "header":         $header,
-  "registry":       $registry,
-  "green":          $green,
-  "danger":         $danger
-);
 
 // Font
 $font-family-sans-serif:    "Inter";
@@ -70,11 +55,6 @@ $spacers: (
     6: $spacer * 4.5
 );
 
-// Borders
-$border-radius-sm:  .25rem;     // 1
-$border-radius:     .5rem;      // 2
-$border-radius-lg:  2rem;       // 3
-
 // Links
 $link-color:  $secondary;
 
@@ -88,6 +68,40 @@ $navbar-light-hover-color:          $primary;
 $navbar-light-active-color:         $primary;
 $navbar-light-toggler-border-color: rgba($primary, .1);
 
+// Form Checkboxes
+$form-check-input-width: 1.5em;
+$form-check-input-border-radius:          .15em;
+$form-check-input-focus-box-shadow: 0 0 0 .25rem rgba($white, .25);
+$form-check-input-checked-color:          $primary;
+$form-check-input-checked-bg-color:       $white;
+
+// Mixins
+@import "~bootstrap/scss/_functions";
+@import "~bootstrap/scss/_variables";
+
+$theme-colors: (
+  "primary":        $primary,
+  "secondary":      $secondary,
+  "danger":         $danger,
+  "light":          $light,
+  "dark":           $dark,
+  "body":           $white,
+  "lightgreen":     $lightgreen,
+  "black":          $black,
+  "white":          $white,
+  "header":         $header,
+  "admin":          $admin,
+  "green":          $green,
+);
+
+// Table Variants
+$custom-table-variants: (
+  "admin":      $admin,
+  "registry":   #0e3419,
+);
+
+$table-variants: map-merge($table-variants, $custom-table-variants);
+
 // Body
 html, body {
   background-color: $white;
@@ -98,12 +112,37 @@ html, body {
   padding: 0;
 }
 
-// Form Checkboxes
-$form-check-input-width: 1.5em;
-$form-check-input-border-radius:          .15em;
-$form-check-input-focus-box-shadow: 0 0 0 .25rem rgba($white, .25);
-$form-check-input-checked-color:          $primary;
-$form-check-input-checked-bg-color:       $white;
+// Text
+.text-justify {
+  text-align: justify !important;
+}
+
+// Link
+a {
+  text-decoration: none !important;
+}
+
+// Transparent input field
+.transparent-input {
+  .form-floating {
+    .form-control {
+      background-color: transparent;
+      border-color: white !important;
+    }
+    .form-control:focus {
+      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
+    }
+    .form-control:focus ~ label::after,
+    .form-control:not(:placeholder-shown) ~ label::after {
+      position: absolute;
+      inset: 1rem 0.375rem;
+      z-index: -1;
+      height: 1.5em;
+      content: "";
+      background-color: rgba(#45bf5d, 0.75);
+    }
+  }
+}
 
 // Main SCSS
 @import "~bootstrap/scss/bootstrap";

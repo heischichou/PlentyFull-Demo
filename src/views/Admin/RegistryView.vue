@@ -1,14 +1,14 @@
 <template>
-  <div class="container-fluid bg-registry p-0">
+  <div class="container-fluid bg-admin p-0">
     <div class="row">
-      <div class="col-sm-auto sticky-top pe-0 shadow-sm">
+      <div class="col-lg-auto sticky-top pe-0 shadow-sm">
         <div
-          class="navbar d-flex flex-sm-column flex-row flex-nowrap bg-registry border-end border-green border-2 h-100 sticky-top p-0"
+          class="navbar d-flex flex-row flex-lg-column flex-nowrap bg-admin border-end border-green border-2 h-100 sticky-top p-0"
           role="navigation"
           id="sideBar"
         >
           <button
-            class="navbar-toggler align-self-start d-none d-sm-block border-0 my-3 mx-3"
+            class="navbar-toggler align-self-start d-none d-lg-block border-0 my-3 mx-3"
             type="button"
             aria-label="Toggle Sidebar"
             @click="toggleSidebar"
@@ -17,15 +17,15 @@
             <em class="bi bi-list text-white fs-3"></em>
           </button>
           <ul
-            class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap justify-content-around align-items-center w-100 mb-auto"
+            class="nav nav-pills nav-flush flex-row flex-lg-column flex-nowrap justify-content-around align-items-center w-100 mb-auto"
           >
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
                 @click="switchTab('Registration')"
+                id="registrationTab"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
                 :class="activeTab === 'Registration' ? 'active' : ''"
                 role="button"
-                ref="registration"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -39,10 +39,10 @@
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
                 @click="switchTab('Members')"
+                id="membersTab"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
                 :class="activeTab === 'Members' ? 'active' : ''"
                 role="button"
-                ref="members"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -56,10 +56,10 @@
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
                 @click="switchTab('Reports')"
+                id="reportsTab"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
                 :class="activeTab === 'Reports' ? 'active' : ''"
                 role="button"
-                ref="reports"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -74,7 +74,7 @@
         </div>
       </div>
 
-      <div class="col-sm p-5 min-vh-100">
+      <div class="col-md p-5 min-vh-100">
         <h1 class="text-start text-white fw-bold pb-4">{{ activeTab }}</h1>
         <div v-show="activeTab === 'Registration'">
           <div id="requestsSection" v-if="requests.length > 0">
@@ -105,6 +105,8 @@
             <h3 class="text-white">No requests found.</h3>
           </div>
         </div>
+
+        <UserReports v-if="activeTab === 'Reports'" />
       </div>
     </div>
   </div>
@@ -114,8 +116,9 @@
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
 import { DateTime } from "luxon";
-import SignUpRequest from "@/components/Admin/SignUpRequest.vue";
-import RequestsPagination from "@/components/Admin/RequestsPagination.vue";
+import SignUpRequest from "@/components/Admin/RegistryView/SignUpRequest.vue";
+import RequestsPagination from "@/components/Admin/RegistryView/RequestsPagination.vue";
+import UserReports from "@/components/Admin/RegistryView/UserReports/UserReports.vue";
 
 declare interface Request {
   id: string;
@@ -134,11 +137,12 @@ export default defineComponent({
   components: {
     SignUpRequest,
     RequestsPagination,
+    UserReports,
   },
   data() {
     return {
       role: "Admin",
-      activeTab: "Registration",
+      activeTab: "Reports",
       show: true,
       requests: [] as Array<Request>,
       sortedRequests: [] as Array<Request>,
@@ -157,7 +161,7 @@ export default defineComponent({
     },
     hideSideBarText() {
       const width = window.innerWidth;
-      if (width < 768) {
+      if (width <= 768) {
         this.show = false;
       } else {
         this.show = true;

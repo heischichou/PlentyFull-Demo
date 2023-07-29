@@ -16,7 +16,7 @@
             </p>
           </div>
           <div>
-            <form action="" id="login-form">
+            <form action="" id="loginForm">
               <div class="form-floating mb-4">
                 <input
                   type="email"
@@ -36,7 +36,7 @@
                 <label for="password" class="text-white">Password</label>
               </div>
               <div class="text-start">
-                <a href="#" class="text-lightgreen" id="forgot-password"
+                <a href="#" class="text-lightgreen" id="forgotPassword"
                   >Forgot Password?</a
                 >
               </div>
@@ -45,9 +45,9 @@
                   type="checkbox"
                   class="form-check-input"
                   value=""
-                  id="rememberbox"
+                  id="rememberMe"
                 />
-                <label for="rememberbox" class="form-check-label text-white"
+                <label for="rememberMe" class="form-check-label text-white"
                   >Remember me</label
                 >
               </div>
@@ -55,7 +55,7 @@
                 <button
                   type="submit"
                   class="btn btn-lightgreen text-black fw-bold px-5 py-2 rounded-1"
-                  id="login-btn"
+                  ref="login"
                 >
                   Login
                 </button>
@@ -76,29 +76,4 @@ export default defineComponent({
 });
 </script>
 
-<style lang="scss">
-a {
-  text-decoration: none;
-}
-
-.transparent-input {
-  .form-floating {
-    .form-control {
-      background-color: transparent;
-      border-color: white !important;
-    }
-    .form-control:focus {
-      box-shadow: 0 0 0 0.25rem rgba(255, 255, 255, 0.25);
-    }
-    .form-control:focus ~ label::after,
-    .form-control:not(:placeholder-shown) ~ label::after {
-      position: absolute;
-      inset: 1rem 0.375rem;
-      z-index: -1;
-      height: 1.5em;
-      content: "";
-      background-color: rgba(#143d37, 0.75);
-    }
-  }
-}
-</style>
+<style scoped lang="scss"></style>
