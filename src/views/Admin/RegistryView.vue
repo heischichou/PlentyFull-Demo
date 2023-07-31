@@ -105,6 +105,43 @@
             <h3 class="text-white">No requests found.</h3>
           </div>
         </div>
+        <div v-show="activeTab === 'Members'">
+          <a
+            ref="warnBtn"
+            role="button"
+            class="link-white link-opacity-75-hover me-3"
+            data-bs-toggle="modal"
+            data-bs-target="#actionsModal"
+            @click="toggleModal('Warn')"
+            ><i class="bi bi-exclamation-circle fs-2"></i
+          ></a>
+          <a
+            ref="suspendBtn"
+            role="button"
+            class="link-white link-opacity-75-hover me-3"
+            data-bs-toggle="modal"
+            data-bs-target="#actionsModal"
+            @click="toggleModal('Suspend')"
+            ><i class="bi bi-lock fs-2"></i
+          ></a>
+          <a
+            ref="deleteBtn"
+            role="button"
+            class="link-white link-opacity-75-hover me-3"
+            data-bs-toggle="modal"
+            data-bs-target="#actionsModal"
+            @click="toggleModal('Delete')"
+            ><i class="bi bi-dash-circle fs-2"></i
+          ></a>
+          <ActionsModal
+            :action="actionModal"
+            :isVisible="showModal"
+            :selectedUsers="selectedUsers"
+            @closeModal="closeModal"
+            @removeSelected="removeSelected"
+            @cancelAction="cancelAction"
+          />
+        </div>
 
         <UserReports v-if="activeTab === 'Reports'" />
       </div>
@@ -118,6 +155,7 @@ import { uuid } from "vue-uuid";
 import { DateTime } from "luxon";
 import SignUpRequest from "@/components/Admin/RegistryView/SignUpRequest.vue";
 import RequestsPagination from "@/components/Admin/RegistryView/RequestsPagination.vue";
+import ActionsModal from "@/components/Admin/ActionsModal.vue";
 import UserReports from "@/components/Admin/RegistryView/UserReports/UserReports.vue";
 
 declare interface Request {
@@ -132,11 +170,21 @@ declare interface Request {
   createdAt: string;
 }
 
+declare interface User {
+  userId: string;
+  name: string;
+  address: string;
+  contact: string;
+  userType: string;
+  verified: string;
+}
+
 export default defineComponent({
   name: "RegistryView",
   components: {
     SignUpRequest,
     RequestsPagination,
+    ActionsModal,
     UserReports,
   },
   data() {
@@ -146,10 +194,39 @@ export default defineComponent({
       show: true,
       requests: [] as Array<Request>,
       sortedRequests: [] as Array<Request>,
+      members: [] as Array<User>,
+      selectedUsers: [
+        {
+          userId: uuid.v1(),
+          name: "Hippodromo Barangay Hall",
+          address: "Hippodromo, Cebu City",
+          contact: "032 233 1311",
+          userType: "Charity",
+          verified: "Yes",
+        },
+        {
+          userId: uuid.v1(),
+          name: "Itaewon",
+          address: "Juan Luna Ave, Cebu City",
+          contact: "032 233 1311",
+          userType: "Donor",
+          verified: "Yes",
+        },
+        {
+          userId: uuid.v1(),
+          name: "Pabugnawan",
+          address: "Sitio Nasipit, Cebu City",
+          contact: "032 233 1311",
+          userType: "Donor",
+          verified: "Yes",
+        },
+      ],
       visibleButtons: 0,
       totalRequests: 0,
       perPage: 3,
       currentPage: 1,
+      showModal: false,
+      actionModal: "",
     };
   },
   methods: {
@@ -166,6 +243,24 @@ export default defineComponent({
       } else {
         this.show = true;
       }
+    },
+    toggleModal(action: string) {
+      this.actionModal = action;
+      this.showModal = !this.showModal;
+    },
+    closeModal() {
+      this.showModal = false;
+    },
+    removeSelected(id: string) {
+      const index = this.selectedUsers.findIndex((user) => user.userId === id);
+      this.selectedUsers.splice(index, 1);
+    },
+    resetSelected(): void {
+      this.selectedUsers = Object.assign([], []);
+    },
+    cancelAction() {
+      this.resetSelected();
+      this.closeModal();
     },
     onPageChange(page: number) {
       this.currentPage = page;
@@ -268,6 +363,48 @@ export default defineComponent({
         phone: "(32) 417 3322",
         proof: "sampleImage.img",
         createdAt: "7/12/2023 1:50:00 AM",
+      },
+    ];
+    this.members = [
+      {
+        userId: uuid.v1(),
+        name: "Hippodromo Barangay Hall",
+        address: "Hippodromo, Cebu City",
+        contact: "032 233 1311",
+        userType: "Charity",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "Itaewon",
+        address: "Juan Luna Ave, Cebu City",
+        contact: "032 233 1311",
+        userType: "Donor",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "JPIC-IDC Inc.",
+        address: "Maguikay, Mandaue City",
+        contact: "032 233 1311",
+        userType: "Charity",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "Mayeen’s Catering Services",
+        address: "Cebu City",
+        contact: "032 233 1311",
+        userType: "Donor",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "Pabugnawan",
+        address: "Sitio Nasipit, Cebu City",
+        contact: "032 233 1311",
+        userType: "Donor",
+        verified: "Yes",
       },
     ];
     this.totalRequests = this.getTotalRequests;

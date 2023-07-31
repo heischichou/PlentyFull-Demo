@@ -49,4 +49,15 @@ describe("Registry Page", () => {
         });
     });
   });
+
+  it("should contain and display actions buttons", () => {
+    cy.get("#members").click();
+    cy.get("#members").should("have.class", "active");
+    cy.get("a").find(".bi-exclamation-circle").should("exist");
+    cy.get("a").find(".bi-exclamation-circle").should("be.visible");
+    cy.get("a").find(".bi-lock").should("exist");
+    cy.get("a").find(".bi-lock").should("be.visible");
+    cy.get("a").find(".bi-dash-circle").should("exist");
+    cy.get("a").find(".bi-dash-circle").should("be.visible");
+  });
 });
