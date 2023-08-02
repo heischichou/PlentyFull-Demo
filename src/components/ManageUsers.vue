@@ -1,254 +1,242 @@
 <template>
-  <div class="container">
+  <div>
     <form action="get">
       <div class="input-group mb-2">
         <input
           type="text"
-          class="form-control border border-secondary bg-registry text-white rounded-bottom-0"
+          class="form-control border-3 border-primary bg-transparent text-white rounded-end-0 rounded-top-4 px-4 py-3"
           placeholder="Search here..."
-          aria-label="Search here..."
-          aria-describedby="button-addon2"
+          id="searchbar"
+          @change="setSearchText($event.target.value)"
         />
         <button
-          class="btn btn-outline-secondary ps-3"
+          class="btn btn-outline-primary border-start-0 border-3 px-4"
           type="button"
           id="button-addon2"
         >
           <em class="bi bi-arrow-clockwise text-white"></em>
         </button>
-        <button
-          class="btn border border-start-0 border-end-0 border-secondary"
-          type="button"
-          id="button-addon2"
+        <div
+          class="d-flex justify-content-around align-items-center gap-3 border border-primary border-3 border-start-0 rounded-end-4 rounded-bottom-0 px-4"
         >
-          <em class="bi bi-exclamation-circle text-white"></em>
-        </button>
-        <button
-          class="btn border border-start-0 border-end-0 border-secondary"
-          type="button"
-          id="button-addon2"
-        >
-          <em class="bi bi-lock text-white"></em>
-        </button>
-        <button
-          class="btn border border-secondary border-start-0 rounded-bottom-0"
-          type="button"
-          id="button-addon2"
-        >
-          <em class="bi bi-dash-circle text-white"></em>
-        </button>
+          <a
+            ref="warnBtn"
+            role="button"
+            class="link-white link-opacity-75-hover"
+            data-bs-toggle="modal"
+            data-bs-target="#actionsModal"
+            @click="toggleModal('Warn')"
+            ><em class="bi bi-exclamation-circle text-white"></em
+          ></a>
+          <a
+            ref="suspendBtn"
+            role="button"
+            class="link-white link-opacity-75-hover"
+            data-bs-toggle="modal"
+            data-bs-target="#actionsModal"
+            @click="toggleModal('Suspend')"
+            ><em class="bi bi-lock text-white"></em
+          ></a>
+          <a
+            ref="deleteBtn"
+            role="button"
+            class="link-white link-opacity-75-hover"
+            data-bs-toggle="modal"
+            data-bs-target="#actionsModal"
+            @click="toggleModal('Delete')"
+            ><em class="bi bi-dash-circle text-white"></em
+          ></a>
+        </div>
       </div>
-      <div class="table-responsive-md">
-        <table
-          class="table table-registry table-hover border-top border-start border-end border-secondary align-middle"
-        >
-          <thead>
-            <tr class="table-success">
-              <th scope="col"></th>
-              <th scope="col">Name</th>
-              <th scope="col">Address</th>
-              <th scope="col">Contact No.</th>
-              <th scope="col">User Type</th>
-              <th scope="col">Verified?</th>
-              <th scope="col"></th>
-            </tr>
-          </thead>
-          <tbody class="table-group-divider border-secondary">
-            <tr>
-              <th scope="row">
-                <input class="form-check-input" type="checkbox" value="" />
-              </th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-              <td>mem</td>
-              <td>yeah</td>
-              <td>
-                <button class="btn" type="button" id="button-addon2">
-                  <em class="bi bi-three-dots text-white"></em>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+      <Members
+        :headers="headers"
+        :members="
+          members.slice((currentPage - 1) * perPage, currentPage * perPage)
+        "
+        :selectedUsers="selectedUsers"
+        @update:selectedUsers="onSelectedUserChange"
+        @runSingleAction="onRunSingleAction"
+      />
+      <ActionsModal
+        :action="actionModal"
+        :isVisible="showModal"
+        :selectedUsers="selectedUsers"
+        @closeModal="closeModal"
+        @removeSelected="removeSelected"
+        @cancelAction="cancelAction"
+      />
     </form>
+    <Pagination
+      :maxVisibleButtons="visibleButtons"
+      :totalMembers="totalMembers"
+      :perPage="perPage"
+      :currentPage="currentPage"
+      @pageChanged="onPageChange"
+    />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
+import Members from "./UsersTable.vue";
+import ActionsModal from "@/components/Admin/ActionsModal.vue";
+import Pagination from "./UsersPagination.vue";
 
-declare interface FoodItem {
-  itemId: string;
-  name: string;
-  type: string;
-  stage: string;
-  quantity: number;
-  weight: number;
-  createdAt: string;
-  updatedAt: string;
+declare interface Header {
+  key: string;
+  label: string;
 }
 
-declare interface Queuer {
-  queuerId: string;
-  charityId: string;
+declare interface UserDetails {
+  memberId: string;
   name: string;
-  status: string;
-  queuePos: number;
-  queueWeight: string;
-  distance: number;
-  donationsReceived: number;
-  createdAt: string;
-  updatedAt: string;
+  address: string;
+  number: string;
+  type: string;
+  verification: string;
 }
 
 export default defineComponent({
-  name: "ManageUsers",
+  name: "MembersList",
+  components: {
+    Members,
+    ActionsModal,
+    Pagination,
+  },
   data() {
     return {
-      windowWidth: window.innerWidth,
-      queuers: [] as Queuer[],
-      newItem: {
-        itemId: uuid.v1(),
-        name: "",
-        type: "Eggs and Dairy",
-        stage: "In Storage",
-        quantity: 0,
-        weight: 0,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      } as FoodItem,
-      foodItems: [
-        {
-          itemId: uuid.v1(),
-          name: "Chicken Breast",
-          type: "Meat and Poultry",
-          stage: "In Storage",
-          quantity: 2,
-          weight: 1,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        },
-        {
-          itemId: uuid.v1(),
-          name: "Brussels Sprouts",
-          type: "Vegetables",
-          stage: "Prepared",
-          quantity: 1,
-          weight: 3,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        },
-        {
-          itemId: uuid.v1(),
-          name: "Tuna Panga",
-          type: "Fish and Seafood",
-          stage: "In Storage",
-          quantity: 2,
-          weight: 0.25,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        },
-        {
-          itemId: uuid.v1(),
-          name: "Duck Eggs",
-          type: "Eggs and Dairy",
-          stage: "Prepared",
-          quantity: 2,
-          weight: 0.2,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        },
-      ] as FoodItem[],
+      showModal: false,
+      actionModal: "",
+      headers: [
+        { key: "name", label: "Name" },
+        { key: "address", label: "Address" },
+        { key: "number", label: "Contact No." },
+        { key: "type", label: "User Type" },
+        { key: "verification", label: "Verified" },
+        { key: "actions", label: "" },
+      ] as Header[],
+      members: [] as Array<UserDetails>,
+      visibleButtons: 0,
+      totalMembers: 0,
+      perPage: 5,
+      currentPage: 1,
+      selectedUsers: [] as Array<UserDetails>,
     };
   },
-  methods: {
-    onResize() {
-      this.windowWidth = window.innerWidth;
+  computed: {
+    getTotalMembers: function (): number {
+      return this.members.length;
     },
-    createItem() {
-      this.foodItems.push(this.newItem as FoodItem);
-      this.newItem = Object.assign(
-        {},
-        {
-          itemId: uuid.v1(),
-          name: "",
-          type: "Eggs and Dairy",
-          stage: "In Storage",
-          quantity: 0,
-          weight: 0,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        }
-      );
-    },
-    removeItem(index: number) {
-      this.foodItems.splice(index, 1);
-    },
-    resetForm() {
-      this.newItem = Object.assign(
-        {},
-        {
-          itemId: uuid.v1(),
-          name: "",
-          type: "Eggs and Dairy",
-          stage: "In Storage",
-          quantity: 0,
-          weight: 0,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        }
-      );
-      this.foodItems = Object.assign([], []);
+    setVisibleButtons: function (): number {
+      const pages = Math.ceil(this.totalMembers / this.perPage);
+      return this.totalMembers > 0 && pages >= 3 ? 3 : pages;
     },
   },
-  mounted() {
-    window.addEventListener("resize", this.onResize);
-    this.queuers = Object.assign(
-      [],
-      [
-        {
-          queuerId: uuid.v1(),
-          charityId: uuid.v1(),
-          name: "Cebu Food Bank",
-          status: "Pending",
-          queuePos: 1,
-          queueWeight: 1000,
-          distance: 1100,
-          donationsReceived: 1,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        },
-        {
-          queuerId: uuid.v1(),
-          charityId: uuid.v1(),
-          name: "Hippodromo Barangay Hall",
-          status: "Pending",
-          queuePos: 2,
-          queueWeight: 1100,
-          distance: 1300,
-          donationsReceived: 2,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        },
-        {
-          queuerId: uuid.v1(),
-          charityId: uuid.v1(),
-          name: "JPIC-IDC Inc.",
-          status: "Pending",
-          queuePos: 3,
-          queueWeight: 1200,
-          distance: 1800,
-          donationsReceived: 2,
-          createdAt: new Date().toString(),
-          updatedAt: new Date().toString(),
-        },
-      ]
-    );
+  methods: {
+    toggleModal(action: string) {
+      this.actionModal = action;
+      this.showModal = !this.showModal;
+    },
+    closeModal() {
+      this.showModal = false;
+    },
+    removeSelected(id: string) {
+      const index = this.selectedUsers.findIndex(
+        (user) => user.memberId === id
+      );
+      this.selectedUsers.splice(index, 1);
+    },
+    resetSelected(): void {
+      this.selectedUsers = Object.assign([], []);
+    },
+    cancelAction() {
+      this.resetSelected();
+      this.closeModal();
+    },
+    onSelectedUserChange(selectedMember: UserDetails) {
+      if (this.selectedUsers?.includes(selectedMember)) {
+        this.removeSelected(selectedMember.memberId);
+      } else {
+        this.selectedUsers.push(selectedMember);
+      }
+    },
+    onRunSingleAction(member: UserDetails, action: string) {
+      this.resetSelected();
+      this.selectedUsers.push(member);
+      this.toggleModal(action);
+    },
+    onPageChange(page: number) {
+      this.currentPage = page;
+    },
+  },
+  beforeMount() {
+    this.members = [
+      {
+        memberId: uuid.v1(),
+        name: "Hippodromo Barangay Hall",
+        address: "Hippodromo, Cebu City",
+        number: "032 233 1311",
+        type: "Charity",
+        verification: "Yes",
+      },
+      {
+        memberId: uuid.v1(),
+        name: "Itaewon",
+        address: "Juan Luna Ave, Cebu City",
+        number: "032 233 1311",
+        type: "Donor",
+        verification: "Yes",
+      },
+      {
+        memberId: uuid.v1(),
+        name: "JPIC-IDC Inc.",
+        address: "Maguikay, Mandaue City",
+        number: "032 233 1311",
+        type: "Charity",
+        verification: "Yes",
+      },
+      {
+        memberId: uuid.v1(),
+        name: "Mayeen’s Catering Services",
+        address: "Cebu City",
+        number: "032 233 1311",
+        type: "Donor",
+        verification: "Yes",
+      },
+      {
+        memberId: uuid.v1(),
+        name: "Pabugnawan",
+        address: "Sitio Nasipit, Cebu City",
+        number: "032 233 1311",
+        type: "Donor",
+        verification: "Yes",
+      },
+      {
+        memberId: uuid.v1(),
+        name: "Jangoo",
+        address: "Cebu City",
+        number: "032 233 1311",
+        type: "Charity",
+        verification: "No",
+      },
+      {
+        memberId: uuid.v1(),
+        name: "Kita Kits",
+        address: "Cebu City",
+        number: "032 233 1311",
+        type: "Donor",
+        verification: "No",
+      },
+    ];
+    this.totalMembers = this.getTotalMembers;
+    this.visibleButtons = this.setVisibleButtons;
   },
 });
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+::placeholder {
+  color: #f8f9fa !important;
+}
+</style>
