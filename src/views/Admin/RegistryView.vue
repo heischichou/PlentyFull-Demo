@@ -1,32 +1,31 @@
 <template>
-  <div class="container-fluid bg-registry p-0">
+  <div class="container-fluid bg-admin p-0">
     <div class="row">
-      <div class="col-sm-auto sticky-top pe-0 shadow-sm">
+      <div class="col-lg-auto sticky-top pe-0 shadow-sm">
         <div
-          class="navbar d-flex flex-sm-column flex-row flex-nowrap bg-registry border-end border-green border-2 h-100 sticky-top p-0"
+          class="navbar d-flex flex-row flex-lg-column flex-nowrap bg-admin border-end border-green border-2 h-100 sticky-top p-0"
           role="navigation"
           id="sideBar"
         >
           <button
-            class="navbar-toggler align-self-start d-none d-sm-block border-0 my-3 mx-3"
+            class="navbar-toggler align-self-start d-none d-lg-block border-0 my-3 mx-3"
             type="button"
             aria-label="Toggle Sidebar"
             @click="toggleSidebar"
+            ref="sidebarToggle"
           >
             <em class="bi bi-list text-white fs-3"></em>
           </button>
           <ul
-            class="nav nav-pills nav-flush flex-sm-column flex-row flex-nowrap justify-content-around align-items-center w-100 mb-auto"
+            class="nav nav-pills nav-flush flex-row flex-lg-column flex-nowrap justify-content-around align-items-center w-100 mb-auto"
           >
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
-                @click="togglePages(true, false, false)"
+                @click="switchTab('Registration')"
+                id="registrationTab"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="signUp ? 'active' : ''"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-title="Awaiting Transactions"
-                aria-label="Awaiting Transactions"
+                :class="activeTab === 'Registration' ? 'active' : ''"
+                role="button"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -39,13 +38,11 @@
             </li>
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
-                @click="togglePages(false, true, false)"
+                @click="switchTab('Members')"
+                id="membersTab"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="manageUsers ? 'active' : ''"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-title="Completed Transactions"
-                aria-label="Completed Transactions"
+                :class="activeTab === 'Members' ? 'active' : ''"
+                role="button"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -58,13 +55,11 @@
             </li>
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
-                @click="togglePages(false, false, true)"
+                @click="switchTab('Reports')"
+                id="reportsTab"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="reports ? 'active' : ''"
-                data-bs-toggle="tooltip"
-                data-bs-placement="right"
-                data-bs-title="Cancelled Transactions"
-                aria-label="Cancelled Transactions"
+                :class="activeTab === 'Reports' ? 'active' : ''"
+                role="button"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
@@ -79,13 +74,42 @@
         </div>
       </div>
 
-      <div class="col-sm p-5 min-vh-100">
-        <h1
-          class="text-start text-white fw-bold pb-3"
-          v-text="updateTitle()"
-        ></h1>
-        <p class="text-white">Insert content here</p>
-        <ManageUsers />
+      <div class="col-md p-5 min-vh-100">
+        <h1 class="text-start text-white fw-bold pb-4">{{ activeTab }}</h1>
+        <div v-show="activeTab === 'Registration'">
+          <div id="requestsSection" v-if="requests.length > 0">
+            <div v-if="sortedRequests.length > 0">
+              <SignUpRequest
+                v-for="request in sortedRequests.slice(
+                  (currentPage - 1) * perPage,
+                  currentPage * perPage
+                )"
+                class="mb-3"
+                :key="request.id"
+                :request="request"
+                :dateDuration="
+                  convertToDuration(request.createdAt, new Date().toISOString())
+                "
+              />
+              <RequestsPagination
+                :maxVisibleButtons="visibleButtons"
+                :totalRequests="totalRequests"
+                :perPage="perPage"
+                :currentPage="currentPage"
+                @pageChanged="onPageChange"
+              />
+            </div>
+          </div>
+
+          <div v-else>
+            <h3 class="text-white">No requests found.</h3>
+          </div>
+        </div>
+        <div v-show="activeTab === 'Members'">
+          <ManageUsers :members="members" />
+        </div>
+
+        <UserReports v-if="activeTab === 'Reports'" />
       </div>
     </div>
   </div>
@@ -93,61 +117,223 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { uuid } from "vue-uuid";
+import { DateTime } from "luxon";
+import SignUpRequest from "@/components/Admin/RegistryView/SignUpRequest.vue";
+import RequestsPagination from "@/components/Admin/RegistryView/RequestsPagination.vue";
+import UserReports from "@/components/Admin/RegistryView/UserReports/UserReports.vue";
 import ManageUsers from "@/components/ManageUsers.vue";
 
+declare interface Request {
+  id: string;
+  requestName: string;
+  organizationType: string;
+  description: string;
+  location: string;
+  email: string;
+  phone: string;
+  proof: string;
+  createdAt: string;
+}
+
+declare interface User {
+  userId: string;
+  name: string;
+  address: string;
+  contact: string;
+  userType: string;
+  verified: string;
+}
 export default defineComponent({
   name: "RegistryView",
   components: {
+    SignUpRequest,
+    RequestsPagination,
+    UserReports,
     ManageUsers,
   },
   data() {
     return {
+      role: "Admin",
+      activeTab: "Registration",
       show: true,
-      signUp: true,
-      manageUsers: false,
-      reports: false,
+      requests: [] as Array<Request>,
+      sortedRequests: [] as Array<Request>,
+      members: [] as Array<User>,
+      visibleButtons: 0,
+      totalRequests: 0,
+      perPage: 3,
+      currentPage: 1,
     };
   },
   methods: {
-    updateTitle() {
-      if (this.signUp) {
-        return "Registration";
-      } else if (this.manageUsers) {
-        return "Members";
-      } else if (this.reports) {
-        return "Reports";
-      } else {
-        return "Title";
-      }
+    switchTab(tab: string) {
+      this.activeTab = tab;
     },
     toggleSidebar() {
       this.show = !this.show;
     },
     hideSideBarText() {
       const width = window.innerWidth;
-      if (width < 576) {
+      if (width <= 768) {
         this.show = false;
       } else {
         this.show = true;
       }
     },
-    togglePages(
-      signUpdate: boolean,
-      manageUsersUpdate: boolean,
-      reportsUpdate: boolean
-    ) {
-      this.signUp = signUpdate;
-      this.manageUsers = manageUsersUpdate;
-      this.reports = reportsUpdate;
+    onPageChange(page: number) {
+      this.currentPage = page;
+    },
+    sortRequests() {
+      const sorted = this.requests
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b["createdAt"]).getTime() -
+            new Date(a["createdAt"]).getTime()
+        );
+      this.sortedRequests = Object.assign([], sorted);
+    },
+    convertToDuration(date: string, current: string) {
+      date = new Date(date).toISOString();
+      const createdAt = DateTime.fromISO(date);
+      const currentDate = DateTime.fromISO(current);
+      const duration = currentDate
+        .diff(createdAt, [
+          "years",
+          "months",
+          "weeks",
+          "days",
+          "hours",
+          "minutes",
+          "seconds",
+          "milliseconds",
+        ])
+        .toObject();
+      const units = [
+        { value: duration.years ?? 0, unit: "year" },
+        { value: duration.months ?? 0, unit: "month" },
+        { value: duration.weeks ?? 0, unit: "week" },
+        { value: duration.days ?? 0, unit: "day" },
+        { value: duration.hours ?? 0, unit: "hour" },
+        { value: duration.minutes ?? 0, unit: "minute" },
+        { value: duration.seconds ?? 0, unit: "second" },
+      ];
+
+      for (const unit of units) {
+        if (unit.value >= 1) {
+          return `${unit.value} ${
+            unit.value === 1 ? unit.unit : unit.unit + "s"
+          } ago`;
+        }
+      }
+
+      return "Just now";
+    },
+  },
+  computed: {
+    getTotalRequests: function (): number {
+      return this.requests.length;
+    },
+    setVisibleButtons: function (): number {
+      const pages = Math.ceil(this.totalRequests / this.perPage);
+      if (this.totalRequests > 0 && pages >= 3) {
+        return 3;
+      } else {
+        return pages;
+      }
     },
   },
   mounted() {
     window.addEventListener("resize", this.hideSideBarText);
+    this.requests = [
+      {
+        id: uuid.v1(),
+        requestName: "Cebu Food Bank",
+        organizationType: "Charity",
+        description:
+          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+        location: "CMG Bldg, M. C. Briones St, Tipolo, Mandaue City",
+        email: "info@cebufoodbank.com",
+        phone: "(32) 417 3322",
+        proof: "https://my.alfred.edu/zoom/_images/foster-lake.jpg",
+        createdAt: new Date().toString(),
+      },
+      {
+        id: uuid.v1(),
+        requestName: "JPIC-IDC Inc.",
+        organizationType: "Charity",
+        description:
+          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+        location: "CMG Bldg, M. C. Briones St, Tipolo, Mandaue City",
+        email: "info@JPIC.com",
+        phone: "(32) 417 3322",
+        proof: "https://www.imagelighteditor.com/img/bg-after.jpg",
+        createdAt: "7/13/2023 2:00:00 AM",
+      },
+      {
+        id: uuid.v1(),
+        requestName: "Hipodromo Barangay Hall",
+        organizationType: "Charity",
+        description:
+          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+        location: "CMG Bldg, M. C. Briones St, Tipolo, Mandaue City",
+        email: "info@Hipodromo.com",
+        phone: "(32) 417 3322",
+        proof: "sampleImage.img",
+        createdAt: "7/12/2023 1:50:00 AM",
+      },
+    ];
+    this.members = [
+      {
+        userId: uuid.v1(),
+        name: "Hippodromo Barangay Hall",
+        address: "Hippodromo, Cebu City",
+        contact: "032 233 1311",
+        userType: "Charity",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "Itaewon",
+        address: "Juan Luna Ave, Cebu City",
+        contact: "032 233 1311",
+        userType: "Donor",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "JPIC-IDC Inc.",
+        address: "Maguikay, Mandaue City",
+        contact: "032 233 1311",
+        userType: "Charity",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "Mayeen’s Catering Services",
+        address: "Cebu City",
+        contact: "032 233 1311",
+        userType: "Donor",
+        verified: "Yes",
+      },
+      {
+        userId: uuid.v1(),
+        name: "Pabugnawan",
+        address: "Sitio Nasipit, Cebu City",
+        contact: "032 233 1311",
+        userType: "Donor",
+        verified: "Yes",
+      },
+    ];
+    this.totalRequests = this.getTotalRequests;
+    this.visibleButtons = this.setVisibleButtons;
+    this.sortRequests();
   },
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 #sideBar > ul > li > .nav-link.active {
   background-color: rgba(#45bf5d, 0.53) !important;
   @media (max-width: 576px) {
