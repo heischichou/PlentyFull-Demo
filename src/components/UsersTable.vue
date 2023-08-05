@@ -1,5 +1,5 @@
 <template>
-  <div class="table-responsive">
+  <div class="table-responsive" id="usersTable">
     <table
       class="table table-hover table-responsive table-admin overflow-hidden rounded-1"
     >
@@ -195,8 +195,10 @@ export default defineComponent({
     return {
       filterBy: "name",
       ascending: true,
+      searchText: "",
       filteredMembers: [] as UserDetails[],
       selectedMembers: this.selectedUsers,
+      filteredUsers: {} as UserDetails,
     };
   },
   methods: {
@@ -205,6 +207,20 @@ export default defineComponent({
     },
     runSingleAction(member: UserDetails, action: string) {
       this.$emit("runSingleAction", member, action);
+    },
+    setSelectedMembers(member: UserDetails): void {
+      this.filteredUsers = member;
+    },
+    setSearchText(data: string): void {
+      this.searchText = data;
+      if (data.length === 0) {
+        this.filteredMembers = Object.assign([], this.members);
+      } else {
+        this.filteredMembers = this.members.filter((report: UserDetails) => {
+          const key = report[this.filterBy as keyof UserDetails] as string;
+          return key.toLowerCase().includes(data.toLowerCase());
+        });
+      }
     },
     setFilterBy(filterBy: string): void {
       if (filterBy === this.filterBy) {

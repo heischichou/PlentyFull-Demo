@@ -1,54 +1,57 @@
 <template>
-  <div>
-    <form action="get">
-      <div class="input-group mb-2">
-        <input
-          type="text"
-          class="form-control border-3 border-primary bg-transparent text-white rounded-end-0 rounded-top-4 px-4 py-3"
-          placeholder="Search here..."
-          id="searchbar"
-          @change="setSearchText($event.target.value)"
-        />
-        <button
-          class="btn btn-outline-primary border-start-0 border-3 px-4"
-          type="button"
-          id="button-addon2"
-        >
-          <em class="bi bi-arrow-clockwise text-white"></em>
-        </button>
-        <div
-          class="d-flex justify-content-around align-items-center gap-3 border border-primary border-3 border-start-0 rounded-end-4 rounded-bottom-0 px-4"
-        >
-          <a
-            ref="warnBtn"
-            role="button"
-            class="link-white link-opacity-75-hover"
-            data-bs-toggle="modal"
-            data-bs-target="#actionsModal"
-            @click="toggleModal('Warn')"
-            ><em class="bi bi-exclamation-circle text-white"></em
-          ></a>
-          <a
-            ref="suspendBtn"
-            role="button"
-            class="link-white link-opacity-75-hover"
-            data-bs-toggle="modal"
-            data-bs-target="#actionsModal"
-            @click="toggleModal('Suspend')"
-            ><em class="bi bi-lock text-white"></em
-          ></a>
-          <a
-            ref="deleteBtn"
-            role="button"
-            class="link-white link-opacity-75-hover"
-            data-bs-toggle="modal"
-            data-bs-target="#actionsModal"
-            @click="toggleModal('Delete')"
-            ><em class="bi bi-dash-circle text-white"></em
-          ></a>
+  <div id="manageUsers">
+    <form>
+      <div class="d-flex">
+        <div class="input-group mb-2">
+          <input
+            type="text"
+            class="form-control border-3 border-primary bg-transparent text-white rounded-end-0 rounded-top-4 px-4 py-3"
+            placeholder="Search here..."
+            id="searchbar"
+            @change="setSearchText($event.target.value)"
+          />
+          <button
+            class="btn btn-outline-primary border-start-0 border-3 px-4"
+            type="button"
+            id="button-addon2"
+          >
+            <em class="bi bi-arrow-clockwise text-white"></em>
+          </button>
+          <div
+            class="d-flex justify-content-around align-items-center gap-3 border border-primary border-3 border-start-0 rounded-end-4 rounded-bottom-0 px-4"
+          >
+            <a
+              ref="warnBtn"
+              role="button"
+              class="link-white link-opacity-75-hover"
+              data-bs-toggle="modal"
+              data-bs-target="#actionsModal"
+              @click="toggleModal('Warn')"
+              ><em class="bi bi-exclamation-circle text-white"></em
+            ></a>
+            <a
+              ref="suspendBtn"
+              role="button"
+              class="link-white link-opacity-75-hover"
+              data-bs-toggle="modal"
+              data-bs-target="#actionsModal"
+              @click="toggleModal('Suspend')"
+              ><em class="bi bi-lock text-white"></em
+            ></a>
+            <a
+              ref="deleteBtn"
+              role="button"
+              class="link-white link-opacity-75-hover"
+              data-bs-toggle="modal"
+              data-bs-target="#actionsModal"
+              @click="toggleModal('Delete')"
+              ><em class="bi bi-dash-circle text-white"></em
+            ></a>
+          </div>
         </div>
       </div>
       <Members
+        class="mb-5"
         :headers="headers"
         :members="
           members.slice((currentPage - 1) * perPage, currentPage * perPage)
