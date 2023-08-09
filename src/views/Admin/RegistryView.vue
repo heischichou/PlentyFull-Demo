@@ -1,14 +1,14 @@
 <template>
   <div class="registry container-fluid bg-admin p-0">
     <div class="row">
-      <div class="col-lg-auto sticky-top pe-0 shadow-sm">
+      <div class="col-xl-auto sticky-top pe-0 shadow-sm">
         <div
-          class="navbar d-flex flex-row flex-lg-column flex-nowrap bg-admin border-end border-green border-2 h-100 sticky-top p-0"
+          class="navbar d-flex flex-row flex-xl-column flex-nowrap bg-admin border-end border-green border-2 h-100 sticky-top p-0"
           role="navigation"
           id="sideBar"
         >
           <button
-            class="navbar-toggler align-self-start d-none d-lg-block border-0 my-3 mx-3"
+            class="navbar-toggler align-self-start d-none d-xl-block border-0 my-3 mx-3"
             type="button"
             aria-label="Toggle Sidebar"
             @click="toggleSidebar"
@@ -17,7 +17,7 @@
             <em class="bi bi-list text-white fs-3"></em>
           </button>
           <ul
-            class="nav nav-pills nav-flush flex-row flex-lg-column flex-nowrap justify-content-around align-items-center w-100 mb-auto"
+            class="nav nav-pills nav-flush flex-row flex-xl-column flex-nowrap justify-content-around align-items-center w-100 mb-auto"
           >
             <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
               <a
@@ -114,12 +114,12 @@ export default defineComponent({
   },
   mounted() {
     window.addEventListener("resize", () => {
-      this.show = window.innerWidth <= 768 ? false : true;
+      this.show = window.innerWidth > 768;
     });
   },
   beforeUnmount() {
     window.removeEventListener("resize", () => {
-      this.show = window.innerWidth <= 768 ? false : true;
+      this.show = window.innerWidth > 768;
     });
   },
 });

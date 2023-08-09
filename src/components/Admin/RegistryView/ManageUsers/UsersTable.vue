@@ -1,65 +1,61 @@
 <template>
   <div id="members">
-    <div class="search-bar d-flex">
-      <div class="input-group mb-2">
-        <input
-          type="text"
-          class="form-control border-3 border-primary bg-transparent text-white rounded-end-0 rounded-top-4 px-4 py-3"
-          placeholder="Search here..."
-          id="searchBar"
-          :value="searchText"
-          @change="setSearchText($event.target.value)"
-        />
-        <button
-          class="btn btn-outline-primary border-start-0 border-3 px-4"
-          type="button"
-          id="button-addon2"
-          @click="
-            () => {
-              setSearchText('');
-              $emit('resetSelected');
-            }
-          "
-        >
-          <em class="bi bi-arrow-clockwise text-white"></em>
-        </button>
-        <div
-          class="d-flex justify-content-around align-items-center gap-3 border border-primary border-3 border-start-0 rounded-end-4 rounded-bottom-0 px-4"
-        >
-          <a
-            ref="warn"
-            role="button"
-            class="link-white link-opacity-75-hover"
-            data-bs-toggle="modal"
-            data-bs-target="#actionsModal"
-            @click="toggleModal('Warn')"
-            ><em class="bi bi-exclamation-circle text-white"></em
-          ></a>
-          <a
-            ref="suspend"
-            role="button"
-            class="link-white link-opacity-75-hover"
-            data-bs-toggle="modal"
-            data-bs-target="#actionsModal"
-            @click="toggleModal('Suspend')"
-            ><em class="bi bi-lock text-white"></em
-          ></a>
-          <a
-            ref="delete"
-            role="button"
-            class="link-white link-opacity-75-hover"
-            data-bs-toggle="modal"
-            data-bs-target="#actionsModal"
-            @click="toggleModal('Delete')"
-            ><em class="bi bi-dash-circle text-white"></em
-          ></a>
-        </div>
+    <div class="search-bar input-group">
+      <input
+        type="text"
+        class="form-control border-3 border-primary bg-transparent text-white rounded-end-0 rounded-top-4 px-4 py-3"
+        placeholder="Search here..."
+        id="searchBar"
+        :value="searchText"
+        @change="setSearchText($event.target.value)"
+      />
+      <button
+        class="btn btn-outline-primary border-start-0 border-3 px-4"
+        type="button"
+        id="button-addon2"
+        @click="
+          () => {
+            setSearchText('');
+            $emit('resetSelected');
+          }
+        "
+      >
+        <em class="bi bi-arrow-clockwise text-white"></em>
+      </button>
+      <div
+        class="d-flex justify-content-around align-items-center gap-3 border border-primary border-3 border-start-0 rounded-end-4 rounded-bottom-0 px-4"
+      >
+        <a
+          ref="warn"
+          role="button"
+          class="link-white link-opacity-75-hover"
+          data-bs-toggle="modal"
+          data-bs-target="#actionsModal"
+          @click="toggleModal('Warn')"
+          ><em class="bi bi-exclamation-circle text-white"></em
+        ></a>
+        <a
+          ref="suspend"
+          role="button"
+          class="link-white link-opacity-75-hover"
+          data-bs-toggle="modal"
+          data-bs-target="#actionsModal"
+          @click="toggleModal('Suspend')"
+          ><em class="bi bi-lock text-white"></em
+        ></a>
+        <a
+          ref="delete"
+          role="button"
+          class="link-white link-opacity-75-hover"
+          data-bs-toggle="modal"
+          data-bs-target="#actionsModal"
+          @click="toggleModal('Delete')"
+          ><em class="bi bi-dash-circle text-white"></em
+        ></a>
       </div>
     </div>
-    <div class="table-responsive" id="usersTable">
-      <table
-        class="table table-hover table-responsive table-admin overflow-hidden rounded-1"
-      >
+    <div class="users-table table-responsive mt-2 mb-3">
+      <table class="table table-hover table-admin overflow-hidden rounded-1">
         <thead class="table-registry border-3 border-primary">
           <tr class="align-middle">
             <th
@@ -133,7 +129,7 @@
             >
               <template v-for="(header, index) in headers">
                 <template v-if="header.key === 'name'">
-                  <td :key="index" class="text-center py-4">
+                  <td :key="index" class="py-4">
                     <div
                       class="d-flex align-items-center justify-content-start py-1"
                     >
@@ -147,7 +143,7 @@
                           @change="toggleCheckbox(member)"
                         />
                       </div>
-                      <p class="m-0">{{ member[header.key] }}</p>
+                      <p class="text-start m-0">{{ member[header.key] }}</p>
                     </div>
                   </td>
                 </template>

@@ -1,5 +1,5 @@
 <template>
-  <form id="manageUsers" v-if="members.length > 0">
+  <div id="manageUsers" v-if="members.length > 0">
     <Users
       class="mb-5"
       :headers="headers"
@@ -28,7 +28,7 @@
       :currentPage="currentPage"
       @pageChanged="onPageChange"
     />
-  </form>
+  </div>
 
   <div v-else>
     <h3 class="text-white">No users found.</h3>

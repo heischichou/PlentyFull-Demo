@@ -136,4 +136,13 @@ describe("User Reports", () => {
     await wrapper.vm.setVisibleButtons;
     expect(mockSetVisibleButtons).toHaveReturnedWith(3);
   });
+
+  it("onPageChange() method successfully returns the correct page number", async () => {
+    const wrapper = factory([]);
+    const mockOnPageChange = jest.spyOn(wrapper.vm, "onPageChange");
+
+    wrapper.vm.onPageChange(2);
+    expect(mockOnPageChange).toHaveBeenCalled();
+    expect(wrapper.vm.currentPage).toEqual(2);
+  });
 });

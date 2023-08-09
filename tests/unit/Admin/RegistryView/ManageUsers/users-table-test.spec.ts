@@ -144,7 +144,7 @@ describe("Users Table", () => {
     }
   });
 
-  it("runs setSelectedReport() correctly", async () => {
+  it("runs setSelectedMember() correctly", async () => {
     const users = members();
     const wrapper = factory(users, []);
     const rows = wrapper.findAll(".member");
