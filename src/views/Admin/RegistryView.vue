@@ -1,5 +1,5 @@
 <template>
-  <div class="container-fluid bg-admin p-0">
+  <div class="registry container-fluid bg-admin p-0">
     <div class="row">
       <div class="col-lg-auto sticky-top pe-0 shadow-sm">
         <div
@@ -32,7 +32,7 @@
                     class="bi bi-hourglass text-white fs-2"
                     :class="show ? 'me-3' : ''"
                   ></i>
-                  <p class="m-0" v-show="show">Sign Up Requests</p>
+                  <p class="m-0" v-if="show">Sign Up Requests</p>
                 </div>
               </a>
             </li>
@@ -49,7 +49,7 @@
                     class="bi bi-clipboard-check text-white fs-2"
                     :class="show ? 'me-3' : ''"
                   ></i>
-                  <p class="m-0" v-show="show">Manage Users</p>
+                  <p class="m-0" v-if="show">Manage Users</p>
                 </div>
               </a>
             </li>
@@ -66,7 +66,7 @@
                     class="bi bi-slash-circle text-white fs-2"
                     :class="show ? 'me-3' : ''"
                   ></i>
-                  <p class="m-0" v-show="show">Reports</p>
+                  <p class="m-0" v-if="show">Reports</p>
                 </div>
               </a>
             </li>
@@ -76,39 +76,9 @@
 
       <div class="col-md p-5 min-vh-100">
         <h1 class="text-start text-white fw-bold pb-4">{{ activeTab }}</h1>
-        <div v-show="activeTab === 'Registration'">
-          <div id="requestsSection" v-if="requests.length > 0">
-            <div v-if="sortedRequests.length > 0">
-              <SignUpRequest
-                v-for="request in sortedRequests.slice(
-                  (currentPage - 1) * perPage,
-                  currentPage * perPage
-                )"
-                class="mb-3"
-                :key="request.id"
-                :request="request"
-                :dateDuration="
-                  convertToDuration(request.createdAt, new Date().toISOString())
-                "
-              />
-              <RequestsPagination
-                :maxVisibleButtons="visibleButtons"
-                :totalRequests="totalRequests"
-                :perPage="perPage"
-                :currentPage="currentPage"
-                @pageChanged="onPageChange"
-              />
-            </div>
-          </div>
 
-          <div v-else>
-            <h3 class="text-white">No requests found.</h3>
-          </div>
-        </div>
-        <div v-show="activeTab === 'Members'">
-          <ManageUsers :members="members" />
-        </div>
-
+        <Registration v-if="activeTab === 'Registration'" />
+        <ManageUsers v-if="activeTab === 'Members'" />
         <UserReports v-if="activeTab === 'Reports'" />
       </div>
     </div>
@@ -117,53 +87,21 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { uuid } from "vue-uuid";
-import { DateTime } from "luxon";
-import SignUpRequest from "@/components/Admin/RegistryView/SignUpRequest.vue";
-import RequestsPagination from "@/components/Admin/RegistryView/RequestsPagination.vue";
+import Registration from "@/components/Admin/RegistryView/UserRegistration/UserRegistration.vue";
 import UserReports from "@/components/Admin/RegistryView/UserReports/UserReports.vue";
-import ManageUsers from "@/components/ManageUsers.vue";
+import ManageUsers from "@/components/Admin/RegistryView/ManageUsers/ManageUsers.vue";
 
-declare interface Request {
-  id: string;
-  requestName: string;
-  organizationType: string;
-  description: string;
-  location: string;
-  email: string;
-  phone: string;
-  proof: string;
-  createdAt: string;
-}
-
-declare interface User {
-  userId: string;
-  name: string;
-  address: string;
-  contact: string;
-  userType: string;
-  verified: string;
-}
 export default defineComponent({
   name: "RegistryView",
   components: {
-    SignUpRequest,
-    RequestsPagination,
+    Registration,
     UserReports,
     ManageUsers,
   },
   data() {
     return {
-      role: "Admin",
       activeTab: "Registration",
       show: true,
-      requests: [] as Array<Request>,
-      sortedRequests: [] as Array<Request>,
-      members: [] as Array<User>,
-      visibleButtons: 0,
-      totalRequests: 0,
-      perPage: 3,
-      currentPage: 1,
     };
   },
   methods: {
@@ -173,162 +111,16 @@ export default defineComponent({
     toggleSidebar() {
       this.show = !this.show;
     },
-    hideSideBarText() {
-      const width = window.innerWidth;
-      if (width <= 768) {
-        this.show = false;
-      } else {
-        this.show = true;
-      }
-    },
-    onPageChange(page: number) {
-      this.currentPage = page;
-    },
-    sortRequests() {
-      const sorted = this.requests
-        .slice()
-        .sort(
-          (a, b) =>
-            new Date(b["createdAt"]).getTime() -
-            new Date(a["createdAt"]).getTime()
-        );
-      this.sortedRequests = Object.assign([], sorted);
-    },
-    convertToDuration(date: string, current: string) {
-      date = new Date(date).toISOString();
-      const createdAt = DateTime.fromISO(date);
-      const currentDate = DateTime.fromISO(current);
-      const duration = currentDate
-        .diff(createdAt, [
-          "years",
-          "months",
-          "weeks",
-          "days",
-          "hours",
-          "minutes",
-          "seconds",
-          "milliseconds",
-        ])
-        .toObject();
-      const units = [
-        { value: duration.years ?? 0, unit: "year" },
-        { value: duration.months ?? 0, unit: "month" },
-        { value: duration.weeks ?? 0, unit: "week" },
-        { value: duration.days ?? 0, unit: "day" },
-        { value: duration.hours ?? 0, unit: "hour" },
-        { value: duration.minutes ?? 0, unit: "minute" },
-        { value: duration.seconds ?? 0, unit: "second" },
-      ];
-
-      for (const unit of units) {
-        if (unit.value >= 1) {
-          return `${unit.value} ${
-            unit.value === 1 ? unit.unit : unit.unit + "s"
-          } ago`;
-        }
-      }
-
-      return "Just now";
-    },
-  },
-  computed: {
-    getTotalRequests: function (): number {
-      return this.requests.length;
-    },
-    setVisibleButtons: function (): number {
-      const pages = Math.ceil(this.totalRequests / this.perPage);
-      if (this.totalRequests > 0 && pages >= 3) {
-        return 3;
-      } else {
-        return pages;
-      }
-    },
   },
   mounted() {
-    window.addEventListener("resize", this.hideSideBarText);
-    this.requests = [
-      {
-        id: uuid.v1(),
-        requestName: "Cebu Food Bank",
-        organizationType: "Charity",
-        description:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        location: "CMG Bldg, M. C. Briones St, Tipolo, Mandaue City",
-        email: "info@cebufoodbank.com",
-        phone: "(32) 417 3322",
-        proof: "https://my.alfred.edu/zoom/_images/foster-lake.jpg",
-        createdAt: new Date().toString(),
-      },
-      {
-        id: uuid.v1(),
-        requestName: "JPIC-IDC Inc.",
-        organizationType: "Charity",
-        description:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        location: "CMG Bldg, M. C. Briones St, Tipolo, Mandaue City",
-        email: "info@JPIC.com",
-        phone: "(32) 417 3322",
-        proof: "https://www.imagelighteditor.com/img/bg-after.jpg",
-        createdAt: "7/13/2023 2:00:00 AM",
-      },
-      {
-        id: uuid.v1(),
-        requestName: "Hipodromo Barangay Hall",
-        organizationType: "Charity",
-        description:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        location: "CMG Bldg, M. C. Briones St, Tipolo, Mandaue City",
-        email: "info@Hipodromo.com",
-        phone: "(32) 417 3322",
-        proof: "sampleImage.img",
-        createdAt: "7/12/2023 1:50:00 AM",
-      },
-    ];
-    this.members = [
-      {
-        userId: uuid.v1(),
-        name: "Hippodromo Barangay Hall",
-        address: "Hippodromo, Cebu City",
-        contact: "032 233 1311",
-        userType: "Charity",
-        verified: "Yes",
-      },
-      {
-        userId: uuid.v1(),
-        name: "Itaewon",
-        address: "Juan Luna Ave, Cebu City",
-        contact: "032 233 1311",
-        userType: "Donor",
-        verified: "Yes",
-      },
-      {
-        userId: uuid.v1(),
-        name: "JPIC-IDC Inc.",
-        address: "Maguikay, Mandaue City",
-        contact: "032 233 1311",
-        userType: "Charity",
-        verified: "Yes",
-      },
-      {
-        userId: uuid.v1(),
-        name: "Mayeen’s Catering Services",
-        address: "Cebu City",
-        contact: "032 233 1311",
-        userType: "Donor",
-        verified: "Yes",
-      },
-      {
-        userId: uuid.v1(),
-        name: "Pabugnawan",
-        address: "Sitio Nasipit, Cebu City",
-        contact: "032 233 1311",
-        userType: "Donor",
-        verified: "Yes",
-      },
-    ];
-    this.totalRequests = this.getTotalRequests;
-    this.visibleButtons = this.setVisibleButtons;
-    this.sortRequests();
+    window.addEventListener("resize", () => {
+      this.show = window.innerWidth <= 768 ? false : true;
+    });
+  },
+  beforeUnmount() {
+    window.removeEventListener("resize", () => {
+      this.show = window.innerWidth <= 768 ? false : true;
+    });
   },
 });
 </script>
@@ -342,5 +134,41 @@ export default defineComponent({
   @media (min-width: 576px) {
     box-shadow: -5px 0px 0px #6ef997 inset !important;
   }
+}
+
+.registry :deep(.search-bar ::placeholder) {
+  color: #f8f9fa !important;
+}
+
+.registry :deep(.pagination .page-link) {
+  color: #fff;
+  background-color: transparent;
+  border: 1px solid #6ef997;
+}
+
+.registry :deep(.pagination .page-link:hover) {
+  z-index: 2;
+  background-color: #57cd7a2e;
+  cursor: pointer;
+}
+
+.registry :deep(.pagination .page-link.disabled) {
+  color: #afafaf;
+  pointer-events: none;
+  background-color: #57cd7a2e;
+  border-color: #57cd7a2e;
+}
+
+.registry :deep(.pagination .disabled > .page-link) {
+  color: #afafaf;
+  pointer-events: none;
+  background-color: #57cd7a2e;
+  border-color: #57cd7a2e;
+}
+
+.registry :deep(.pagination .page-item.active .page-link) {
+  color: #000000;
+  background-color: #57cd7a;
+  border-color: #57cd7a;
 }
 </style>

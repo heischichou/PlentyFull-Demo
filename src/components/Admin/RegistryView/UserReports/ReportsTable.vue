@@ -1,11 +1,12 @@
 <template>
   <div id="reports">
-    <div class="d-flex">
+    <div class="search-bar d-flex">
       <input
         type="text"
         class="form-control bg-transparent text-white px-4 py-3 border-3 border-primary rounded-top-4"
         placeholder="Search here..."
         id="searchBar"
+        :value="searchText"
         @change="setSearchText($event.target.value)"
       />
     </div>
@@ -228,28 +229,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
-declare interface Header {
-  key: string;
-  label: string;
-}
-
-declare interface Report {
-  notificationId: string;
-  reportId: string;
-  senderId: string;
-  violatorId: string;
-  type: string;
-  subject: string;
-  message: string;
-  violatorName: string;
-  reporterName: string;
-  reportType: string;
-  resolved: boolean;
-  anonymous: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Header } from "@/types";
+import { Report } from "@/types/Admin";
 
 export default defineComponent({
   name: "ReportsTable",
@@ -296,13 +277,6 @@ export default defineComponent({
       }
 
       switch (filterBy) {
-        case "violatorName":
-          this.filteredReports.sort((a, b) => {
-            return this.ascending
-              ? a.violatorName.localeCompare(b.violatorName)
-              : b.violatorName.localeCompare(a.violatorName);
-          });
-          break;
         case "reporterName":
           this.filteredReports.sort((a, b) => {
             return this.ascending
@@ -324,6 +298,7 @@ export default defineComponent({
               : b.subject.localeCompare(a.subject);
           });
           break;
+        case "violatorName":
         default:
           this.filteredReports.sort((a, b) => {
             return this.ascending
@@ -348,8 +323,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped lang="scss">
-::placeholder {
-  color: #f8f9fa !important;
-}
-</style>
+<style scoped lang="scss"></style>

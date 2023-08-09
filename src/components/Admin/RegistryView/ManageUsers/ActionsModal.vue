@@ -10,12 +10,9 @@
     <div class="modal-dialog">
       <div class="modal-content rounded-2">
         <div class="modal-header">
-          <h5
-            class="modal-title"
-            v-text="
-              action !== 'Delete' ? action + ' Users' : action + ' Accounts'
-            "
-          ></h5>
+          <h5 class="modal-title">
+            {{ action !== "Delete" ? `${action} Users` : `${action} Accounts` }}
+          </h5>
           <button
             type="button"
             class="btn-close"
@@ -26,11 +23,8 @@
         </div>
         <div class="modal-body text-start">
           <form>
-            <div id="userlistSection" class="mb-3">
-              <small
-                class="fs-6 fw-semibold"
-                v-text="'Users to ' + action"
-              ></small>
+            <div id="userPills" class="mb-3">
+              <small class="fs-6 fw-semibold">{{ `Users to ${action}` }}</small>
               <div
                 v-if="selectedUsers.length > 0"
                 class="d-flex gap-2 flex-wrap align-content-start mt-2"
@@ -38,12 +32,12 @@
                 <div
                   id="userList"
                   v-for="(user, index) in selectedUsers"
-                  :key="user.userId"
+                  :key="user.id"
                   :index="index"
                 >
                   <UserTag
                     :id="`userTag-${index}`"
-                    :userId="user.userId"
+                    :userId="user.id"
                     :name="user.name"
                     @removeSelected="onRemoveSelected"
                   />
@@ -58,7 +52,7 @@
             </div>
 
             <div v-if="action === 'Warn'">
-              <div id="subjectSection" class="mb-3">
+              <div class="mb-3" ref="subject">
                 <label for="subject" class="form-label"
                   ><small class="fs-6 fw-semibold">Subject</small></label
                 >
@@ -70,7 +64,7 @@
                 />
               </div>
 
-              <div id="descSection" class="mb-3">
+              <div class="mb-3" ref="description">
                 <label for="description" class="form-label"
                   ><small class="fs-6 fw-semibold">Description</small></label
                 >
@@ -123,16 +117,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Account } from "@/types/Admin";
 import UserTag from "./UserTag.vue";
-
-declare interface User {
-  userId: string;
-  name: string;
-  address: string;
-  contact: string;
-  userType: string;
-  verified: string;
-}
 
 export default defineComponent({
   name: "ActionsModal",
@@ -140,16 +126,12 @@ export default defineComponent({
     UserTag,
   },
   props: {
-    isVisible: {
-      type: Boolean,
-    },
+    isVisible: Boolean,
     action: {
       type: String,
       required: true,
     },
-    selectedUsers: {
-      type: Array as () => User[],
-    },
+    selectedUsers: Array as () => Account[],
   },
   methods: {
     closeModal() {

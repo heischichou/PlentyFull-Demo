@@ -1,5 +1,5 @@
 import { mount } from "@vue/test-utils";
-import UserTag from "@/components/Admin/UserTag.vue";
+import UserTag from "@/components/Admin/RegistryView/ManageUsers/UserTag.vue";
 
 const factory = () => {
   return mount(UserTag as any, {
@@ -14,26 +14,31 @@ const factory = () => {
 describe("User Tag", () => {
   it("renders successfully", () => {
     const wrapper = factory();
-    expect(wrapper.exists()).toBe(true);
-    expect(wrapper.find("#userTag-1").exists()).toBe(true);
+    expect(wrapper.exists()).toBeTruthy();
+    expect(wrapper.find("#userTag-1").exists()).toBeTruthy();
   });
 
   it("receives props successfully", () => {
     const wrapper = factory();
-    expect(wrapper.props().id).toBe("userTag-1");
-    expect(wrapper.props().userId).toBe("2");
-    expect(wrapper.props().name).toBe("Itaewon");
+    expect(wrapper.props()).toEqual({
+      id: "userTag-1",
+      userId: "2",
+      name: "Itaewon",
+    });
   });
 
   it("displays the correct user name", async () => {
     const wrapper = factory();
-    expect(wrapper.find("span").text()).toBe("Itaewon");
+    const names = [
+      "Itaewon",
+      "Pabugnawan",
+      "Hippodromo Barangay Hall",
+    ];
 
-    await wrapper.setProps({ name: "Pabugnawan" });
-    expect(wrapper.find("span").text()).toBe("Pabugnawan");
-
-    await wrapper.setProps({ name: "Hippodromo Barangay Hall" });
-    expect(wrapper.find("span").text()).toBe("Hippodromo Barangay Hall");
+    for(const name of names){
+      await wrapper.setProps({ name: name });
+      expect(wrapper.find("span").text()).toBe(name);
+    }
   });
 
   it("emits an event when remove button is clicked", async () => {

@@ -1,34 +1,7 @@
-import { VueWrapper, DOMWrapper, mount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
+import { Report } from "@/types/Admin";
 import UserReports from "@/components/Admin/RegistryView/UserReports/UserReports.vue";
-
-const findByText = (
-  wrapper: VueWrapper<any> | DOMWrapper<any>,
-  selector: string,
-  text: string
-) => {
-  return wrapper
-    .findAll(selector)
-    .filter((e: any) => e.text() === text)
-    .at(0) as DOMWrapper<Element>;
-};
-
-declare interface Report {
-  notificationId: string;
-  reportId: string;
-  senderId: string;
-  violatorId: string;
-  type: string;
-  subject: string;
-  message: string;
-  violatorName: string;
-  reporterName: string;
-  reportType: string;
-  resolved: boolean;
-  anonymous: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
 
 const stubReports = () => {
   return [
@@ -140,6 +113,7 @@ describe("User Reports", () => {
       "getTotalReports",
       "get"
     );
+    
     await wrapper.setData({ reports: stubReports() });
     await wrapper.vm.getTotalReports;
     expect(mockGetTotalReports).toHaveBeenCalled();

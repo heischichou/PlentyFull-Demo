@@ -8,8 +8,9 @@
       "
     />
     <Pagination
+      aria-label="User Reports Pagination"
       :maxVisibleButtons="visibleButtons"
-      :totalReports="totalReports"
+      :totalItems="totalReports"
       :perPage="perPage"
       :currentPage="currentPage"
       @pageChanged="onPageChange"
@@ -24,30 +25,10 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
-import Reports from "@/components/Admin/RegistryView/UserReports/ReportsTable.vue";
-import Pagination from "@/components/Admin/RegistryView/UserReports/ReportsPagination.vue";
-
-declare interface Header {
-  key: string;
-  label: string;
-}
-
-declare interface Report {
-  notificationId: string;
-  reportId: string;
-  senderId: string;
-  violatorId: string;
-  type: string;
-  subject: string;
-  message: string;
-  violatorName: string;
-  reporterName: string;
-  reportType: string;
-  resolved: boolean;
-  anonymous: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Header } from "@/types";
+import { Report } from "@/types/Admin";
+import Reports from "./ReportsTable.vue";
+import Pagination from "@/components/Admin/RegistryView/RegistryPagination.vue";
 
 export default defineComponent({
   name: "RegistryView",
@@ -86,127 +67,130 @@ export default defineComponent({
     },
   },
   beforeMount() {
-    this.reports = [
-      {
-        notificationId: uuid.v1(),
-        reportId: uuid.v1(),
-        senderId: uuid.v1(),
-        violatorId: uuid.v1(),
-        type: "Report",
-        subject: "Phallus in Donation Post",
-        message:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        violatorName: "Cebu Food Bank",
-        reporterName: "Hippodromo Barangay Hall",
-        reportType: "Inappropriate Content",
-        resolved: false,
-        anonymous: true,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      },
-      {
-        notificationId: uuid.v1(),
-        reportId: uuid.v1(),
-        senderId: uuid.v1(),
-        violatorId: uuid.v1(),
-        type: "Report",
-        subject: "Berating Pick-up Staff",
-        message:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        violatorName: "Hippodromo Barangay Hall",
-        reporterName: "Mayeen's Catering Services",
-        reportType: "Harassment/Ill Conduct",
-        resolved: false,
-        anonymous: true,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      },
-      {
-        notificationId: uuid.v1(),
-        reportId: uuid.v1(),
-        senderId: uuid.v1(),
-        violatorId: uuid.v1(),
-        type: "Report",
-        subject: "Donating Expired Goods",
-        message:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        violatorName: "Itaewon",
-        reporterName: "JPIC-IDC Inc.",
-        reportType: "Health & Safety Violations",
-        resolved: false,
-        anonymous: false,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      },
-      {
-        notificationId: uuid.v1(),
-        reportId: uuid.v1(),
-        senderId: uuid.v1(),
-        violatorId: uuid.v1(),
-        type: "Report",
-        subject: "Lorem Ipsum",
-        message:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        violatorName: "Donor A",
-        reporterName: "Charity A",
-        reportType: "Other",
-        resolved: false,
-        anonymous: true,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      },
-      {
-        notificationId: uuid.v1(),
-        reportId: uuid.v1(),
-        senderId: uuid.v1(),
-        violatorId: uuid.v1(),
-        type: "Report",
-        subject: "Lorem Ipsum",
-        message:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        violatorName: "Donor B",
-        reporterName: "Charity B",
-        reportType: "Other",
-        resolved: false,
-        anonymous: true,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      },
-      {
-        notificationId: uuid.v1(),
-        reportId: uuid.v1(),
-        senderId: uuid.v1(),
-        violatorId: uuid.v1(),
-        type: "Report",
-        subject: "Lorem Ipsum",
-        message:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        violatorName: "Donor C",
-        reporterName: "Charity C",
-        reportType: "Other",
-        resolved: false,
-        anonymous: true,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      },
-      {
-        notificationId: uuid.v1(),
-        reportId: uuid.v1(),
-        senderId: uuid.v1(),
-        violatorId: uuid.v1(),
-        type: "Report",
-        subject: "Lorem Ipsum",
-        message:
-          "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
-        violatorName: "Donor D",
-        reporterName: "Charity D",
-        reportType: "Other",
-        resolved: false,
-        anonymous: true,
-        createdAt: new Date().toString(),
-        updatedAt: new Date().toString(),
-      },
-    ];
+    this.reports = Object.assign(
+      [],
+      [
+        {
+          notificationId: uuid.v1(),
+          reportId: uuid.v1(),
+          senderId: uuid.v1(),
+          violatorId: uuid.v1(),
+          type: "Report",
+          subject: "Phallus in Donation Post",
+          message:
+            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+          violatorName: "Cebu Food Bank",
+          reporterName: "Hippodromo Barangay Hall",
+          reportType: "Inappropriate Content",
+          resolved: false,
+          anonymous: true,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          notificationId: uuid.v1(),
+          reportId: uuid.v1(),
+          senderId: uuid.v1(),
+          violatorId: uuid.v1(),
+          type: "Report",
+          subject: "Berating Pick-up Staff",
+          message:
+            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+          violatorName: "Hippodromo Barangay Hall",
+          reporterName: "Mayeen's Catering Services",
+          reportType: "Harassment/Ill Conduct",
+          resolved: false,
+          anonymous: true,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          notificationId: uuid.v1(),
+          reportId: uuid.v1(),
+          senderId: uuid.v1(),
+          violatorId: uuid.v1(),
+          type: "Report",
+          subject: "Donating Expired Goods",
+          message:
+            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+          violatorName: "Itaewon",
+          reporterName: "JPIC-IDC Inc.",
+          reportType: "Health & Safety Violations",
+          resolved: false,
+          anonymous: false,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          notificationId: uuid.v1(),
+          reportId: uuid.v1(),
+          senderId: uuid.v1(),
+          violatorId: uuid.v1(),
+          type: "Report",
+          subject: "Lorem Ipsum",
+          message:
+            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+          violatorName: "Donor A",
+          reporterName: "Charity A",
+          reportType: "Other",
+          resolved: false,
+          anonymous: true,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          notificationId: uuid.v1(),
+          reportId: uuid.v1(),
+          senderId: uuid.v1(),
+          violatorId: uuid.v1(),
+          type: "Report",
+          subject: "Lorem Ipsum",
+          message:
+            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+          violatorName: "Donor B",
+          reporterName: "Charity B",
+          reportType: "Other",
+          resolved: false,
+          anonymous: true,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          notificationId: uuid.v1(),
+          reportId: uuid.v1(),
+          senderId: uuid.v1(),
+          violatorId: uuid.v1(),
+          type: "Report",
+          subject: "Lorem Ipsum",
+          message:
+            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+          violatorName: "Donor C",
+          reporterName: "Charity C",
+          reportType: "Other",
+          resolved: false,
+          anonymous: true,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+        {
+          notificationId: uuid.v1(),
+          reportId: uuid.v1(),
+          senderId: uuid.v1(),
+          violatorId: uuid.v1(),
+          type: "Report",
+          subject: "Lorem Ipsum",
+          message:
+            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements.",
+          violatorName: "Donor D",
+          reporterName: "Charity D",
+          reportType: "Other",
+          resolved: false,
+          anonymous: true,
+          createdAt: new Date().toString(),
+          updatedAt: new Date().toString(),
+        },
+      ]
+    );
     this.totalReports = this.getTotalReports;
     this.visibleButtons = this.setVisibleButtons;
   },

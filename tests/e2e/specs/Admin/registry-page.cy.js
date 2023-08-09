@@ -30,10 +30,10 @@ describe("Registry Page", () => {
         tab: "registrationTab",
         content: "requestsSection",
       },
-      // {
-      //   tab: "membersTab",
-      //   content: "manageUsers",
-      // },
+      {
+        tab: "membersTab",
+        content: "manageUsers",
+      },
       {
         tab: "reportsTab",
         content: "userReports",
@@ -50,14 +50,23 @@ describe("Registry Page", () => {
     });
   });
 
-  it("should contain and display actions buttons", () => {
-    cy.get("#members").click();
-    cy.get("#members").should("have.class", "active");
-    cy.get("a").find(".bi-exclamation-circle").should("exist");
-    cy.get("a").find(".bi-exclamation-circle").should("be.visible");
-    cy.get("a").find(".bi-lock").should("exist");
-    cy.get("a").find(".bi-lock").should("be.visible");
-    cy.get("a").find(".bi-dash-circle").should("exist");
-    cy.get("a").find(".bi-dash-circle").should("be.visible");
-  });
+  // Uncomment and revise when the back-end is ready
+  // it("should contain and display actions buttons", () => {
+  //   cy.get("#membersTab")
+  //     .click()
+  //     .then(($el) => {
+  //       cy.get("a").find(".bi-exclamation-circle").should("exist").should("be.visible");
+  //       cy.get("a").find(".bi-lock").should("exist").should("be.visible");
+  //       cy.get("a").find(".bi-dash-circle").should("exist").should("be.visible");
+  //     });
+  // });
+
+  // it("should display a table with 6 columns", () => {
+  //   cy.get("#membersTab")
+  //     .click()
+  //     .then(($el) => {
+  //       cy.get("table").should("exist").should("be.visible");
+  //       cy.get("table").find("th").should("have.length", 6).should("be.visible");
+  //     });
+  // });
 });

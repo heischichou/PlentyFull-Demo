@@ -1,5 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
+import { Header } from "@/types";
+import { Report } from "@/types/Admin";
 import Reports from "@/components/Admin/RegistryView/UserReports/ReportsTable.vue";
 
 const stubReports = () => {
@@ -55,18 +57,18 @@ const stubReports = () => {
       createdAt: new Date().toString(),
       updatedAt: new Date().toString(),
     },
-  ];
+  ] as Report[];
 };
 
-const factory = (reports: Object) => {
+const factory = (reports: Report[]) => {
   return mount(Reports as any, {
     data() {
       return {
         filterBy: "violatorName",
         ascending: true,
-        filteredReports: [],
+        filteredReports: [] as Report[],
         searchText: "",
-        selectedReport: {},
+        selectedReport: {} as Report,
       };
     },
     propsData: {
@@ -76,7 +78,7 @@ const factory = (reports: Object) => {
         { key: "reportType", label: "Report Type" },
         { key: "subject", label: "Subject" },
         { key: "actions", label: "" },
-      ],
+      ] as Header[],
       reports: reports,
     },
   });

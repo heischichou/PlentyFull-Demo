@@ -20,15 +20,9 @@ import { defineComponent } from "vue";
 export default defineComponent({
   name: "UserTag",
   props: {
-    id: {
-      type: String,
-    },
-    userId: {
-      type: String,
-    },
-    name: {
-      type: String,
-    },
+    id: String,
+    userId: String,
+    name: String,
   },
   methods: {
     removeSelected() {
