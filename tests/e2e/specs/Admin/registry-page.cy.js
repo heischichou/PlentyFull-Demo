@@ -8,12 +8,9 @@ describe("Registry Page", () => {
     cy.get("#app").should("exist");
   });
 
-  it("should display page title", () => {
+  it("should display sidebar and page title", () => {
     cy.get("h1").should("exist");
     cy.get("h1").should("be.visible");
-  });
-
-  it("should contain and display a sidebar", () => {
     cy.get("#sideBar").should("exist");
   });
 
