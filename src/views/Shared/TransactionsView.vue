@@ -100,33 +100,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
+import { FoodItem } from "@/types/Donor";
+import { Transaction } from "@/types/Shared";
 import TransactionItem from "@/components/Shared/TransactionsView/TransactionItem.vue";
-
-declare interface FoodItem {
-  itemId: string;
-  name: string;
-  type: string;
-  stage: string;
-  quantity: number;
-  weight: number;
-  createdAt: string;
-}
-
-declare interface Transaction {
-  transactionId: string;
-  donorName: string;
-  donorAvatar: string;
-  charityName: string;
-  charityAvatar: string;
-  distance: number;
-  deliveryMode: string;
-  status: string;
-  deliveryNotes: string;
-  optionalNotes: string;
-  donations: Array<FoodItem>;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export default defineComponent({
   name: "TransactionsView",
@@ -137,8 +113,8 @@ export default defineComponent({
     return {
       role: "Charity",
       windowWidth: window.innerWidth,
-      transactions: [] as Array<Transaction>,
-      filteredTransactions: [] as Array<Transaction>,
+      transactions: [] as Transaction[],
+      filteredTransactions: [] as Transaction[],
       activeTab: "Completed",
     };
   },
@@ -218,7 +194,7 @@ export default defineComponent({
             weight: 0.2,
             createdAt: new Date().toString(),
           },
-        ],
+        ] as FoodItem[],
         createdAt: new Date().toString(),
         updatedAt: new Date().toString(),
       },
@@ -272,7 +248,7 @@ export default defineComponent({
             weight: 0.2,
             createdAt: new Date().toString(),
           },
-        ],
+        ] as FoodItem[],
         createdAt: new Date().toString(),
         updatedAt: new Date().toString(),
       },
@@ -326,7 +302,7 @@ export default defineComponent({
             weight: 0.2,
             createdAt: new Date().toString(),
           },
-        ],
+        ] as FoodItem[],
         createdAt: new Date().toString(),
         updatedAt: new Date().toString(),
       },

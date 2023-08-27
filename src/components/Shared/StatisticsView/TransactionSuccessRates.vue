@@ -3,10 +3,8 @@
     id="transactionRates"
     class="container-fluid"
     :class="{
-      'bg-white': role === 'Donor' || role === 'Charity',
-      'bg-black': role === 'Administrator',
-      'text-black': role === 'Donor' || role === 'Charity',
-      'text-white': role === 'Administrator',
+      'bg-white text-black': role === 'Donor' || role === 'Charity',
+      'bg-dark text-white': role === 'Administrator',
     }"
   >
     <div class="container">

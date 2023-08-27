@@ -134,12 +134,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Header } from "@/types";
 import Donations from "./DonationsTable.vue";
-
-declare interface Header {
-  key: string;
-  label: string;
-}
 
 export default defineComponent({
   name: "TransactionItem",

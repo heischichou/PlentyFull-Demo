@@ -19,54 +19,25 @@
           <ul
             class="nav nav-pills nav-flush flex-row flex-xl-column flex-nowrap justify-content-around align-items-center w-100 mb-auto"
           >
-            <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
+            <li
+              v-for="tab in tabs"
+              :key="`${tab.text.toLowerCase()}`"
+              class="nav-item h-100 w-100"
+              :class="show ? 'text-start' : ''"
+            >
               <a
-                @click="switchTab('Registration')"
-                id="registrationTab"
+                @click="switchTab(tab.tab)"
+                :id="`${tab.text.toLowerCase()}Tab`"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="activeTab === 'Registration' ? 'active' : ''"
+                :class="activeTab === tab.tab ? 'active' : ''"
                 role="button"
               >
                 <div class="d-inline-flex align-items-center">
                   <i
-                    class="bi bi-hourglass text-white fs-2"
-                    :class="show ? 'me-3' : ''"
+                    class="bi text-white fs-2"
+                    :class="[tab.icon, show ? 'me-3' : '']"
                   ></i>
-                  <p class="m-0" v-if="show">Sign Up Requests</p>
-                </div>
-              </a>
-            </li>
-            <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
-              <a
-                @click="switchTab('Members')"
-                id="membersTab"
-                class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="activeTab === 'Members' ? 'active' : ''"
-                role="button"
-              >
-                <div class="d-inline-flex align-items-center">
-                  <i
-                    class="bi bi-clipboard-check text-white fs-2"
-                    :class="show ? 'me-3' : ''"
-                  ></i>
-                  <p class="m-0" v-if="show">Manage Users</p>
-                </div>
-              </a>
-            </li>
-            <li class="nav-item h-100 w-100" :class="show ? 'text-start' : ''">
-              <a
-                @click="switchTab('Reports')"
-                id="reportsTab"
-                class="nav-link link-white py-3 px-4 w-100 rounded-0"
-                :class="activeTab === 'Reports' ? 'active' : ''"
-                role="button"
-              >
-                <div class="d-inline-flex align-items-center">
-                  <i
-                    class="bi bi-slash-circle text-white fs-2"
-                    :class="show ? 'me-3' : ''"
-                  ></i>
-                  <p class="m-0" v-if="show">Reports</p>
+                  <p class="m-0" v-if="show">{{ tab.text }}</p>
                 </div>
               </a>
             </li>
@@ -100,6 +71,23 @@ export default defineComponent({
   },
   data() {
     return {
+      tabs: [
+        {
+          tab: "Registration",
+          text: "Sign Up Requests",
+          icon: "bi-hourglass",
+        },
+        {
+          tab: "Members",
+          text: "Manage Users",
+          icon: "bi-clipboard-check",
+        },
+        {
+          tab: "Reports",
+          text: "Reports",
+          icon: "bi-slash-circle",
+        },
+      ],
       activeTab: "Registration",
       show: true,
     };

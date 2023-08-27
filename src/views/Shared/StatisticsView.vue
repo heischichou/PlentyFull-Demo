@@ -10,15 +10,12 @@
       >
         <div class="col col-lg-6">
           <img
-            v-if="role === 'Administrator'"
             class="img-fluid"
-            src="@/assets/images/Statistics/Admin_Header.svg"
-          />
-
-          <img
-            v-else
-            class="img-fluid"
-            src="@/assets/images/Statistics/Header.svg"
+            :src="
+              require(`@/assets/images/Statistics/${
+                role === 'Administrator' ? 'Admin_' : ''
+              }Header.svg`)
+            "
           />
         </div>
         <div class="col col-lg-6 mt-5 mt-lg-0">

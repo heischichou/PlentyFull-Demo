@@ -1,7 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
-import { Header } from "@/types";
-import { Account } from "@/types/Admin";
+import { Header, Account } from "@/types";
 import Members from "@/components/Admin/RegistryView/ManageUsers/UsersTable.vue";
 
 const members = () => {

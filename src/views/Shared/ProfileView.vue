@@ -17,9 +17,11 @@
             }"
           >
             <li
-              id="profileTab"
+              v-for="tab in tabs"
+              :key="`${tab.text.toLowerCase()}`"
+              :id="`${tab.text.toLowerCase()}Tab`"
               class="nav-item w-100 overflow-hidden mb-0 mb-lg-3"
-              :class="{ 'nav-active': activeTab === 'Profile' }"
+              :class="{ 'nav-active': activeTab === tab.name }"
             >
               <button
                 type="button"
@@ -28,38 +30,15 @@
                   'text-start': windowWidth >= 992,
                   'py-3 px-4 text-center': windowWidth < 992,
                 }"
-                @click="setActiveTab('Profile')"
+                @click="setActiveTab(tab.name)"
               >
                 <em
-                  class="bi bi-person-circle"
-                  :class="windowWidth >= 992 ? 'fs-4' : 'fs-2'"
+                  class="bi"
+                  :class="[tab.icon, windowWidth >= 992 ? 'fs-4' : 'fs-2']"
                 ></em
-                ><span class="fs-4 d-none d-block d-lg-inline ms-3"
-                  >Profile</span
-                >
-              </button>
-            </li>
-            <li
-              id="securityTab"
-              class="nav-item w-100 overflow-hidden mb-0 mb-lg-3"
-              :class="{ 'nav-active': activeTab === 'Security and Login' }"
-            >
-              <button
-                type="button"
-                class="nav-link nav-highlight w-100 text-white rounded-0"
-                :class="{
-                  'text-start': windowWidth >= 992,
-                  'py-3 px-4 text-center': windowWidth < 992,
-                }"
-                @click="setActiveTab('Security and Login')"
-              >
-                <em
-                  class="bi bi-shield-check"
-                  :class="windowWidth >= 992 ? 'fs-4' : 'fs-2'"
-                ></em
-                ><span class="fs-4 d-none d-block d-lg-inline ms-3"
-                  >Security</span
-                >
+                ><span class="fs-4 d-none d-block d-lg-inline ms-3">{{
+                  tab.text
+                }}</span>
               </button>
             </li>
           </ul>
@@ -129,6 +108,18 @@ export default defineComponent({
   name: "ProfileView",
   data() {
     return {
+      tabs: [
+        {
+          name: "Profile",
+          text: "Profile",
+          icon: "bi-person-circle",
+        },
+        {
+          name: "Security and Login",
+          text: "Security",
+          icon: "bi-shield-check",
+        },
+      ],
       activeTab: "Profile",
       windowWidth: window.innerWidth,
       avatar: "default_profile.png",

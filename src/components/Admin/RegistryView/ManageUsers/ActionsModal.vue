@@ -117,7 +117,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Account } from "@/types/Admin";
+import { Account } from "@/types/";
 import UserTag from "./UserTag.vue";
 
 export default defineComponent({

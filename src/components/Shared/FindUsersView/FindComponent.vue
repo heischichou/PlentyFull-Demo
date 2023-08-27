@@ -6,13 +6,13 @@
           <div>
             <img
               :src="setURL(user.avatar)"
-              :alt="user.username"
+              :alt="user.name"
               class="avatar rounded-circle object-fit-cover text-white bg-dark"
             />
           </div>
 
           <div class="text-start ms-3">
-            <h5 class="card-title fs-5">{{ user.username }}</h5>
+            <h5 class="card-title fs-5">{{ user.name }}</h5>
             <h6 class="card-subtitle text-black-50 fs-6">
               {{ user.address }}
             </h6>
@@ -29,7 +29,7 @@
         </div>
       </div>
       <p class="bio text-justify lh-sm pt-4">
-        {{ user.description }}
+        {{ user.bio }}
       </p>
       <div class="d-flex flex-column text-start">
         <div class="address d-flex mb-2">

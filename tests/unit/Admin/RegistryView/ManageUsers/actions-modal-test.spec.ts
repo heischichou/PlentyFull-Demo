@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
-import { Account } from "@/types/Admin";
+import { Account } from "@/types";
 import ActionsModal from "@/components/Admin/RegistryView/ManageUsers/ActionsModal.vue";
 
 const selectedUsers = () => {

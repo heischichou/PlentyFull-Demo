@@ -3,10 +3,8 @@
     id="totalVolume"
     class="container-fluid"
     :class="{
-      'bg-white': role === 'Donor' || role === 'Charity',
-      'bg-black': role === 'Administrator',
-      'text-black': role === 'Donor' || role === 'Charity',
-      'text-white': role === 'Administrator',
+      'bg-white text-black': role === 'Donor' || role === 'Charity',
+      'bg-dark text-white': role === 'Administrator',
     }"
   >
     <div
@@ -55,41 +53,22 @@
               <button
                 type="button"
                 class="btn dropdown-toggle fs-6"
-                :class="{
-                  'text-black': role === 'Donor' || role === 'Charity',
-                  'text-white': role === 'Administrator',
-                }"
+                :class="`text-${
+                  role === 'Donor' || role === 'Charity' ? 'black' : 'white'
+                }`"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
                 Per basis: {{ basis }}
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
-                <li>
+                <li v-for="basis in bases" :key="basis">
                   <button
                     type="button"
                     class="dropdown-item"
-                    @click="$emit('updateBasis', 'Weekly')"
+                    @click="$emit('updateBasis', basis)"
                   >
-                    Weekly
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    class="dropdown-item"
-                    @click="$emit('updateBasis', 'Monthly')"
-                  >
-                    Monthly
-                  </button>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    class="dropdown-item"
-                    @click="$emit('updateBasis', 'Yearly')"
-                  >
-                    Yearly
+                    {{ basis }}
                   </button>
                 </li>
               </ul>
@@ -136,6 +115,7 @@ export default defineComponent({
   components: { Doughnut },
   data() {
     return {
+      bases: ["Weekly", "Monthly", "Yearly"] as string[],
       chartOptions: {
         responsive: false,
         aspectRatio: 1,

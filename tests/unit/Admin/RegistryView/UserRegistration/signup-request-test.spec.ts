@@ -1,6 +1,6 @@
 import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
-import { Account } from "@/types/Admin";
+import { Account } from "@/types";
 import SignUpRequest from "@/components/Admin/RegistryView/UserRegistration/SignUpRequest.vue";
 
 const stubRegistrant = () => {

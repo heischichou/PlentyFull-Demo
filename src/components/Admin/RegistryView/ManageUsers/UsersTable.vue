@@ -236,8 +236,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Header } from "@/types";
-import { Account } from "@/types/Admin";
+import { Header, Account } from "@/types";
 
 export default defineComponent({
   name: "UsersTable",

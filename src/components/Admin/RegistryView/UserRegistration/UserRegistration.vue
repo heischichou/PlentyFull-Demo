@@ -31,7 +31,7 @@
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
 import { DateTime } from "luxon";
-import { Account } from "@/types/Admin/";
+import { Account } from "@/types/";
 import Registrant from "./SignUpRequest.vue";
 import Pagination from "@/components/Admin/RegistryView/RegistryPagination.vue";
 

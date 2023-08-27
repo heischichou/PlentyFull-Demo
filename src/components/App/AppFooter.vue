@@ -7,17 +7,8 @@
             Contact
           </h5>
           <ul class="nav flex-column text-white opacity-75">
-            <li class="nav-item">
-              <p>City: Cebu City</p>
-            </li>
-            <li class="nav-item">
-              <p>Zip Code: 6000</p>
-            </li>
-            <li class="nav-item">
-              <p>Phone Number: (032)3333333</p>
-            </li>
-            <li class="nav-item">
-              <p>Mobile Number: 09916588874</p>
+            <li v-for="item in items" :key="item" class="nav-item">
+              <p>{{ item }}</p>
             </li>
           </ul>
         </div>
@@ -25,54 +16,143 @@
         <div class="col-md-3 mt-5" id="menu">
           <h5 class="text-uppercase font-weight-bold text-white">Menu</h5>
           <ul class="nav flex-column">
-            <li class="nav-item">
-              <router-link
-                class="nav-link"
-                to="/"
-                :class="{
-                  'link-white': $route.path !== '/',
-                  'opacity-75': $route.path !== '/',
-                  active: $route.path === '/',
-                }"
-                >Home</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link
-                class="nav-link"
-                to="/about"
-                :class="{
-                  'link-white': $route.path !== '/about',
-                  'opacity-75': $route.path !== '/about',
-                  active: $route.path === '/about',
-                }"
-                >About</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link
-                class="nav-link"
-                to="/register"
-                :class="{
-                  'link-white': $route.path !== '/register',
-                  'opacity-75': $route.path !== '/register',
-                  active: $route.path === '/register',
-                }"
-                >Register</router-link
-              >
-            </li>
-            <li class="nav-item">
-              <router-link
-                class="nav-link"
-                to="/login"
-                :class="{
-                  'link-white': $route.path !== '/login',
-                  'opacity-75': $route.path !== '/login',
-                  active: $route.path === '/login',
-                }"
-                >Login</router-link
-              >
-            </li>
+            <template v-if="role.length === 0">
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  to="/"
+                  :class="{
+                    'link-white opacity-75': $route.path !== '/',
+                    active: $route.path === '/',
+                  }"
+                  >Home</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  to="/about"
+                  :class="{
+                    'link-white opacity-75': $route.path !== '/about',
+                    active: $route.path === '/about',
+                  }"
+                  >About</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  to="/register"
+                  :class="{
+                    'link-white opacity-75': $route.path !== '/register',
+                    active: $route.path === '/register',
+                  }"
+                  >Register</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link
+                  class="nav-link"
+                  to="/login"
+                  :class="{
+                    'link-white opacity-75': $route.path !== '/login',
+                    active: $route.path === '/login',
+                  }"
+                  >Login</router-link
+                >
+              </li>
+            </template>
+
+            <template v-else>
+              <template v-if="role === 'Donor' || role === 'Charity'">
+                <template v-if="role === 'Donor'">
+                  <li class="nav-item">
+                    <router-link
+                      class="nav-link"
+                      to="/donate"
+                      :class="{
+                        'link-white opacity-75': $route.path !== '/donate',
+                        active: $route.path === '/donate',
+                      }"
+                      >Donate</router-link
+                    >
+                  </li>
+                </template>
+
+                <template v-else>
+                  <li class="nav-item">
+                    <router-link
+                      class="nav-link"
+                      to="/receive"
+                      :class="{
+                        'link-white opacity-75': $route.path !== '/receive',
+                        active: $route.path === '/receive',
+                      }"
+                      >Receive</router-link
+                    >
+                  </li>
+                </template>
+
+                <li class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/find"
+                    :class="{
+                      'link-white opacity-75': $route.path !== '/find',
+                      active: $route.path === '/find',
+                    }"
+                    >Find</router-link
+                  >
+                </li>
+                <li v-if="role === 'Donor'" class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/transactions"
+                    :class="{
+                      'link-white opacity-75': $route.path !== '/transactions',
+                      active: $route.path === '/transactions',
+                    }"
+                    >Transactions</router-link
+                  >
+                </li>
+                <li class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/statistics"
+                    :class="{
+                      'link-white opacity-75': $route.path !== '/statistics',
+                      active: $route.path === '/statistics',
+                    }"
+                    >Statistics</router-link
+                  >
+                </li>
+              </template>
+
+              <template v-else>
+                <li class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/statistics"
+                    :class="{
+                      'link-white opacity-75': $route.path !== '/statistics',
+                      active: $route.path === '/statistics',
+                    }"
+                    >Statistics</router-link
+                  >
+                </li>
+                <li class="nav-item">
+                  <router-link
+                    class="nav-link"
+                    to="/registry"
+                    :class="{
+                      'link-white opacity-75': $route.path !== '/registry',
+                      active: $route.path === '/registry',
+                    }"
+                    >Registry</router-link
+                  >
+                </li>
+              </template>
+            </template>
           </ul>
         </div>
 
@@ -100,6 +180,17 @@ import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "AppFooter",
+  data() {
+    return {
+      role: "Admin",
+      items: [
+        "City: Cebu City",
+        "Zip Code: 6000",
+        "Phone Number: (032)3333333",
+        "Mobile Number: 09916588874",
+      ] as string[],
+    };
+  },
 });
 </script>
 

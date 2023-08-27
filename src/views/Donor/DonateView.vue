@@ -147,12 +147,13 @@
                       aria-label="Select food item type"
                       v-model="newItem.type"
                     >
-                      <option value="Eggs and Dairy">Eggs and Dairy</option>
-                      <option value="Vegetables">Vegetables</option>
-                      <option value="Fruits">Fruits</option>
-                      <option value="Meat and Poultry">Meat and Poultry</option>
-                      <option value="Fish and Seafood">Fish and Seafood</option>
-                      <option value="Grains and Nuts">Grains and Nuts</option>
+                      <option
+                        v-for="type in foodTypes"
+                        :key="type"
+                        :value="type"
+                      >
+                        {{ type }}
+                      </option>
                     </select>
                     <label for="itemType" class="fw-medium text-black"
                       >Food Item Type</label
@@ -340,32 +341,9 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
+import { FoodItem, Queuer } from "@/types/Donor";
 import SearchingFor from "@/components/Donor/SearchingForCharities.vue";
 import DonationQueue from "@/components/Donor/DonationQueue.vue";
-
-declare interface FoodItem {
-  itemId: string;
-  name: string;
-  type: string;
-  stage: string;
-  quantity: number;
-  weight: number;
-  createdAt: string;
-  updatedAt: string;
-}
-
-declare interface Queuer {
-  queuerId: string;
-  charityId: string;
-  name: string;
-  status: string;
-  queuePos: number;
-  queueWeight: string;
-  distance: number;
-  donationsReceived: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
 export default defineComponent({
   name: "DonateView",
@@ -373,6 +351,14 @@ export default defineComponent({
     return {
       windowWidth: window.innerWidth,
       queuers: [] as Queuer[],
+      foodTypes: [
+        "Eggs and Dairy",
+        "Fruits",
+        "Vegetables",
+        "Meat and Poultry",
+        "Fish and Seafood",
+        "Grains and Nuts",
+      ],
       newItem: {
         itemId: uuid.v1(),
         name: "",

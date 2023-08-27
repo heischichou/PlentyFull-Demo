@@ -103,21 +103,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
-declare interface Header {
-  key: string;
-  label: string;
-}
-
-declare interface FoodItem {
-  itemId: number;
-  name: string;
-  type: string;
-  stage: string;
-  quantity: number;
-  weight: number;
-  createdAt: string;
-}
+import { Header } from "@/types";
+import { FoodItem } from "@/types/Donor";
 
 export default defineComponent({
   name: "DonationsTable",
@@ -148,13 +135,6 @@ export default defineComponent({
       }
 
       switch (filterBy) {
-        case "name":
-          this.filteredDonations.sort((a, b) => {
-            return this.ascending
-              ? a.name.localeCompare(b.name)
-              : b.name.localeCompare(a.name);
-          });
-          break;
         case "type":
           this.filteredDonations.sort((a, b) => {
             return this.ascending
@@ -181,6 +161,7 @@ export default defineComponent({
             return this.ascending ? a.weight - b.weight : b.weight - a.weight;
           });
           break;
+        case "name":
         default:
           this.filteredDonations.sort((a, b) => {
             return this.ascending

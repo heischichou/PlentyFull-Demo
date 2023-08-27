@@ -38,8 +38,7 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
-import { Header } from "@/types";
-import { Account } from "@/types/Admin";
+import { Header, Account } from "@/types";
 import Users from "./UsersTable.vue";
 import ActionsModal from "./ActionsModal.vue";
 import Pagination from "@/components/Admin/RegistryView/RegistryPagination.vue";

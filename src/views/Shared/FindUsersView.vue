@@ -24,22 +24,13 @@
         Search by: {{ searchBy }}
       </button>
       <ul class="dropdown-menu dropdown-menu-end" id="searchByDropdown">
-        <li>
+        <li v-for="option in searchByOptions" :key="option">
           <button
             class="dropdown-item"
-            value="Name"
-            @click="setSearchBy('Name')"
+            :value="option"
+            @click="setSearchBy(option)"
           >
-            Name
-          </button>
-        </li>
-        <li>
-          <button
-            class="dropdown-item"
-            value="Address"
-            @click="setSearchBy('Address')"
-          >
-            Address
+            {{ option }}
           </button>
         </li>
       </ul>
@@ -53,31 +44,13 @@
         Sort by: {{ sortBy }}
       </button>
       <ul class="dropdown-menu dropdown-menu-end" id="sortByDropdown">
-        <li>
+        <li v-for="option in sortByOptions" :key="option">
           <button
             class="dropdown-item"
-            value="Distance"
-            @click="setSortBy('Distance')"
+            :value="option"
+            @click="setSortBy(option)"
           >
-            Distance
-          </button>
-        </li>
-        <li>
-          <button
-            class="dropdown-item"
-            value="A to Z"
-            @click="setSortBy('A to Z')"
-          >
-            A to Z
-          </button>
-        </li>
-        <li>
-          <button
-            class="dropdown-item"
-            value="Z to A"
-            @click="setSortBy('Z to A')"
-          >
-            Z to A
+            {{ option }}
           </button>
         </li>
       </ul>
@@ -86,7 +59,7 @@
     <div v-if="filteredUsers.length > 0" id="users">
       <FindComponent
         v-for="user in filteredUsers"
-        :key="user.userId"
+        :key="user.id"
         :user="user"
       />
     </div>
@@ -99,17 +72,8 @@
 <script lang="ts">
 import { defineComponent } from "vue";
 import { uuid } from "vue-uuid";
+import { Account } from "@/types";
 import FindComponent from "@/components/Shared/FindUsersView/FindComponent.vue";
-
-declare interface User {
-  userId: string;
-  username: string;
-  avatar: string;
-  email: string;
-  contact: string;
-  address: string;
-  description: string;
-}
 
 export default defineComponent({
   name: "FindUsersView",
@@ -121,42 +85,41 @@ export default defineComponent({
       role: "",
       searchText: "",
       searchBy: "Name",
+      searchByOptions: ["Name", "Address"] as string[],
       sortBy: "Distance",
+      sortByOptions: ["Distance", "A to Z", "Z to A"] as string[],
       users: [
         {
-          userId: uuid.v1(),
-          username: "Cebu Food Bank",
+          id: uuid.v1(),
+          name: "Cebu Food Bank",
           avatar: "default_profile.png",
           email: "info@cebufoodbank.com",
           contact: "(32) 417 3322",
           address: "Pacific Square Building, Ayala Access Road, Cebu City",
-          description:
-            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
+          bio: "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample bio. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
         },
         {
-          userId: uuid.v1(),
-          username: "Hipodromo Barangay Hall",
+          id: uuid.v1(),
+          name: "Hipodromo Barangay Hall",
           avatar:
             "https://bestprofilepictures.com/wp-content/uploads/2021/08/Amazing-Profile-Picture-for-Facebook.jpg",
           email: "info@hipodromoBarangayHall.com",
           contact: "(32) 233 1311",
           address: "664 Saint Joseph St., Barangay Hipodromo, Cebu City",
-          description:
-            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
+          bio: "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample bio. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
         },
         {
-          userId: uuid.v1(),
-          username: "JPIC-IDC Inc.",
+          id: uuid.v1(),
+          name: "JPIC-IDC Inc.",
           avatar:
             "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
           email: "info@jpic-idc.org.ph",
           contact: "(32) 254 5254",
           address: "L. Jaime Street, Maguikay, Mandaue City",
-          description:
-            "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
+          bio: "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample bio. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
         },
-      ] as User[],
-      filteredUsers: [] as User[],
+      ] as Account[],
+      filteredUsers: [] as Account[],
     };
   },
   methods: {
@@ -164,14 +127,14 @@ export default defineComponent({
       this.sortBy = sortVal;
 
       if (this.sortBy === "Distance") {
-        this.filteredUsers.sort((a, b) => a.username.localeCompare(b.username));
+        this.filteredUsers.sort((a, b) => a.name.localeCompare(b.name));
       } else {
         switch (this.searchBy) {
           case "Name":
             this.filteredUsers.sort((a, b) => {
               return this.sortBy === "A to Z"
-                ? a.username.localeCompare(b.username)
-                : b.username.localeCompare(a.username);
+                ? a.name.localeCompare(b.name)
+                : b.name.localeCompare(a.name);
             });
             break;
           case "Address":
@@ -183,7 +146,7 @@ export default defineComponent({
             break;
           default:
             this.filteredUsers.sort((a, b) => {
-              return a.username.localeCompare(b.username);
+              return a.name.localeCompare(b.name);
             });
             break;
         }
@@ -200,7 +163,7 @@ export default defineComponent({
       } else {
         this.filteredUsers = this.users.filter((user) => {
           return this.searchBy === "Name"
-            ? user.username.toLowerCase().includes(data.toLowerCase())
+            ? user.name.toLowerCase().includes(data.toLowerCase())
             : user.address.toLowerCase().includes(data.toLowerCase());
         });
       }

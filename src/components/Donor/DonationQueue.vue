@@ -256,19 +256,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
-declare interface Queuer {
-  queuerId: string;
-  charityId: string;
-  name: string;
-  status: string;
-  queuePos: number;
-  queueWeight: number;
-  distance: number;
-  donationsReceived: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { Queuer } from "@/types/Donor";
 
 export default defineComponent({
   name: "DonationQueue",
@@ -300,27 +288,14 @@ export default defineComponent({
               : b.name.localeCompare(a.name);
           });
           break;
-        case "Priority Number":
+        case "Queue Time":
           this.filteredQueue.sort((a, b) => {
             return this.sortBy === "Ascending"
-              ? a.queuePos - b.queuePos
-              : b.queuePos - a.queuePos;
+              ? new Date(a.createdAt).getTime() -
+                  new Date(b.createdAt).getTime()
+              : new Date(b.createdAt).getTime() -
+                  new Date(a.createdAt).getTime();
           });
-          break;
-        case "Queue Time":
-          if (this.sortBy === "Ascending") {
-            this.filteredQueue.sort((a, b) => {
-              const dateA = new Date(a.createdAt);
-              const dateB = new Date(b.createdAt);
-              return dateA < dateB ? dateA.getDate() : dateB.getDate();
-            });
-          } else {
-            this.filteredQueue.sort((a, b) => {
-              const dateA = new Date(a.createdAt);
-              const dateB = new Date(b.createdAt);
-              return dateA > dateB ? dateA.getDate() : dateB.getDate();
-            });
-          }
           break;
         case "Distance":
           this.filteredQueue.sort((a, b) => {
@@ -336,6 +311,7 @@ export default defineComponent({
               : b.donationsReceived - a.donationsReceived;
           });
           break;
+        case "Priority Number":
         default:
           this.filteredQueue.sort((a, b) => {
             return this.sortBy === "Ascending"
@@ -347,59 +323,7 @@ export default defineComponent({
     },
     setSortBy(sortBy: string) {
       this.sortBy = sortBy;
-
-      switch (this.filterBy) {
-        case "Name":
-          this.filteredQueue.sort((a, b) => {
-            return sortBy === "Ascending"
-              ? a.name.localeCompare(b.name)
-              : b.name.localeCompare(a.name);
-          });
-          break;
-        case "Priority Number":
-          this.filteredQueue.sort((a, b) => {
-            return sortBy === "Ascending"
-              ? a.queuePos - b.queuePos
-              : b.queuePos - a.queuePos;
-          });
-          break;
-        case "Queue Time":
-          if (sortBy === "Ascending") {
-            this.filteredQueue.sort((a, b) => {
-              const dateA = new Date(a.createdAt);
-              const dateB = new Date(b.createdAt);
-              return dateA < dateB ? dateA.getDate() : dateB.getDate();
-            });
-          } else {
-            this.filteredQueue.sort((a, b) => {
-              const dateA = new Date(a.createdAt);
-              const dateB = new Date(b.createdAt);
-              return dateA > dateB ? dateA.getDate() : dateB.getDate();
-            });
-          }
-          break;
-        case "Distance":
-          this.filteredQueue.sort((a, b) => {
-            return sortBy === "Ascending"
-              ? a.distance - b.distance
-              : b.distance - a.distance;
-          });
-          break;
-        case "Donations Received":
-          this.filteredQueue.sort((a, b) => {
-            return sortBy === "Ascending"
-              ? a.donationsReceived - b.donationsReceived
-              : b.donationsReceived - a.donationsReceived;
-          });
-          break;
-        default:
-          this.filteredQueue.sort((a, b) => {
-            return sortBy === "Ascending"
-              ? a.queuePos - b.queuePos
-              : b.queuePos - a.queuePos;
-          });
-          break;
-      }
+      this.setFilterBy(this.filterBy);
     },
     truncateText(text: string) {
       const truncated = text.length > 6 ? text.substring(0, 6) + "..." : text;

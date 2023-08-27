@@ -3,10 +3,8 @@
     id="donationCount"
     class="container-fluid"
     :class="{
-      'bg-white': role === 'Donor' || role === 'Charity',
-      'bg-dark': role === 'Administrator',
-      'text-black': role === 'Donor' || role === 'Charity',
-      'text-white': role === 'Administrator',
+      'bg-white text-black': role === 'Donor' || role === 'Charity',
+      'bg-dark text-white': role === 'Administrator',
     }"
   >
     <div
@@ -54,41 +52,22 @@
             <button
               type="button"
               class="btn dropdown-toggle fs-6"
-              :class="{
-                'text-black': role === 'Donor' || role === 'Charity',
-                'text-white': role === 'Administrator',
-              }"
+              :class="`text-${
+                role === 'Donor' || role === 'Charity' ? 'black' : 'white'
+              }`"
               data-bs-toggle="dropdown"
               aria-expanded="false"
             >
               Government level: {{ governmentLevel }}
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
-              <li>
+              <li v-for="level in governmentLevels" :key="level">
                 <button
                   type="button"
                   class="dropdown-item"
-                  @click="$emit('updateGovernmentLevel', 'Barangay')"
+                  @click="$emit('updateGovernmentLevel', level)"
                 >
-                  Barangay
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  class="dropdown-item"
-                  @click="$emit('updateGovernmentLevel', 'Municipality')"
-                >
-                  Municipality
-                </button>
-              </li>
-              <li>
-                <button
-                  type="button"
-                  class="dropdown-item"
-                  @click="$emit('updateGovernmentLevel', 'City')"
-                >
-                  City
+                  {{ level }}
                 </button>
               </li>
             </ul>
@@ -142,6 +121,11 @@ export default defineComponent({
       type: Object,
       required: true,
     },
+  },
+  data() {
+    return {
+      governmentLevels: ["Barangay", "Municipality", "City"] as string[],
+    };
   },
   mounted() {
     window.addEventListener("resize", () => {
