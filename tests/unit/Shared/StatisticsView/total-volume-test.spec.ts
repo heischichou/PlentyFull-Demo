@@ -50,6 +50,11 @@ const stubProps = () => {
 
 const factory = (props = {}) => {
   return shallowMount(TotalVolume as any, {
+    data() {
+      return {
+        bases: ["Weekly", "Monthly", "Yearly"],
+      };
+    },
     propsData: {
       ...props,
     },

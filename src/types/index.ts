@@ -18,3 +18,17 @@ export interface Account {
   createdAt: string;
   updatedAt: string | undefined;
 }
+
+export interface Notification {
+  notificationId: string;
+  senderId: string;
+  senderName: string;
+  type: string;
+  message: string;
+  createdAt: string;
+  read: boolean;
+  report: {
+    type: object | undefined;
+    default: undefined;
+  };
+}

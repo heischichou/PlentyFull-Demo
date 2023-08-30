@@ -1,21 +1,7 @@
 import { mount } from "@vue/test-utils";
 import Notifications from "@/components/Shared/NotificationsDropdown.vue";
 import { uuid } from "vue-uuid";
-
-declare interface Notification {
-  notificationId: string;
-  senderId: string;
-  senderName: string;
-  type: string;
-  message: string;
-  createdAt: string;
-  read: boolean;
-  report: {
-    required: boolean;
-    type: object | null;
-    default: object | null;
-  };
-}
+import { Notification } from "@/types";
 
 const notifications = () => {
   return [
@@ -27,11 +13,6 @@ const notifications = () => {
       message: "has accepted your donation reception.",
       createdAt: new Date().toDateString(),
       read: false,
-      report: {
-        required: false,
-        type: [Object, null],
-        default: null,
-      },
     },
     {
       notificationId: uuid.v1(),
@@ -41,13 +22,8 @@ const notifications = () => {
       message: "successfully received your donation.",
       createdAt: new Date().toDateString(),
       read: true,
-      report: {
-        required: false,
-        type: [Object, null],
-        default: null,
-      },
     },
-  ] as Notification[];
+  ] as unknown as Notification[];
 };
 
 const factory = (

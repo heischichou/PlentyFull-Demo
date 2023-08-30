@@ -37,99 +37,80 @@ describe("App Header", () => {
     expect(wrapper.findComponent(NotificationsDropdown).exists()).toBe(false);
   });
 
-  it("renders Guest routes correctly", async () => {
+  it("renders routes correctly", async () => {
     const wrapper = factory("");
-
-    const guestRoutes = ["Home", "/about", "/register", "/login"];
-    const nonGuestRoutes = [
-      "/donate",
-      "/receive",
-      "/registry",
-      "/find",
-      "/transactions",
-      "/statistics",
-      "/profile",
+    const states = [
+      {
+        role: "",
+        routes: ["Home", "/about", "/register", "/login"],
+        nonRoutes: [
+          "/donate",
+          "/receive",
+          "/registry",
+          "/find",
+          "/transactions",
+          "/statistics",
+          "/profile",
+        ],
+      },
+      {
+        role: "Donor",
+        routes: [
+          "/donate",
+          "/find",
+          "/transactions",
+          "/statistics",
+          "/profile",
+        ],
+        nonRoutes: [
+          "/home",
+          "/about",
+          "/register",
+          "/login",
+          "/registry",
+          "/receive",
+        ],
+      },
+      {
+        role: "Charity",
+        routes: ["/receive", "/find", "/statistics", "/profile"],
+        nonRoutes: [
+          "/home",
+          "/about",
+          "/register",
+          "/login",
+          "/registry",
+          "/donate",
+        ],
+      },
+      {
+        role: "Administrator",
+        routes: ["/registry", "/statistics", "/profile"],
+        nonRoutes: [
+          "/home",
+          "/about",
+          "/register",
+          "/login",
+          "/donate",
+          "/receive",
+          "/find",
+          "/transactions",
+        ],
+      },
     ];
 
-    // Contains Guest routes
-    guestRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(true);
-    });
+    for (const state of states) {
+      await wrapper.setData({ role: state.role });
 
-    // Does not contain non-Guest routes
-    nonGuestRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(false);
-    });
-  });
+      // Contains routes specific to user type
+      state.routes.forEach((route) => {
+        expect(wrapper.html().includes(route)).toBe(true);
+      });
 
-  it("renders Donor routes correctly", () => {
-    const wrapper = factory("Donor");
-
-    const donorRoutes = [
-      "/donate",
-      "/find",
-      "/transactions",
-      "/statistics",
-      "/profile",
-    ];
-    const guestRoutes = ["/home", "/about", "/register", "/login"];
-
-    // Contains Donor routes
-    donorRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(true);
-    });
-
-    // Does not contain Guest routes
-    guestRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(false);
-    });
-  });
-
-  it("renders Charity routes correctly", () => {
-    const wrapper = factory("Charity");
-
-    const donorRoutes = [
-      "/receive",
-      "/find",
-      "/statistics",
-      "/profile",
-    ];
-    const guestRoutes = ["/home", "/about", "/register", "/login"];
-
-    // Contains Donor routes
-    donorRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(true);
-    });
-
-    // Does not contain Guest routes
-    guestRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(false);
-    });
-  });
-
-  it("renders Admin routes correctly", () => {
-    const wrapper = factory("Admin");
-
-    const adminRoutes = ["/registry", "/statistics", "/profile"];
-    const nonAdminRoutes = [
-      "/home",
-      "/about",
-      "/register",
-      "/login",
-      "/donate",
-      "/receive",
-      "/find",
-      "/transactions",
-    ];
-
-    // Contains Admin routes
-    adminRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(true);
-    });
-
-    // Does not contain non-Admin routes
-    nonAdminRoutes.forEach((route) => {
-      expect(wrapper.html().includes(route)).toBe(false);
-    });
+      // Does not contain non-user type routes
+      state.nonRoutes.forEach((route) => {
+        expect(wrapper.html().includes(route)).toBe(false);
+      });
+    }
   });
 });

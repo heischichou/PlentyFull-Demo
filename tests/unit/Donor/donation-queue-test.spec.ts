@@ -1,5 +1,6 @@
 import { DOMWrapper, VueWrapper, shallowMount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
+import { Queuer } from "@/types/Donor";
 import DonationQueue from "@/components/Donor/DonationQueue.vue";
 
 const findByText = (
@@ -12,19 +13,6 @@ const findByText = (
     .filter((e: any) => e.text() === text)
     .at(0) as DOMWrapper<Element>;
 };
-
-declare interface Queuer {
-  queuerId: string;
-  charityId: string;
-  name: string;
-  status: string;
-  queuePos: number;
-  queueWeight: string;
-  distance: number;
-  donationsReceived: number;
-  createdAt: string;
-  updatedAt: string;
-}
 
 const queuers = () => {
   return [

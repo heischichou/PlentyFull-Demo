@@ -5,6 +5,23 @@ const factory = () => {
   return mount(Registry as any, {
     data() {
       return {
+        tabs: [
+          {
+            tab: "Registration",
+            text: "Sign Up Requests",
+            icon: "bi-hourglass",
+          },
+          {
+            tab: "Members",
+            text: "Manage Users",
+            icon: "bi-clipboard-check",
+          },
+          {
+            tab: "Reports",
+            text: "Reports",
+            icon: "bi-slash-circle",
+          },
+        ],
         activeTab: "Registration",
         show: true,
       };
@@ -37,7 +54,7 @@ describe("Registry View", () => {
       { name: "reportsTab", tab: "Reports" },
     ];
     let callbacks = 0;
-    
+
     tabs.forEach((tab) => {
       wrapper.find(`#${tab.name}`).trigger("click");
       expect(mockSwitchTab).toHaveBeenCalledTimes(++callbacks);
@@ -49,7 +66,7 @@ describe("Registry View", () => {
     const wrapper = factory();
     const mockToggleSideBar = jest.spyOn(wrapper.vm, "toggleSidebar");
 
-    for(let i = 0; i < 2; i++) {
+    for (let i = 0; i < 2; i++) {
       const show = wrapper.vm.show;
       await wrapper.find({ ref: "sidebarToggle" }).trigger("click");
       expect(mockToggleSideBar).toHaveBeenCalledTimes(i + 1);
@@ -67,10 +84,10 @@ describe("Registry View", () => {
       {
         width: 750,
         show: false,
-      }
+      },
     ];
 
-    for(const state of states) {
+    for (const state of states) {
       Object.defineProperty(window, "innerWidth", {
         writable: true,
         configurable: true,

@@ -70,22 +70,8 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import { Notification } from "@/types";
 import { uuid } from "vue-uuid";
-
-declare interface Notification {
-  notificationId: string;
-  senderId: string;
-  senderName: string;
-  type: string;
-  message: string;
-  createdAt: string;
-  read: boolean;
-  report: {
-    required: boolean;
-    type: object | null;
-    default: object | null;
-  };
-}
 
 export default defineComponent({
   name: "NotificationsDropdown",
@@ -101,11 +87,6 @@ export default defineComponent({
           message: "has accepted your donation reception.",
           createdAt: new Date().toDateString(),
           read: false,
-          report: {
-            required: false,
-            type: [Object, null],
-            default: null,
-          },
         },
         {
           notificationId: uuid.v1(),
@@ -116,14 +97,10 @@ export default defineComponent({
           createdAt: new Date().toDateString(),
           read: false,
           report: {
-            required: false,
-            type: [Object, null],
-            default: {
-              reportId: uuid.v1(),
-              reportType: "Other",
-              anonymous: true,
-              resolved: false,
-            },
+            reportId: uuid.v1(),
+            reportType: "Other",
+            anonymous: true,
+            resolved: false,
           },
         },
         {
@@ -134,11 +111,6 @@ export default defineComponent({
           message: "successfully received your donation.",
           createdAt: new Date().toDateString(),
           read: true,
-          report: {
-            required: false,
-            type: [Object, null],
-            default: null,
-          },
         },
         {
           notificationId: uuid.v1(),
@@ -148,13 +120,8 @@ export default defineComponent({
           message: "successfully received your donation.",
           createdAt: new Date().toDateString(),
           read: true,
-          report: {
-            required: false,
-            type: [Object, null],
-            default: null,
-          },
         },
-      ] as Notification[],
+      ] as unknown as Notification[],
       filteredNotifications: [] as Notification[],
     };
   },

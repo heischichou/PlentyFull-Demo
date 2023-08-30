@@ -39,6 +39,11 @@ const stubProps = () => {
 
 const factory = (props = {}) => {
   return shallowMount(DonationCount as any, {
+    data() {
+      return {
+        governmentLevels: ["Barangay", "Municipality", "City"],
+      };
+    },
     propsData: {
       ...props,
     },
@@ -66,11 +71,7 @@ describe("Donations Per Location", () => {
     expect(legends.length).toBe(labels.length);
 
     legends.forEach((legend, index) => {
-      const legendItem = findByText(
-        legend,
-        "p",
-        data.at(index) + " donations"
-      );
+      const legendItem = findByText(legend, "p", data.at(index) + " donations");
       const pill = legend.find(".pill").attributes("style");
 
       expect(legendItem.exists()).not.toBe(undefined);

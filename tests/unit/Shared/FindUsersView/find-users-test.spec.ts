@@ -1,5 +1,6 @@
 import { VueWrapper, DOMWrapper, mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
+import { Account } from "@/types";
 import FindUsers from "@/views/Shared/FindUsersView.vue";
 
 const findByText = (
@@ -13,63 +14,52 @@ const findByText = (
     .at(0) as DOMWrapper<Element>;
 };
 
-declare interface User {
-  userId: string;
-  username: string;
-  avatar: string;
-  email: string;
-  contact: string;
-  address: string;
-  description: string;
-}
-
 const users = () => {
   return [
     {
-      userId: uuid.v1(),
-      username: "Cebu Food Bank",
+      id: uuid.v1(),
+      name: "Cebu Food Bank",
       avatar: "default_profile.png",
       email: "info@cebufoodbank.com",
       contact: "(32) 417 3322",
       address: "Pacific Square Building, Ayala Access Road, Cebu City",
-      description:
-        "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
+      bio: "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample bio. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
     },
     {
-      userId: uuid.v1(),
-      username: "Hipodromo Barangay Hall",
+      id: uuid.v1(),
+      name: "Hipodromo Barangay Hall",
       avatar:
         "https://bestprofilepictures.com/wp-content/uploads/2021/08/Amazing-Profile-Picture-for-Facebook.jpg",
       email: "info@hipodromoBarangayHall.com",
       contact: "(32) 233 1311",
       address: "664 Saint Joseph St., Barangay Hipodromo, Cebu City",
-      description:
-        "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
+      bio: "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample bio. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
     },
     {
-      userId: uuid.v1(),
-      username: "JPIC-IDC Inc.",
+      id: uuid.v1(),
+      name: "JPIC-IDC Inc.",
       avatar:
         "https://images.unsplash.com/photo-1518806118471-f28b20a1d79d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
       email: "info@jpic-idc.org.ph",
       contact: "(32) 254 5254",
       address: "L. Jaime Street, Maguikay, Mandaue City",
-      description:
-        "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample description. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
+      bio: "Lorem ipsum dolor sit amet ad nauseum, ad infinitium, ad profundis. This is a sample bio. Text labels need to be distinct from other elements. If the text label isn’t capitalized, it should use a different color, style, or layout from other text.",
     },
-  ] as User[];
-}
+  ] as Account[];
+};
 
-const factory = (users: User[]) => {
+const factory = (users: Account[]) => {
   return mount(FindUsers as any, {
     data() {
       return {
         role: "",
-        searchText: "",
         searchBy: "Name",
+        searchByOptions: ["Name", "Address"],
         sortBy: "Distance",
+        sortByOptions: ["Distance", "A to Z", "Z to A"],
+        searchText: "",
         users: users,
-        filteredUsers: [] as User[],
+        filteredUsers: [] as Account[],
       };
     },
   });
@@ -119,7 +109,7 @@ describe("Find Users page", () => {
     const options = [
       {
         name: "Name",
-        wrapper: findByText(wrapper, ".dropdown-item", "Name")
+        wrapper: findByText(wrapper, ".dropdown-item", "Name"),
       },
       {
         name: "Address",

@@ -1,5 +1,7 @@
 import { mount } from "@vue/test-utils";
 import { uuid } from "vue-uuid";
+import { Transaction } from "@/types/Shared";
+import { FoodItem } from "@/types/Donor";
 import Transactions from "@/views/Shared/TransactionsView.vue";
 
 const transactions = () => {
@@ -52,7 +54,7 @@ const transactions = () => {
           weight: 0.2,
           createdAt: new Date().toString(),
         },
-      ],
+      ] as FoodItem[],
       createdAt: new Date().toString(),
       updatedAt: new Date().toString(),
     },
@@ -106,7 +108,7 @@ const transactions = () => {
           weight: 0.2,
           createdAt: new Date().toString(),
         },
-      ],
+      ] as FoodItem[],
       createdAt: new Date().toString(),
       updatedAt: new Date().toString(),
     },
@@ -160,11 +162,11 @@ const transactions = () => {
           weight: 0.2,
           createdAt: new Date().toString(),
         },
-      ],
+      ] as FoodItem[],
       createdAt: new Date().toString(),
       updatedAt: new Date().toString(),
     },
-  ];
+  ] as Transaction[];
 };
 
 const factory = () => {
@@ -174,7 +176,7 @@ const factory = () => {
         role: "Charity",
         windowWidth: window.innerWidth,
         transactions: transactions(),
-        filteredTransactions: [] as Array<Object>,
+        filteredTransactions: [] as Transaction[],
         activeTab: "Completed",
       };
     },

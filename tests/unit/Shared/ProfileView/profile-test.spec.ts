@@ -23,6 +23,18 @@ const factory = (activeTab: string, avatar: string) => {
   return mount(Profile, {
     data() {
       return {
+        tabs: [
+          {
+            name: "Profile",
+            text: "Profile",
+            icon: "bi-person-circle",
+          },
+          {
+            name: "Security and Login",
+            text: "Security",
+            icon: "bi-shield-check",
+          },
+        ],
         activeTab: activeTab,
         windowWidth: window.innerWidth,
         avatar: avatar,

@@ -182,7 +182,7 @@ export default defineComponent({
   name: "AppFooter",
   data() {
     return {
-      role: "Admin",
+      role: "",
       items: [
         "City: Cebu City",
         "Zip Code: 6000",

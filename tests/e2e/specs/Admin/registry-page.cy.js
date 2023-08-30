@@ -15,8 +15,13 @@ describe("Registry Page", () => {
   });
 
   it("should contain and display a button and three items", () => {
+    cy.viewport('macbook-16');
     cy.get("#sideBar").find(".navbar-toggler").should("exist");
     cy.get("#sideBar").find(".navbar-toggler").should("be.visible");
+
+    cy.viewport(1024, 768)
+    cy.get("#sideBar").find(".navbar-toggler").should("not.be.visible");
+
     cy.get("#sideBar").find(".nav-link").should("have.length", 3);
     cy.get("#sideBar").find(".nav-link").should("be.visible");
   });

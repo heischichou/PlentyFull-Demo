@@ -19,8 +19,13 @@ const router = createRouter({
   routes: routes,
 });
 
-const factory = () => {
+const factory = (role: string) => {
   return mount(Footer as any, {
+    data() {
+      return {
+        role: role,
+      };
+    },
     global: {
       plugins: [router],
     },
@@ -29,35 +34,93 @@ const factory = () => {
 
 describe("Footer", () => {
   it("renders successfully", () => {
-    const wrapper = factory();
+    const wrapper = factory("");
     expect(wrapper.exists()).toBe(true);
     expect(wrapper.find("#footer").exists()).toBe(true);
   });
 
   it("renders Footer sections successfully", () => {
     const sections = ["contact", "menu", "textSection"];
-    const wrapper = factory();
+    const wrapper = factory("");
 
     sections.forEach((section) => {
       expect(wrapper.find(`#${section}`).exists()).toBeTruthy();
     });
   });
 
-  it("renders Menu routes successfully", async () => {
-    const wrapper = factory();
-    const routes = [
-      findByText(wrapper, ".nav-link", "Home"),
-      findByText(wrapper, ".nav-link", "About"),
-      findByText(wrapper, ".nav-link", "Register"),
-      findByText(wrapper, ".nav-link", "Login"),
+  it("renders routes correctly", async () => {
+    const wrapper = factory("");
+    const states = [
+      {
+        role: "",
+        routes: ["Home", "About", "Register", "Login"],
+        nonRoutes: [
+          "/donate",
+          "/receive",
+          "/registry",
+          "/find",
+          "/transactions",
+          "/statistics",
+          "/profile",
+        ],
+      },
+      {
+        role: "Donor",
+        routes: ["Donate", "Find", "Transactions", "Statistics"],
+        nonRoutes: [
+          "/home",
+          "/about",
+          "/register",
+          "/login",
+          "/registry",
+          "/receive",
+        ],
+      },
+      {
+        role: "Charity",
+        routes: ["Receive", "Find", "Statistics"],
+        nonRoutes: [
+          "/home",
+          "/about",
+          "/register",
+          "/login",
+          "/registry",
+          "/donate",
+        ],
+      },
+      {
+        role: "Administrator",
+        routes: ["Registry", "Statistics"],
+        nonRoutes: [
+          "/home",
+          "/about",
+          "/register",
+          "/login",
+          "/donate",
+          "/receive",
+          "/find",
+          "/transactions",
+        ],
+      },
     ];
-    routes.forEach((route) => {
-      expect(route.exists()).toBe(true);
-    });
+
+    for(const state of states){
+      await wrapper.setData({ role: state.role });
+
+      // Contains routes specific to user type
+      state.routes.forEach((route) => {
+        expect(findByText(wrapper, ".nav-link", route).exists()).toBe(true);
+      });
+
+      // Does not contain non-user type routes
+      state.nonRoutes.forEach((route) => {
+        expect(wrapper.html().includes(route)).toBe(false);
+      });
+    }
   });
 
   it("renders Copyrights correctly", () => {
-    const wrapper = factory();
+    const wrapper = factory("");
     const copyrights = wrapper.find("#copyrights");
     expect(copyrights.exists()).toBeTruthy();
     expect(copyrights.text()).toContain("© PlentyFull. All rights reserved.");

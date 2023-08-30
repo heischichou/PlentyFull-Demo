@@ -2,6 +2,7 @@ import { DOMWrapper, VueWrapper, mount } from "@vue/test-utils";
 import { createRouter, createWebHistory } from "vue-router";
 import { routes } from "@/router/index";
 import { uuid } from "vue-uuid";
+import { FoodItem } from "@/types/Donor";
 import Donate from "@/views/Donor/DonateView.vue";
 
 const router = createRouter({
@@ -62,7 +63,7 @@ const foodItems = () => {
       createdAt: new Date().toString(),
       updatedAt: new Date().toString(),
     },
-  ];
+  ] as FoodItem[];
 };
 
 const newItem = (name: string, quantity: number, weight: number) => {
@@ -75,7 +76,7 @@ const newItem = (name: string, quantity: number, weight: number) => {
     weight: weight,
     createdAt: new Date().toString(),
     updatedAt: new Date().toString(),
-  };
+  } as FoodItem;
 };
 
 const factory = (data = {}) => {
@@ -83,6 +84,14 @@ const factory = (data = {}) => {
     data() {
       return {
         windowWidth: window.innerWidth,
+        foodTypes: [
+          "Eggs and Dairy",
+          "Fruits",
+          "Vegetables",
+          "Meat and Poultry",
+          "Fish and Seafood",
+          "Grains and Nuts",
+        ],
         ...data,
       };
     },

@@ -178,7 +178,7 @@ export default defineComponent({
   name: "AppHeader",
   data() {
     return {
-      role: "",
+      role: "Charity",
       filterByRead: false,
       dropdownIsOpen: false,
     };

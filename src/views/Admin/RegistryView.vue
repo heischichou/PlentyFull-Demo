@@ -21,13 +21,13 @@
           >
             <li
               v-for="tab in tabs"
-              :key="`${tab.text.toLowerCase()}`"
+              :key="`${tab.tab.toLowerCase()}`"
               class="nav-item h-100 w-100"
               :class="show ? 'text-start' : ''"
             >
               <a
                 @click="switchTab(tab.tab)"
-                :id="`${tab.text.toLowerCase()}Tab`"
+                :id="`${tab.tab.toLowerCase()}Tab`"
                 class="nav-link link-white py-3 px-4 w-100 rounded-0"
                 :class="activeTab === tab.tab ? 'active' : ''"
                 role="button"
